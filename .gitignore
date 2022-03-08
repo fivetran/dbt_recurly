@@ -1,0 +1,14 @@
+### VisualStudioCode ###
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+
+### dbt ###
+target/
+dbt_modules/
+logs/
+dbt_packages/
+
+### MacOS ###
+.DS_Store
