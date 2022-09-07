@@ -1,0 +1,3 @@
+_fivetran_synced,id,created_at,updated_at,deleted_at,code,state,name,description,interval_unit,interval_length,trial_unit,trial_length,total_billing_cycles,auto_renew,accounting_code,setup_fee_accounting_code,tax_code,tax_exempt
+2022-08-30 08:23:26,1c85c5b774e9eabf29b9b439b8ee4584,2015-02-09 21:00:56,2019-04-29 16:20:03,,dd82c1882969461de74b46427961ea2c,active,13e685964c2548aa748f7ea263bad4e5,,months,1,days,0,1,true,,,,true
+2022-08-30 08:23:26,455b18e9a39e782da54de395edb6b566,2015-02-13 09:25:58,2019-04-29 16:20:03,,09300df44b9d20cc219b25abddc3346e,active,a0f27638260642afb474516cc918407e,,months,1,days,7,1,true,645ec79f22bec5efe970061d395cf7c4,645ec79f22bec5efe970061d395cf7c4,,true

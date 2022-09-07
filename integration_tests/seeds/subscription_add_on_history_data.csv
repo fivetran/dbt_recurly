@@ -1,0 +1,3 @@
+_fivetran_synced,created_at,expired_at,id,object,plan_add_on_id,quantity,subscription_id,unit_amount,updated_at
+2022-09-01 08:23:26,2015-02-13 09:42:08,,1ff64df2a949d3a8078da5e46747ee8d,subscription_add_on,a80b5418d4fda1613d34c242d238e060,1,caxmfuh3zdov,599.0,2015-02-13 09:42:08
+2022-09-01 08:23:26,2015-02-13 09:42:08,,3c10c5142a8d7a5d37f7686a125273cd,subscription_add_on,10b3229f0a6d00aa9da79a1cf0dc272b,2,caxmfuh3zdov,999.0,2015-02-13 09:42:08

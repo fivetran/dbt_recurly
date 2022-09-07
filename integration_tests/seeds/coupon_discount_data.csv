@@ -1,0 +1,5 @@
+coupon_id,fivetran_id,_fivetran_synced,amount,currency,percentage,trial_length,trial_unit,type
+7eafccdb4921ddd912e67a365d80f876,a24ffd1828c99c439b1d3539c43b9673,2022-07-28 14:59:08,1.0,USD,,,,fixed
+17757758e5e0ce64f0e898a7f6c9094c,b8095ea798d2410a907b399527cb23b1,2022-07-28 14:59:08,1.0,USD,,,,fixed
+657f4ba8302535ff500e32a0a42e0b6d,6b05c1c54fc23d672c39a7b87e673089,2022-07-28 14:59:08,,,20,,,percent
+f34f9149fe6fb3d75c17a24d1669e3d9,abe33122f583776fb67b6d92e5beb751,2022-09-01 08:23:27,,,10,,,percent

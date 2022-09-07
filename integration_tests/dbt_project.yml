@@ -1,0 +1,89 @@
+name: 'recurly_integration_tests'
+version: '0.1.0'
+profile: 'integration_tests'
+config-version: 2
+
+vars:
+  recurly_schema: recurly_integration_tests
+  recurly_source:
+    account_balance_history_identifier: "account_balance_history_data"
+    account_history_identifier: "account_history_data"
+    account_note_history_identifier: "account_note_history_data"
+    billing_info_history_identifier: "billing_info_history_data"
+    coupon_discount_identifier: "coupon_discount_data"
+    coupon_redemption_history_identifier: "coupon_redemption_history_data"
+    credit_payment_history_identifier: "credit_payment_history_data"
+    invoice_coupon_redemption_history_identifier: "invoice_coupon_redemption_history_data"
+    invoice_history_identifier: "invoice_history_data"
+    invoice_subscription_history_identifier: "invoice_subscription_history_data"
+    line_item_history_identifier: "line_item_history_data"
+    plan_currency_history_identifier: "plan_currency_history_data"
+    plan_history_identifier: "plan_history_data"
+    subscription_add_on_history_identifier: "subscription_add_on_history_data"
+    subscription_change_history_identifier: "subscription_change_history_data"
+    subscription_history_identifier: "subscription_history_data"
+    transaction_identifier: "transaction_data"
+    transaction_subscription_identifier: "transaction_subscription_data"
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['spark_utils', 'dbt_utils']
+
+seeds:
+  recurly_integration_tests:
+    account_balance_history_data:
+      +column_types: 
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    credit_payment_history_data:
+      +column_types: 
+        id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        account_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        applied_to_invoice_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        original_invoice_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        refund_transaction_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        original_credit_payment_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        uuid: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    coupon_discount_data:
+      +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    invoice_history_data:
+      +column_types:
+        balance: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        paid: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        total: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        subtotal: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        refundable_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}" 
+    line_item_history_data:
+      +column_types:
+        discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        subtotal: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        credit_applied: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    plan_currency_history_data:
+      +column_types:
+        setup_fees: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    subscription_add_on_history_data:
+      +column_types:
+        unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    subscription_change_history_data:
+      +column_types:
+        id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        plan_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        subscription_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        object: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        quantity: "{{ 'INT64' if target.type == 'bigquery' else 'bigint' }}"
+    subscription_history_data:
+      +column_types:
+        unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        add_ons_total: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        subtotal: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    transaction_data:
+      +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
