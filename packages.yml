@@ -1,2 +1,6 @@
 packages:
-    - local: ../dbt_recurly_source
+#  - package:
+#   - local: ../dbt_recurly_source
+
+    - git: https://github.com/fivetran/dbt_recurly_source.git
+      revision: main
