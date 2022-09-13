@@ -1,7 +1,65 @@
 version: 2
 
-models: 
-  - name: recurly__balance_transaction
+models:
+  - name: recurly__account_overview
+    description: Each record represents an account, enriched with metrics about their associated transactions.
+    columns:
+      - name: account_id
+        description: Primary key for the account.
+      - name: email
+        description: Email address associated with the account.
+      - name: account_created_at
+        description: Timestampe of when the account entry was created.
+      - name: account_state
+        description: Current state of the account.
+      - name: total_transactions
+        description: Total amount of unique transactions issued to this account.
+      - name: total_invoices
+        description: Total amount of unique invoices issued to this account.
+      - name: total_charges
+        description: Total amount of charges issued to this account.
+      - name: total_credits
+        description: Total amount of credits issued to this account.
+      - name: total_gross_transaction_amount
+        description: Gross amount of all transactions made with this account.
+      - name: total_discounts
+        description: Total amount of discounts issued to this account.
+      - name: total_net_taxes
+        description: Total amount of taxes issued to this account.
+      - name: total_charge_count
+        description: Total number of charges issued to this account.
+      - name: total_credit_count
+        description: Total number of credits issued to this account.
+      - name: transactions_this_month
+        description: All transactions on this account from this current calendar month.
+      - name: invoices_this_month
+        description: All invoices on this account from this current calendar month.
+      - name: charges_this_month
+        description: All charges on this account from this current calendar month.
+      - name: credits_this_month
+        description: All credits on this account from this current calendar month.
+      - name: gross_transaction_amount_this_month
+        description: Gross amount of all transactions made on this account from this current calendar month.
+      - name: discounts_this_month
+        description: Discounts issued on the account from this current calendar month.
+      - name: taxes_this_month
+        description: Taxes issued on the account from this current calendar month.
+      - name: first_charge_date
+        description: Date the first charge on the account was issued.
+      - name: most_recent_charge_date
+        description: Date the most recent charge on the account was issued.
+      - name: first_invoice_date
+        description: Date the first invoice on the account was issued.
+      - name: most_recent_invoice_date
+        description: Date the most recent invoice on the account was issued.
+      - name: next_invoice_due_at
+        description: Date the most recent invoice on the account is due at.
+      - name: first_transaction_date
+        description: Date first transaction occurred on the account.
+      - name: most_recent_transaction_date
+        description: Date most recent transaction occurred on the account. 
+
+  - name: recurly__balance_transactions
     description: Each record represents a specific line item charge, credit, or other balance change that accumulates into the final invoices.
     columns:
       - name: balance_transaction_id

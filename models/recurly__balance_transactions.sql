@@ -52,6 +52,7 @@ select
     invoice_history.due_at as invoice_due_at,
     invoice_history.closed_at as invoice_closed_at, 
     transaction_history.transaction_id,
+    transaction_history.created_at as transaction_created_at,
     transaction_history.type as transaction_type,
     transaction_history.origin as transaction_origin,
     transaction_history.status as transaction_status, 
