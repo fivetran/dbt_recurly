@@ -1,0 +1,126 @@
+version: 2
+
+models: 
+  - name: recurly__balance_transaction
+    description: Each record represents a specific line item charge, credit, or other balance change that accumulates into the final invoices.
+    columns:
+      - name: balance_transaction_id
+        description: Unique identifer for the balance transaction line item
+      - name: created_at
+        description: When the line item was created.
+      - name: updated_at
+        description: When the line item was last updated.
+      - name: account_id
+        description: Customer in Recurly responsible for the line item.
+      - name: invoice_id
+        description: Invoice in Recurly these line items are associated with.
+      - name: invoice_number
+        description: >
+          If VAT taxation and the Country Invoice Sequencing feature are enabled, 
+          invoices will have country-specific invoice numbers for invoices billed to EU countries (e.g. FR1001). 
+          Non-EU invoices will continue to use the site-level invoice number sequence.
+      - name: type
+        description: >
+          Charges are positive line items that debit the account. 
+          Credits are negative line items that credit the account.
+          Enum: "charge", "credit"
+      - name: state
+        description: >
+          Pending line items are charges or credits on an account that have not been applied to an invoice yet. 
+          Invoiced line items will always have an invoice_id value.
+          Enum: "invoiced", "pending"
+      - name: origin
+        description: >
+          A credit created from an original charge will have the value of the charge's origin
+      - name: product_code
+        description: >
+          For plan-related line items this will be the plan's code, for add-on related line items it will be the add-on's code. 
+          For item-related line items it will be the item's external_sku.
+      - name: discount
+        description: The discount applied to the line item.
+      - name: tax
+        description: The tax amount for the line item.
+      - name: description
+        description: Description that appears on the invoice. For subscription related items this will be filled in automatically.
+      - name: plan_code
+        description: If the line item is a charge or credit for a plan or add-on, this is the plan's code.
+      - name: add_on_code
+        description: If the line item is a charge or credit for an add-on, this is its code.
+      - name: has_refund
+        description: True if the line item is refund, false if it is not.
+      - name: refunded_quantity
+        description: For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds).
+      - name: currency
+        description: 3-letter ISO 4217 currency code.
+      - name: amount
+        description: Total after discounts and taxes (quantity * unit_amount) - (discount + tax).
+      - name: credit_applied
+        description:  The amount of credit from this line item that was applied to the invoice.
+      - name: quantity
+        description: This number will be multiplied by the unit amount to compute the subtotal before any discounts or taxes.
+      - name: unit_amount
+        description: Positive amount for a charge, negative amount for a credit.
+      - name: subtotal
+        description: Total before discounts and taxes (quantity * unit_amount).
+      - name: started_at
+        description: >
+          If an end date is present, this is value indicates the beginning of a billing time range. 
+          If no end date is present it indicates billing for a specific date.
+      - name: ended_at
+        description: If this date is provided, it indicates the end of a time range
+      - name: original_line_item_invoice_id
+        description: >
+          The invoice where the credit originated. 
+          Will only have a value if the line item is a credit created from a previous credit, 
+          or if the credit was created from a charge refund.
+      - name: previous_line_item_id
+        description: >
+          Will only have a value if the line item is a credit created from a previous credit, 
+          or if the credit was created from a charge refund.
+      - name: invoice_state
+        description: >
+          The invoice state. 
+          Enum: "open", "pending", "processing", "past_due", "paid", "closed", "failed", "voided".
+      - name: invoice_origin
+        description: >
+          The event that created the invoice.
+          Enum: "credit", "gift_card", "immediate_change", "line_item_refund", "open_amount_refund", 
+          "purchase", "renewal", "termination", "write_off", "prepayment".
+      - name: invoice_type
+        description: Invoices are either "charge", "credit", or "legacy" invoices.
+      - name: invoice_created_at
+        description: When the invoice was created.
+      - name: invoice_due_at
+        description: Date invoice is due. This is the date the net terms are reached.
+      - name: invoice_closed_at
+        description: Date invoice was marked paid or failed.
+      - name: transaction_id
+        description: The id of the transaction associated with the invoice.
+      - name: transaction_type
+        description: >
+          Transaction types:
+            authorization: verifies billing information and places a hold on money in the customer's account.
+            capture: captures funds held by an authorization and completes a purchase.
+            purchase: combines the authorization and capture in one transaction.
+            refund: returns all or a portion of the money collected in a previous transaction to the customer.
+            verify: a $0 or $1 transaction used to verify billing information which is immediately voided.
+          Enum: "authorization", "capture", "purchase", "refund", "verify"
+      - name: transaction_origin
+        description: >
+          Describes how the transaction was triggered.
+          Enum: "api", "chargeback", "force_collect", "hpp", "merchant", "recurly_admin", "recurlyjs", "recurring", "refunded_externally", "transparent"
+      - name: transaction_status
+        description: >
+          The current transaction status. Note that the status may change, e.g. a pending transaction may become declined or success may later become void.
+          Enum: "chargeback", "declined", "error", "pending", "processing", "scheduled", "success", "void"
+      - name: transaction_billing_country 
+        description: Billing info - Country, 2-letter ISO code.
+      - name: transaction_status_message
+        description: For declined (success=false) transactions, the message displayed to the merchant.
+      - name: transaction_payment_method_object
+        description: >
+          Examples include: "amazon", "amazon_billing_agreement", "apple_pay", "bank_account_info", "check", "credit_card", "eft", "debit",
+          "gateway_token", "iban_bank_account", "money_order", "other", "paypal", "paypal_billing_agreement", "roku", 
+          "sepadirectdebit", "wire_transfer"
+
+   

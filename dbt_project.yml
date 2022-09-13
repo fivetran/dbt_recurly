@@ -1,10 +1,13 @@
-config-version: 2  
- 
+config-version: 2
 name: 'recurly' 
 version: '0.1.0'  
- 
 require-dbt-version: [">=1.0.0", "<2.0.0"] 
-
+models:
+  recurly: 
+    +schema: recurly
+    +materialized: table  
+    intermediate:
+      +materialized: ephemeral 
 vars:
   recurly: 
     account_balance_history: "{{ ref('stg_recurly__account_balance_history') }}"
@@ -25,10 +28,3 @@ vars:
     subscription_history: "{{ ref('stg_recurly__subscription_history') }}"
     transaction_subscription: "{{ ref('stg_recurly__transaction_subscription') }}"
     transaction: "{{ ref('stg_recurly__transaction') }}"
-  
-models:
-  recurly: 
-       +materialized: table  
-       Intermediate:
-           +materialized: ephemeral 
-  
