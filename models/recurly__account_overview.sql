@@ -112,3 +112,4 @@ select
 from account_history
 left join transactions_grouped 
     on account_history.account_id = transactions_grouped.account_id
+where is_most_recent_record = true
