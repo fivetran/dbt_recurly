@@ -34,6 +34,9 @@ seeds:
     account_balance_history_data:
       +column_types: 
         amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    account_history_data:
+      +column_types:
+        deleted_at: timestamp
     credit_payment_history_data:
       +column_types: 
         id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
@@ -64,6 +67,10 @@ seeds:
         discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         tax: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         credit_applied: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        end_date: timestamp
+    plan_history_data:
+      +column_types:
+        deleted_at: timestamp
     plan_currency_history_data:
       +column_types:
         setup_fees: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
@@ -71,6 +78,7 @@ seeds:
     subscription_add_on_history_data:
       +column_types:
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        expired_at: timestamp
     subscription_change_history_data:
       +column_types:
         id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
@@ -81,6 +89,7 @@ seeds:
         quantity: "{{ 'INT64' if target.type == 'bigquery' else 'bigint' }}"
     subscription_history_data:
       +column_types:
+        paused_at: timestamp
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         add_ons_total: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         subtotal: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
