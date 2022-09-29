@@ -6,10 +6,14 @@ models:
     columns:
       - name: account_id
         description: Primary key for the account.
-      - name: email
-        description: Email address associated with the account.
       - name: account_created_at
         description: Timestampe of when the account entry was created.
+      - name: account_email
+        description: Email address associated with the account.
+      - name: account_first_name
+        description: First name associated with the account.
+      - name: account_last_name
+        description: Last name associated with the account.
       - name: account_state
         description: Current state of the account.
       - name: total_transactions
@@ -181,4 +185,71 @@ models:
           "gateway_token", "iban_bank_account", "money_order", "other", "paypal", "paypal_billing_agreement", "roku", 
           "sepadirectdebit", "wire_transfer"
 
-   
+  - name: recurly__subscription_overview
+    description: Each record represents a subscription, enriched with metrics about time, revenue, state, and period.
+    columns:
+      - name: subscription_id
+        description: Unique identifier for the subscription.
+      - name: activation_date
+        description: When the subscription was activated.  
+      - name: add_ons_total
+        description: Total price of add-ons. Greater or equal to 0.
+      - name: cancellation_date
+        description: When the subscription was canceled. Can take future dates.
+      - name: current_period_end_date
+        description: Current billing period ends at.
+      - name: current_period_start_date
+        description: Current billing period started at.
+      - name: current_interval_days
+        description: Length of current billing period in days.
+      - name: expiration_date
+        description: When the subscription has expired. Can take future dates.
+      - name: expiration_reason
+        description: Reason for subscription expiration.
+      - name: subscription_period
+        description: > 
+          The nth subscription defined by the time period set. Subscriptions start with month 0.
+      - name: subscription_state
+        description: >
+          The current state of the subscription.
+          Enum: "active", "canceled", "expired", "failed", "future", "paused"
+      - name: subtotal
+        description: Estimated total, before tax.
+      - name: trial_period_end_date
+        description: Trial period ends at.
+      - name: trial_period_start_date
+        description: Trial period started at.
+      - name: trial_interval_days
+        description: Period of trial, in days.
+      - name: unit_amount
+        description: Subscription unit price.
+      - name: account_id
+        description: The account this subscription belongs to. 
+      - name: account_created_date
+        description: The date this account was created.
+      - name: account_email
+        description: Email address associated with the account for this subscription.
+      - name: account_first_name
+        description: First name associated with the account for this subscription.
+      - name: account_last_name
+        description: Last name associated with the account for this subscription.
+      - name: account_state
+        description: Current state of the account.
+      - name: plan_code
+        description: Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
+      - name: plan_created_at
+        description: When the plan was created.
+      - name: plan_deleted_at
+        description: When the plan was deleted.
+      - name: plan_is_tax_exempt
+        description: true exempts tax on the plan, false applies tax on the plan.
+      - name: plan_name
+        description: This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
+      - name: plan_state
+        description: >
+          The current state of the plan.
+          Enum: "active", "inactive"
+      - name: plan_total_billing_cycles
+        description: >
+          Automatically terminate subscriptions after a defined number of billing cycles. 
+          Number of billing cycles before the plan automatically stops renewing, defaults to null for continuous, automatic renewal.

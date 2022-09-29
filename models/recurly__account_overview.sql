@@ -82,8 +82,10 @@ transactions_grouped as (
 
 select 
     account_history.account_id,
-    account_history.email,
     account_history.created_at as account_created_at,
+    account_history.email as account_email,
+    account_history.first_name as account_first_name,
+    account_history.last_name as account_last_name,
     account_history.state as account_state,
     coalesce(transactions_grouped.total_transactions, 0) as total_transactions,
     coalesce(transactions_grouped.total_invoices, 0) as total_invoices,
