@@ -190,19 +190,19 @@ models:
     columns:
       - name: subscription_id
         description: Unique identifier for the subscription.
-      - name: activation_date
+      - name: activated_at
         description: When the subscription was activated.  
       - name: add_ons_total
         description: Total price of add-ons. Greater or equal to 0.
-      - name: cancellation_date
+      - name: canceled_at
         description: When the subscription was canceled. Can take future dates.
-      - name: current_period_end_date
+      - name: current_period_ended_at
         description: Current billing period ends at.
-      - name: current_period_start_date
+      - name: current_period_started_at
         description: Current billing period started at.
       - name: current_interval_days
         description: Length of current billing period in days.
-      - name: expiration_date
+      - name: expires_at
         description: When the subscription has expired. Can take future dates.
       - name: expiration_reason
         description: Reason for subscription expiration.
@@ -215,9 +215,9 @@ models:
           Enum: "active", "canceled", "expired", "failed", "future", "paused"
       - name: subtotal
         description: Estimated total, before tax.
-      - name: trial_period_end_date
+      - name: trial_ends_at
         description: Trial period ends at.
-      - name: trial_period_start_date
+      - name: trial_started_at
         description: Trial period started at.
       - name: trial_interval_days
         description: Period of trial, in days.
@@ -225,7 +225,7 @@ models:
         description: Subscription unit price.
       - name: account_id
         description: The account this subscription belongs to. 
-      - name: account_created_date
+      - name: account_created_at
         description: The date this account was created.
       - name: account_email
         description: Email address associated with the account for this subscription.
