@@ -10,7 +10,6 @@ account_overview as (
     select * 
     from {{ ref('recurly__account_overview') }}
 ),
- 
 
 plan_enhanced as (
 
