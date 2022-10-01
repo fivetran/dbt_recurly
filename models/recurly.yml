@@ -200,8 +200,8 @@ models:
         description: Current billing period ends at.
       - name: current_period_started_at
         description: Current billing period started at.
-      - name: current_interval_days
-        description: Length of current billing period in days.
+      - name: actual_interval_days
+        description: Actual interval of current billing period, accounting for cancelled/expired periods. 
       - name: expires_at
         description: When the subscription has expired. Can take future dates.
       - name: expiration_reason
@@ -241,6 +241,8 @@ models:
         description: When the plan was created.
       - name: plan_deleted_at
         description: When the plan was deleted.
+      - name: plan_interval_days
+        description: The number of days on the expected Recurly plan.
       - name: plan_is_tax_exempt
         description: true exempts tax on the plan, false applies tax on the plan.
       - name: plan_name
