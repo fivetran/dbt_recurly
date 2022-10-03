@@ -1,7 +1,7 @@
 with subscription_enhanced as (
 
     select *,
-    coalesce(canceled_at, current_period_ended_at) as actual_end_date,
+    coalesce(canceled_at, current_period_ended_at) as actual_end_date, 
     from {{ var('subscription_history') }}
 ),
 
@@ -15,11 +15,11 @@ plan_enhanced as (
 
     select 
         *, 
-        case when interval_unit like 'months' then interval_length * 30
-            when interval_unit like 'weeks' then interval_length * 7
+        case when interval_unit like 'months' then interval_length * 30 
+            when interval_unit like 'weeks' then interval_length * 7 
             else interval_length 
             end as interval_days
-    from {{ var('plan_history') }}
+    from {{ var('plan_history') }} 
 )
 
 
@@ -31,7 +31,7 @@ select
     subscription_enhanced.canceled_at,
     subscription_enhanced.current_period_ended_at,
     subscription_enhanced.current_period_started_at,
-    {{ dbt_utils.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.actual_end_date', 'day') }} as actual_interval_days,
+    {{ dbt_utils.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.actual_end_date', 'day') }} as actual_interval_days, 
     subscription_enhanced.expires_at,
     subscription_enhanced.expiration_reason, 
     subscription_enhanced.has_auto_renew,

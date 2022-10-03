@@ -10,34 +10,34 @@ account_history as (
     from {{ var('account_history') }}
 ),
 
-transactions_grouped as (
+transactions_grouped as ( 
 
     select 
         account_id,
         count(distinct transaction_id) as total_transactions,
         count(distinct invoice_id) as total_invoices,
-        sum(case when type in ('charge') 
+        sum(case when type in ('charge')  
             then amount
             else 0 
             end) as total_charges,
-        sum(case when type in ('credit') 
+        sum(case when type in ('credit')  
             then amount
             else 0 
             end) as total_credits,
         sum(amount) as total_gross_transaction_amount,
         sum(discount) as total_discounts,
         sum(tax) as total_net_taxes,
-        sum(case when type in ('charge') 
+        sum(case when type in ('charge')  
             then 1
             else 0 
             end) as total_charge_count,
-        sum(case when type in ('credit') 
+        sum(case when type in ('credit')  
             then 1
             else 0 
             end) as total_credit_count,
         count(distinct (case when {{ dbt_utils.date_trunc('month', date_timezone('transaction_created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
             then transaction_id  
-            end)) as transactions_this_month,
+            end)) as transactions_this_month, 
         count(distinct (case when {{ dbt_utils.date_trunc('month', date_timezone('invoice_created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
             then invoice_id  
             end)) as invoices_this_month,
@@ -71,7 +71,7 @@ transactions_grouped as (
             end) as most_recent_charge_date,
         min( {{ date_timezone('invoice_created_at') }} ) as first_invoice_date,
         max( {{ date_timezone('invoice_created_at') }} ) as most_recent_invoice_date,
-        max( {{ date_timezone('invoice_due_at') }} ) as next_invoice_due_at,
+        max( {{ date_timezone('invoice_due_at') }} ) as next_invoice_due_at, 
         min( {{ date_timezone('transaction_created_at') }} ) as first_transaction_date,
         max( {{ date_timezone('transaction_created_at') }} ) as most_recent_transaction_date
 
@@ -114,4 +114,4 @@ select
 from account_history
 left join transactions_grouped 
     on account_history.account_id = transactions_grouped.account_id
-where is_most_recent_record = true
+where is_most_recent_record = true 
