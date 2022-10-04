@@ -1,8 +1,14 @@
-with subscription_enhanced as (
+with subscription_history as (
+
+    select * 
+    from {{ var('subscription_history') }}
+),
+
+subscription_enhanced as (
 
     select *,
     coalesce(canceled_at, current_period_ended_at) as actual_end_date,
-    from {{ var('subscription_history') }}
+    from subscription_history
 ),
 
 account_overview as (
@@ -27,13 +33,13 @@ select
     subscription_enhanced.subscription_id,
     subscription_enhanced.activated_at,
     subscription_enhanced.actual_end_date,
+    {{ dbt_utils.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.actual_end_date', 'day') }} as actual_interval_days,
     subscription_enhanced.add_ons_total, 
     subscription_enhanced.canceled_at,
     subscription_enhanced.current_period_ended_at,
     subscription_enhanced.current_period_started_at,
-    {{ dbt_utils.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.actual_end_date', 'day') }} as actual_interval_days,
-    subscription_enhanced.expires_at,
     subscription_enhanced.expiration_reason, 
+    subscription_enhanced.expires_at,
     subscription_enhanced.has_auto_renew,
     subscription_enhanced.subscription_period,  
     subscription_enhanced.state as subscription_state,

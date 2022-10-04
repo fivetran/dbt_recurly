@@ -6,8 +6,10 @@ models:
     columns:
       - name: account_id
         description: Primary key for the account.
+        tests:
+          - unique
       - name: account_created_at
-        description: Timestampe of when the account entry was created.
+        description: Timestamp of when the account entry was created.
       - name: account_email
         description: Email address associated with the account.
       - name: account_first_name
@@ -68,6 +70,8 @@ models:
     columns:
       - name: balance_transaction_id
         description: Unique identifer for the balance transaction line item
+        tests:
+          - unique
       - name: created_at
         description: When the line item was created.
       - name: updated_at
@@ -185,13 +189,108 @@ models:
           "gateway_token", "iban_bank_account", "money_order", "other", "paypal", "paypal_billing_agreement", "roku", 
           "sepadirectdebit", "wire_transfer"
 
+
+  - name: recurly__churn_analysis
+    description: Each record represents a subscription's churn status. 
+    columns: 
+      - name: subscription_id
+        description: Unique identifier for the subscription.
+        tests:
+          - unique
+      - name: activated_at
+        description: When the subscription was activated.  
+      - name: actual_end_date
+        description: When the subscription actually ends, factors in cancellations earlier than the expected end date.
+      - name: actual_interval_days
+        description: Actual interval of current billing period, accounting for cancelled/expired periods. 
+      - name: account_id
+        description: The account this subscription belongs to. 
+      - name: account_state
+        description: Current state of the account.
+      - name: canceled_at
+        description: When the subscription was canceled. Can take future dates.
+      - name: current_period_ended_at
+        description: Current billing period ends at.
+      - name: current_period_started_at
+        description: Current billing period started at.
+      - name: expires_at
+        description: When the subscription has expired. Can take future dates.
+      - name: expiration_reason
+        description: Reason for subscription expiration.
+      - name: plan_name
+        description: This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
+      - name: plan_state
+        description: >
+          The current state of the plan.
+          Enum: "active", "inactive"
+      - name: subscription_period
+        description: > 
+          The nth subscription defined by the time period set. Subscriptions start with month 0.
+      - name: subscription_state
+        description: >
+          The current state of the subscription.
+          Enum: "active", "canceled", "expired", "failed", "future", "paused"
+      - name: subtotal
+        description: Estimated total, before tax.
+      - name: unit_amount
+        description: Subscription unit price.
+      - name: churn_reason
+        description: >
+          Reason for churn. null if subscription has no expiration date.
+          Enum: "account closed", "canceled", "gift ended", "non-payment", "non-renewing", "tax location invalid", "trial ended"
+      - name: churn_reason_type 
+        description: >
+          Type of churn, null if subscription has no expiration date.
+          Enum: "involuntary", "voluntary"
+
+
+  - name: recurly__monthly_recurring_revenue
+    description: Each record represents an account and MRR generated on a monthly basis.
+    columns: 
+      - name: account_id
+        description: Primary key for the account.
+      - name: account_month
+        description: Revenue details of the account by month. 
+      - name: account_month_number
+        description: The nth month the account has been active.
+      - name: current_month_mrr
+        description: The current month's recurring revenue earned by account.
+      - name: previous_month_mrr
+        description: The previous month's recurring revenue earned by account.
+      - name: mrr_type
+        description: >
+          Type of MRR earned. 
+          Enum: "churned", "contraction", "new", "reactivation", "unchanged"
+      - name: account_code
+        description: The unique identifier of the account. This cannot be changed once the account is created. 
+          Provided during account creation.
+      - name: account_created_at
+        description: When the account was created.
+      - name: account_email
+        description: >
+          The email address used for communicating with this customer. 
+          The customer will also use this email address to log into your hosted account management pages. 
+          This value does not need to be unique.
+      - name: account_first_name
+        description: The first name of the customer related to the account.
+      - name: account_last_name
+        description: The last name of the customer related to the account.
+      - name: account_username
+        description: A secondary value for the account.
+
   - name: recurly__subscription_overview
     description: Each record represents a subscription, enriched with metrics about time, revenue, state, and period.
     columns:
       - name: subscription_id
         description: Unique identifier for the subscription.
+        tests:
+          - unique
       - name: activated_at
         description: When the subscription was activated.  
+      - name: actual_end_date
+        description: When the subscription actually ends, factors in cancellations earlier than the expected end date.
+      - name: actual_interval_days
+        description: Actual interval of current billing period, accounting for cancelled/expired periods. 
       - name: add_ons_total
         description: Total price of add-ons. Greater or equal to 0.
       - name: canceled_at
@@ -200,12 +299,14 @@ models:
         description: Current billing period ends at.
       - name: current_period_started_at
         description: Current billing period started at.
-      - name: actual_interval_days
-        description: Actual interval of current billing period, accounting for cancelled/expired periods. 
-      - name: expires_at
-        description: When the subscription has expired. Can take future dates.
       - name: expiration_reason
         description: Reason for subscription expiration.
+      - name: expires_at
+        description: When the subscription has expired. Can take future dates.
+      - name: has_auto_renew
+        description: >
+          Whether the subscription renews at the end of its term.
+          Default: true
       - name: subscription_period
         description: > 
           The nth subscription defined by the time period set. Subscriptions start with month 0.
