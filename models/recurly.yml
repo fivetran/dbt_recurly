@@ -289,10 +289,12 @@ models:
 
   - name: recurly__subscription_overview
     description: Each record represents a subscription, enriched with metrics about time, revenue, state, and period.
+    tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - account_id
-            - account_month    
+            - account_month  
+
     columns:
       - name: subscription_id
         description: Unique identifier for the subscription.
