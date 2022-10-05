@@ -293,7 +293,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - account_id
-            - account_month  
+            - updated_at  
 
     columns:
       - name: subscription_id
