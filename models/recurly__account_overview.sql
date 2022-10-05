@@ -5,10 +5,26 @@ with account_history as (
     where is_most_recent_record
 ),
 
+balance_transaction_joined as (
+
+    select * 
+    from {{ ref('recurly__balance_transactions') }}
+),
+
 transactions_grouped as (
 
     select * 
     from {{ ref('int_recurly__transactions_grouped') }}
+),
+
+account_next_invoice as (
+
+    select 
+        account_id, 
+        min(invoice_due_at) as next_invoice_due_at
+    from balance_transaction_joined
+    where invoice_due_at > {{ dbt_utils.date_trunc('day', dbt_utils.current_timestamp()) }}
+    group by 1  
 )
 
 select 
@@ -38,10 +54,12 @@ select
     transactions_grouped.most_recent_charge_date,
     transactions_grouped.first_invoice_date,
     transactions_grouped.most_recent_invoice_date,
-    transactions_grouped.next_invoice_due_at,
+    account_next_invoice.next_invoice_due_at,
     transactions_grouped.first_transaction_date,
     transactions_grouped.most_recent_transaction_date
 
 from account_history
 left join transactions_grouped 
     on account_history.account_id = transactions_grouped.account_id
+left join account_next_invoice
+    on transactions_grouped.account_id = account_next_invoice.account_id

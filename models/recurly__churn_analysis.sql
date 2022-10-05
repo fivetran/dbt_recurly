@@ -16,6 +16,7 @@ subscription_churn_reason as (
         current_period_started_at,
         expires_at,
         expiration_reason,
+        has_auto_renew,
         plan_name,
         plan_state,
         subscription_end_date, 

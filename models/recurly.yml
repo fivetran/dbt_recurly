@@ -213,6 +213,10 @@ models:
         description: When the subscription has expired. Can take future dates.
       - name: expiration_reason
         description: Reason for subscription expiration.
+      - name: has_auto_renew
+        description: >
+          Whether the subscription renews at the end of its term.
+          Default: true
       - name: plan_name
         description: This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
       - name: plan_state
@@ -285,6 +289,10 @@ models:
 
   - name: recurly__subscription_overview
     description: Each record represents a subscription, enriched with metrics about time, revenue, state, and period.
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - account_id
+            - account_month    
     columns:
       - name: subscription_id
         description: Unique identifier for the subscription.

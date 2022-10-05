@@ -63,7 +63,6 @@ select
         end) as most_recent_charge_date,
     min( {{ date_timezone('invoice_created_at') }} ) as first_invoice_date,
     max( {{ date_timezone('invoice_created_at') }} ) as most_recent_invoice_date,
-    max( {{ date_timezone('invoice_due_at') }} ) as next_invoice_due_at,
     min( {{ date_timezone('transaction_created_at') }} ) as first_transaction_date,
     max( {{ date_timezone('transaction_created_at') }} ) as most_recent_transaction_date
 from balance_transaction_joined
