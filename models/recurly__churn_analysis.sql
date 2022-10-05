@@ -6,10 +6,9 @@ with subscription_history as (
 
 subscription_churn_reason as (
 
-    select subscription_id,
+    select 
+        subscription_id,
         activated_at,
-        actual_end_date, 
-        actual_interval_days,
         account_id,
         account_state,
         canceled_at,
@@ -19,23 +18,28 @@ subscription_churn_reason as (
         expiration_reason,
         plan_name,
         plan_state,
+        subscription_end_date, 
+        subscription_interval_days,
         subscription_period,
         subscription_state,
         subtotal,
         unit_amount,
         case when expires_at is null then null 
-            when account_state not like 'active' then 'account closed'
-            when expiration_reason like 'canceled' then 'canceled'
-            when expiration_reason like 'nonpayment_gift' then 'gift ended'
-            when expiration_reason like 'nonpayment' then 'non-payment'
-            when expiration_reason like '%tax%' then 'tax location invalid' 
-            when expiration_reason like 'nonpayment_trial' then 'trial ended'
-            else 'non-renewing'
+            when account_state != 'active' then 'account closed'
+            when lower(expiration_reason) = 'canceled' then 'canceled'
+            when lower(expiration_reason) = 'nonpayment_gift' then 'gift ended'
+            when lower(expiration_reason) = 'nonpayment' then 'non-payment'
+            when lower(expiration_reason) = 'non renewing' then 'non-renewing'
+-- haven't confirmed the below, will revisit with production data
+            when lower(expiration_reason) = 'tax location invalid' then 'tax location invalid' 
+            when lower(expiration_reason) like 'nonpayment_trial' then 'trial ended'
+            else null 
         end as churn_reason
     from subscription_history
 )  
 
-select *,
+select 
+    *,
     case when churn_reason is null then null
         when churn_reason in ('tax location invalid', 'non-renewing') then 'involuntary'
         else 'voluntary'

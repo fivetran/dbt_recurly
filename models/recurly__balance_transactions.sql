@@ -6,8 +6,9 @@ with line_item_history as (
 
 invoice_history as (
 
-    select * 
+    select *
     from {{ var('invoice_history')}}
+    where is_most_recent_record
 ),
 
 transaction_history as (

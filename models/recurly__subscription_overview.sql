@@ -2,13 +2,22 @@ with subscription_history as (
 
     select * 
     from {{ var('subscription_history') }}
+    where is_most_recent_record
+),
+
+plan_history as (
+
+    select * 
+    from {{ var('plan_history') }}
 ),
 
 subscription_enhanced as (
 
-    select *,
-    coalesce(canceled_at, current_period_ended_at) as actual_end_date,
-    from subscription_history
+    select 
+        *,
+        coalesce(canceled_at, current_period_ended_at) as subscription_end_date,
+        row_number() over (partition by subscription_id order by current_period_started_at) - 1 as subscription_period,
+        from subscription_history
 ),
 
 account_overview as (
@@ -21,19 +30,18 @@ plan_enhanced as (
 
     select 
         *, 
-        case when interval_unit like 'months' then interval_length * 30
-            when interval_unit like 'weeks' then interval_length * 7
+        case when lower(interval_unit) = 'months' then interval_length * 30
+            when lower(interval_unit) = 'weeks' then interval_length * 7
             else interval_length 
             end as interval_days
-    from {{ var('plan_history') }}
+    from plan_history
 )
 
 
 select 
     subscription_enhanced.subscription_id,
+    subscription_enhanced.updated_at,
     subscription_enhanced.activated_at,
-    subscription_enhanced.actual_end_date,
-    {{ dbt_utils.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.actual_end_date', 'day') }} as actual_interval_days,
     subscription_enhanced.add_ons_total, 
     subscription_enhanced.canceled_at,
     subscription_enhanced.current_period_ended_at,
@@ -43,6 +51,8 @@ select
     subscription_enhanced.has_auto_renew,
     subscription_enhanced.subscription_period,  
     subscription_enhanced.state as subscription_state,
+    subscription_enhanced.subscription_end_date,
+    {{ dbt_utils.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.subscription_end_date', 'day') }} as subscription_interval_days,
     subscription_enhanced.subtotal, 
     subscription_enhanced.trial_ends_at,
     subscription_enhanced.trial_started_at,

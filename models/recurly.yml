@@ -191,7 +191,7 @@ models:
 
 
   - name: recurly__churn_analysis
-    description: Each record represents a subscription's churn status. 
+    description: Each record represents a subscription and their churn status and details. 
     columns: 
       - name: subscription_id
         description: Unique identifier for the subscription.
@@ -199,10 +199,6 @@ models:
           - unique
       - name: activated_at
         description: When the subscription was activated.  
-      - name: actual_end_date
-        description: When the subscription actually ends, factors in cancellations earlier than the expected end date.
-      - name: actual_interval_days
-        description: Actual interval of current billing period, accounting for cancelled/expired periods. 
       - name: account_id
         description: The account this subscription belongs to. 
       - name: account_state
@@ -223,6 +219,10 @@ models:
         description: >
           The current state of the plan.
           Enum: "active", "inactive"
+      - name: subscription_end_date
+        description: When the subscription actually ends, factors in cancellations earlier than the expected end date.
+      - name: subscription_interval_days
+        description: Subscription interval by number of days, accounting for cancelled/expired periods. 
       - name: subscription_period
         description: > 
           The nth subscription defined by the time period set. Subscriptions start with month 0.
@@ -246,6 +246,11 @@ models:
 
   - name: recurly__monthly_recurring_revenue
     description: Each record represents an account and MRR generated on a monthly basis.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - account_id
+            - account_month    
     columns: 
       - name: account_id
         description: Primary key for the account.
@@ -287,10 +292,6 @@ models:
           - unique
       - name: activated_at
         description: When the subscription was activated.  
-      - name: actual_end_date
-        description: When the subscription actually ends, factors in cancellations earlier than the expected end date.
-      - name: actual_interval_days
-        description: Actual interval of current billing period, accounting for cancelled/expired periods. 
       - name: add_ons_total
         description: Total price of add-ons. Greater or equal to 0.
       - name: canceled_at
@@ -307,6 +308,10 @@ models:
         description: >
           Whether the subscription renews at the end of its term.
           Default: true
+      - name: subscription_end_date
+        description: When the subscription actually ends, factors in cancellations earlier than the expected end date.
+      - name: subscription_interval_days
+        description: Subscription interval by number of days, accounting for cancelled/expired periods. 
       - name: subscription_period
         description: > 
           The nth subscription defined by the time period set. Subscriptions start with month 0.
@@ -324,6 +329,8 @@ models:
         description: Period of trial, in days.
       - name: unit_amount
         description: Subscription unit price.
+      - name: updated_at
+        description: When the subscription was updated.
       - name: account_id
         description: The account this subscription belongs to. 
       - name: account_created_at

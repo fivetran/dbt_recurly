@@ -1,17 +1,36 @@
-# Recurly dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
+<p align="center">
+    <a alt="License"
+        href="https://github.com/fivetran/dbt_recurly/blob/main/LICENSE">
+        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
+    <a alt="dbt-core">
+        <img src="https://img.shields.io/badge/dbt_Core™_version->=1.0.0_,<2.0.0-orange.svg" /></a>
+    <a alt="Maintained?">
+        <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" /></a>
+    <a alt="PRs">
+        <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
+</p>
+# Recurly Transformation dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
 
 # 📣 What does this dbt package do?
-- Materializes [Recurly staging tables]((https://fivetran.github.io/dbt_recurly/#!/overview/github_source/models/?g_v=1)) which leverages data in the format described by [this ERD](https://fivetran.com/docs/applications/recurly#schemainformation).
+- Produces modeled tables that leverage Recurly data from [Fivetran's connector](https://fivetran.com/docs/applications/recurly) in the format described by [this ERD](https://fivetran.com/docs/applications/recurly#schemainformation) and build off the output of our [Recurly source package](https://github.com/fivetran/dbt_recurly_source).
 
-These staging tables clean, test, and prepare your Recurly data from [Fivetran's connector]()
 
-This package models Recurly data from [Fivetran's connector](https://fivetran.com/docs/applications/recurly) for analysis by doing the following:
+- Enables you to better understand your Recurly data. The package achieves this by performing the following: 
+    - Enhance the balance transaction entries with useful fields from related tables. 
+    - Create customized analysis tables to examine churn by subscriptions and monthly recurring revenue by account. 
+    - Generate a metrics tables allow you to better understand your account activity over time or at a customer level. These time-based metrics are available on a daily level.
+- Generates a comprehensive data dictionary of your source and modeled Recurly data through the [dbt docs site](https://fivetran.github.io/dbt_recurly/).
 
-  - Name columns for consistency across all packages and easier analysis
-  - Adds freshness tests to source data
-  - Adds column-level testing where applicable. For example,  all primary keys are tested for uniqueness and non-null values.
-- Generates a comprehensive data dictionary of your Recurly data through the [dbt docs site](https://fivetran.github.io/dbt_recurly/).
-- These tables are designed to work simultaneously with our [Recurly transformation package](https://github.com/fivetran/dbt_recurly)
+The following table provides a detailed list of all models materialized within this package by default. 
+> TIP: See more details about these models in the package's [dbt docs site](https://fivetran.github.io/dbt_recurly/#!/overview?g_v=1).
+ 
+| **model**                         | **description**                                                                                                                                                                                                                             |
+|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [recurly__account_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_overview)    |  Each record represents an account, enriched with metrics about their associated transactions.                                                                                                     |
+| [recurly__balance_transactions](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__balance_transactions)      | Each record represents a specific line item charge, credit, or other balance change that accumulates into the final invoices.                                                                                                  |
+| [recurly__churn_analysis](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__churn_analysis)    | Each record represents a subscription and their churn status and details.                                                                                                                           |
+| [recurly__monthly_recurring_revenue](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__monthly_recurring_revenue) | Each record represents an account and MRR generated on a monthly basis. |
+| [recurly__subscription_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__subscription_overview)       | Each record represents a subscription, enriched with metrics about time, revenue, state, and period.                                                                                         |
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Prerequisites
@@ -25,7 +44,7 @@ Include the following recurly_source package version in your `packages.yml` file
 > TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 ```yaml
 packages:
-  - package: fivetran/recurly_source
+  - package: fivetran/recurly
     version: [">=0.1.0", "<0.2.0"]
 
 ## Step 3: Define database and schema variables
