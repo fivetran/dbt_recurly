@@ -16,7 +16,7 @@ subscription_enhanced as (
     select 
         *,
         coalesce(canceled_at, current_period_ended_at) as subscription_end_date,
-        row_number() over (partition by subscription_id order by current_period_started_at) - 1 as subscription_period,
+        row_number() over (partition by subscription_id order by current_period_started_at) - 1 as subscription_period
         from subscription_history
 ),
 
