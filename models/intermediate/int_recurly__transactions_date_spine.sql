@@ -68,7 +68,7 @@ date_spine as (
 
 final as (
 
-    select 
+    select distinct
         balance_transactions.account_id,
         date_spine.date_day,
         date_spine.date_index
