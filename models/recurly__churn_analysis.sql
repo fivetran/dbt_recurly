@@ -37,12 +37,19 @@ subscription_churn_reason as (
             else null 
         end as churn_reason
     from subscription_history
-)  
+),
 
-select 
-    *,
-    case when churn_reason is null then null
-        when churn_reason in ('tax location invalid', 'non-renewing') then 'involuntary'
-        else 'voluntary'
-        end as churn_reason_type
-from subscription_churn_reason
+
+final as
+(
+    select 
+        *,
+        case when churn_reason is null then null
+            when churn_reason in ('tax location invalid', 'non-renewing') then 'involuntary'
+            else 'voluntary'
+            end as churn_reason_type
+    from subscription_churn_reason
+)
+
+select * 
+from final

@@ -35,8 +35,7 @@ mrr_by_account as (
 
 ),
 
-current_vs_previous_mrr as 
-(
+current_vs_previous_mrr as (
     
     select 
         *,
@@ -60,15 +59,21 @@ mrr_type_enhanced as (
                 then 'reactivation'
             end as mrr_type
     from current_vs_previous_mrr
+),
+
+final as (
+
+    select 
+        mrr_type_enhanced.*,
+        account_history.code as account_code,
+        account_history.created_at as account_created_at,
+        account_history.email as account_email,
+        account_history.first_name as account_first_name,
+        account_history.last_name as account_last_name,
+        account_history.username as account_username
+    from mrr_type_enhanced
+    left join account_history on mrr_type_enhanced.account_id = account_history.account_id
 )
 
-select 
-    mrr_type_enhanced.*,
-    account_history.code as account_code,
-    account_history.created_at as account_created_at,
-    account_history.email as account_email,
-    account_history.first_name as account_first_name,
-    account_history.last_name as account_last_name,
-    account_history.username as account_username
-from mrr_type_enhanced
-left join account_history on mrr_type_enhanced.account_id = account_history.account_id
+select * 
+from final
