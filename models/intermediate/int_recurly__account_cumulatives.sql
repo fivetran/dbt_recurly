@@ -3,6 +3,12 @@ with transactions_grouped as (
     select * 
     from {{ ref('int_recurly__transactions_grouped') }}
 ),
+
+balance_transaction_joined as (
+
+    select * 
+    from {{ ref('recurly__balance_transactions') }}
+),
  
 account_current_month as (
         select account_id,
@@ -38,16 +44,29 @@ account_current_month as (
         {{ dbt_utils.group_by(1) }}  
 ),
 
+
+account_min_max as (
+    select 
+        account_id,
+        min(case when lower(type) = 'charge' 
+            then {{ date_timezone('created_at') }} 
+            else null end) as first_charge_date,
+        max(case when lower(type) = 'charge' 
+            then {{ date_timezone('created_at') }}
+            else null end) as most_recent_charge_date,
+        min( {{ date_timezone('invoice_created_at') }} ) as first_invoice_date,
+        max( {{ date_timezone('invoice_created_at') }} ) as most_recent_invoice_date,
+        min( {{ date_timezone('transaction_created_at') }} ) as first_transaction_date,
+        max( {{ date_timezone('transaction_created_at') }} ) as most_recent_transaction_date
+    from balance_transaction_joined
+    {{ dbt_utils.group_by(1) }}
+),
+
+
 account_totals as (
 
     select 
         account_id,
-        first_charge_date,
-        most_recent_charge_date,
-        first_invoice_date,
-        most_recent_invoice_date,
-        first_transaction_date,
-        most_recent_transaction_date,
         sum(daily_transactions) as total_transactions,
         sum(daily_invoices) as total_invoices,
         sum(daily_charges) as total_charges,
@@ -58,11 +77,12 @@ account_totals as (
         sum(daily_charge_count) as total_charge_count,
         sum(daily_credit_count) as total_credit_count,
     from transactions_grouped
-    {{ dbt_utils.group_by(7) }}
+    {{ dbt_utils.group_by(1) }}
 ),
 
 final as (
-    select 
+
+    select distinct
         account_totals.*,
         account_current_month.transactions_this_month,
         account_current_month.invoices_this_month,
@@ -70,10 +90,18 @@ final as (
         account_current_month.charges_this_month,
         account_current_month.credits_this_month,
         account_current_month.discounts_this_month,
-        account_current_month.taxes_this_month
+        account_current_month.taxes_this_month,
+        account_min_max.first_charge_date,
+        account_min_max.most_recent_charge_date,
+        account_min_max.first_invoice_date,
+        account_min_max.most_recent_invoice_date,
+        account_min_max.first_transaction_date,
+        account_min_max.most_recent_transaction_date
     from account_totals
-    join account_current_month 
+    left join account_current_month 
         on account_totals.account_id = account_current_month.account_id
+    left join account_min_max
+        on account_totals.account_id = account_min_max.account_id
 )
 
 select *

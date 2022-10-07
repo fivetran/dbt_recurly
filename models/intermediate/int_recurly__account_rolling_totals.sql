@@ -31,11 +31,18 @@ final as
     select 
         coalesce(account_rolling_overview.account_id, balance_transaction_periods.account_id) as account_id,
         coalesce(account_rolling_overview.date_day, balance_transaction_periods.date_day) as date_day, 
-        coalesce(account_rolling_overview.date_week, balance_transaction_periods.date_week) as date_week, 
+        coalesce(account_rolling_overview.date_day, balance_transaction_periods.date_week) as date_week,
         coalesce(account_rolling_overview.date_month, balance_transaction_periods.date_month) as date_month, 
         coalesce(account_rolling_overview.date_year, balance_transaction_periods.date_year) as date_year, 
         account_rolling_overview.daily_transactions,
         account_rolling_overview.daily_balance,
+        account_rolling_overview.daily_invoices,
+        account_rolling_overview.daily_charges,
+        account_rolling_overview.daily_credits,
+        account_rolling_overview.daily_discounts,
+        account_rolling_overview.daily_taxes,
+        account_rolling_overview.daily_charge_count,
+        account_rolling_overview.daily_credit_count,
         case when account_rolling_overview.rolling_account_balance is null and date_index = 1
             then 0
             else account_rolling_overview.rolling_account_balance
