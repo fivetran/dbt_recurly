@@ -1,6 +1,32 @@
 version: 2
 
 models:
+  - name: recurly__account_daily_overview
+    description: Each record is a potential way to slice dice compiled account balances by time period.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - account_id
+            - date_day      
+    
+    columns:
+      - name: account_id
+        description: Account associated with balance transactions.
+      - name: date_day
+        description: Date compiled transactions by day for this account balance took place.
+      - name: date_week
+        description: Date compiled transactions by week for this account balance took place.
+      - name: date_month
+        description: Date compiled transactions by month for this account balance took place.
+      - name: date_year
+        description: Date compiled transactions by year for this account balance took place.
+      - name: transactions
+        description: Number of transactions that took place this day.
+      - name: daily_balance
+        description: Total sum of all transactions. 
+      - name: date_index
+        description: The nth date in the transaction model. 
+
   - name: recurly__account_overview
     description: Each record represents an account, enriched with metrics about their associated transactions.
     columns:
@@ -26,11 +52,11 @@ models:
         description: Total amount of charges issued to this account.
       - name: total_credits
         description: Total amount of credits issued to this account.
-      - name: total_gross_transaction_amount
+      - name: total_balance
         description: Gross amount of all transactions made with this account.
       - name: total_discounts
         description: Total amount of discounts issued to this account.
-      - name: total_net_taxes
+      - name: total_taxes
         description: Total amount of taxes issued to this account.
       - name: total_charge_count
         description: Total number of charges issued to this account.
@@ -188,33 +214,6 @@ models:
           Examples include: "amazon", "amazon_billing_agreement", "apple_pay", "bank_account_info", "check", "credit_card", "eft", "debit",
           "gateway_token", "iban_bank_account", "money_order", "other", "paypal", "paypal_billing_agreement", "roku", 
           "sepadirectdebit", "wire_transfer"
-
-  - name: recurly__balance_transactions_by_period
-    description: Each record is a potential way to slice dice compiled account balances by time period.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - account_id
-            - date_day      
-    
-    columns:
-      - name: account_id
-        description: Account associated with balance transactions.
-      - name: date_day
-        description: Date compiled transactions by day for this account balance took place.
-      - name: date_week
-        description: Date compiled transactions by week for this account balance took place.
-      - name: date_month
-        description: Date compiled transactions by month for this account balance took place.
-      - name: date_year
-        description: Date compiled transactions by year for this account balance took place.
-      - name: transactions
-        description: Number of transactions that took place this day.
-      - name: daily_balance
-        description: Total sum of all transactions. 
-      - name: date_index
-        description: The nth date in the transaction model. 
-
 
   - name: recurly__churn_analysis
     description: Each record represents a subscription and their churn status and details. 

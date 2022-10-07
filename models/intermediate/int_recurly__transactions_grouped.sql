@@ -5,56 +5,33 @@ with balance_transaction_joined as (
 ),
 
 final as (
-
     select  
         account_id,
-        count(distinct transaction_id) as total_transactions,
-        count(distinct invoice_id) as total_invoices,
+        cast({{ dbt_utils.date_trunc("day", "created_at") }} as date) as date_day, 
+        cast({{ dbt_utils.date_trunc("week", "created_at") }} as date) as date_week, 
+        cast({{ dbt_utils.date_trunc("month", "created_at") }} as date) as date_month, 
+        cast({{ dbt_utils.date_trunc("year", "created_at") }} as date) as date_year,       
+        count(distinct transaction_id) as daily_transactions,
+        count(distinct invoice_id) as daily_invoices,
         sum(case when lower(type) = 'charge' 
             then amount
             else 0 
-            end) as total_charges,
+            end) as daily_charges,
         sum(case when lower(type) = 'credit' 
             then amount
             else 0 
-            end) as total_credits,
-        sum(amount) as total_gross_transaction_amount,
-        sum(discount) as total_discounts,
-        sum(tax) as total_net_taxes,
+            end) as daily_credits,
+        sum(amount) as daily_balance,
+        sum(discount) as daily_discounts,
+        sum(tax) as daily_taxes,
         sum(case when lower(type) = 'charge' 
             then 1
             else 0 
-            end) as total_charge_count,
+            end) as daily_charge_count,
         sum(case when lower(type) = 'credit' 
             then 1
             else 0 
-            end) as total_credit_count,
-        count(distinct (case when {{ dbt_utils.date_trunc('month', date_timezone('transaction_created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
-            then transaction_id  
-            end)) as transactions_this_month,
-        count(distinct (case when {{ dbt_utils.date_trunc('month', date_timezone('invoice_created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
-            then invoice_id  
-            end)) as invoices_this_month,
-        sum(case when lower(type) = 'charge' and {{ dbt_utils.date_trunc('month', date_timezone('created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
-            then amount 
-            else 0 
-            end) as charges_this_month,
-        sum(case when lower(type) = 'credit' and {{ dbt_utils.date_trunc('month', date_timezone('created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
-            then amount 
-            else 0 
-            end) as credits_this_month,
-        sum(case when {{ dbt_utils.date_trunc('month', date_timezone('created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
-            then amount 
-            else 0 
-            end) as gross_transaction_amount_this_month,
-        sum(case when {{ dbt_utils.date_trunc('month', date_timezone('created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
-            then discount 
-            else 0 
-            end) as discounts_this_month,
-        sum(case when {{ dbt_utils.date_trunc('month', date_timezone('created_at')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
-            then tax 
-            else 0 
-            end) as taxes_this_month,
+            end) as daily_credit_count,
         min(case when lower(type) = 'charge' 
             then {{ date_timezone('created_at') }}
             else null 
@@ -68,8 +45,8 @@ final as (
         min( {{ date_timezone('transaction_created_at') }} ) as first_transaction_date,
         max( {{ date_timezone('transaction_created_at') }} ) as most_recent_transaction_date
     from balance_transaction_joined
-    group by 1
-)
+    {{ dbt_utils.group_by(5) }}
+) 
 
 select * 
 from final

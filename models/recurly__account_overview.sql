@@ -11,10 +11,10 @@ balance_transaction_joined as (
     from {{ ref('recurly__balance_transactions') }}
 ),
 
-transactions_grouped as (
+account_cumulatives as (
 
     select * 
-    from {{ ref('int_recurly__transactions_grouped') }}
+    from {{ ref('int_recurly__account_cumulatives') }}
 ),
 
 account_next_invoice as (
@@ -36,34 +36,34 @@ final as (
         account_history.first_name as account_first_name,
         account_history.last_name as account_last_name,
         account_history.state as account_state,
-        coalesce(transactions_grouped.total_transactions, 0) as total_transactions,
-        coalesce(transactions_grouped.total_invoices, 0) as total_invoices,
-        coalesce(transactions_grouped.total_charges, 0) as total_charges,
-        coalesce(transactions_grouped.total_credits, 0) as total_credits,
-        coalesce(transactions_grouped.total_gross_transaction_amount, 0) as total_gross_transaction_amount,
-        coalesce(transactions_grouped.total_discounts, 0) as total_discounts,
-        coalesce(transactions_grouped.total_net_taxes, 0) as total_net_taxes,
-        coalesce(transactions_grouped.total_charge_count, 0) as total_charge_count,
-        coalesce(transactions_grouped.total_credit_count, 0) as total_credit_count,
-        coalesce(transactions_grouped.transactions_this_month, 0) as transactions_this_month,
-        coalesce(transactions_grouped.invoices_this_month, 0) as invoices_this_month,
-        coalesce(transactions_grouped.charges_this_month, 0) as charges_this_month,
-        coalesce(transactions_grouped.credits_this_month, 0) as credits_this_month,
-        coalesce(transactions_grouped.gross_transaction_amount_this_month, 0) as gross_transaction_amount_this_month,
-        coalesce(transactions_grouped.discounts_this_month, 0) as discounts_this_month,
-        coalesce(transactions_grouped.taxes_this_month, 0) as taxes_this_month,
-        transactions_grouped.first_charge_date,
-        transactions_grouped.most_recent_charge_date,
-        transactions_grouped.first_invoice_date,
-        transactions_grouped.most_recent_invoice_date,
+        coalesce(account_cumulatives.total_transactions, 0) as total_transactions,
+        coalesce(account_cumulatives.total_invoices, 0) as total_invoices,
+        coalesce(account_cumulatives.total_charges, 0) as total_charges,
+        coalesce(account_cumulatives.total_credits, 0) as total_credits,
+        coalesce(account_cumulatives.total_balance, 0) as total_balance,
+        coalesce(account_cumulatives.total_discounts, 0) as total_discounts,
+        coalesce(account_cumulatives.total_taxes, 0) as total_taxes,
+        coalesce(account_cumulatives.total_charge_count, 0) as total_charge_count,
+        coalesce(account_cumulatives.total_credit_count, 0) as total_credit_count,
+        coalesce(account_cumulatives.transactions_this_month, 0) as transactions_this_month,
+        coalesce(account_cumulatives.invoices_this_month, 0) as invoices_this_month,
+        coalesce(account_cumulatives.charges_this_month, 0) as charges_this_month,
+        coalesce(account_cumulatives.credits_this_month, 0) as credits_this_month,
+        coalesce(account_cumulatives.balance_this_month, 0) as balance_this_month,
+        coalesce(account_cumulatives.discounts_this_month, 0) as discounts_this_month,
+        coalesce(account_cumulatives.taxes_this_month, 0) as taxes_this_month,
+        account_cumulatives.first_charge_date,
+        account_cumulatives.most_recent_charge_date,
+        account_cumulatives.first_invoice_date,
+        account_cumulatives.most_recent_invoice_date,
         account_next_invoice.next_invoice_due_at,
-        transactions_grouped.first_transaction_date,
-        transactions_grouped.most_recent_transaction_date
+        account_cumulatives.first_transaction_date,
+        account_cumulatives.most_recent_transaction_date
     from account_history
-    left join transactions_grouped 
-        on account_history.account_id = transactions_grouped.account_id
+    left join account_cumulatives 
+        on account_history.account_id = account_cumulatives.account_id
     left join account_next_invoice
-        on transactions_grouped.account_id = account_next_invoice.account_id
+        on account_cumulatives.account_id = account_next_invoice.account_id
 )
 
 select * 

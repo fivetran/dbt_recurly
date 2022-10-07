@@ -15,7 +15,7 @@ with spine as (
 
         {% endif %}
 
-    {% else %} {% set first_date_adjust = "'2000-01-01'" %}
+    {% else %} {% set first_date_adjust = "'2009-01-01'" %}
     {% endif %}
 
     {% if execute %}
@@ -52,27 +52,38 @@ with spine as (
 ),
 
 balance_transactions as (
+    
     select *
     from {{ ref('recurly__balance_transactions') }}
 ),
 
+account_overview as (
+
+    select *
+    from {{ ref('recurly__account_overview') }}
+),
+
 date_spine as (
+
     select
         cast({{ dbt_utils.date_trunc("day", "date_day") }} as date) as date_day, 
         cast({{ dbt_utils.date_trunc("week", "date_day") }} as date) as date_week, 
-        cast({{ dbt_utils.date_trunc("month", "date_day") }} as date) as date_month, 
-        cast({{ dbt_utils.date_trunc("year", "date_day") }} as date) as date_year, 
+        cast({{ dbt_utils.date_trunc("month", "date_day") }} as date) as date_month,
+        cast({{ dbt_utils.date_trunc("year", "date_day") }} as date) as date_year,  
         row_number() over (order by cast({{ dbt_utils.date_trunc("day", "date_day") }} as date)) as date_index
     from spine
 ),
 
 final as (
 
-    select 
-        balance_transactions.account_id,
+    select distinct
+        account_overview.account_id,
         date_spine.date_day,
+        date_spine.date_week,
+        date_spine.date_month,
+        date_spine.date_year,
         date_spine.date_index
-    from balance_transactions
+    from account_overview 
     cross join date_spine
 )
 
