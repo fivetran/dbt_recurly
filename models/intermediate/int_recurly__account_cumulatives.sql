@@ -75,7 +75,7 @@ account_totals as (
         sum(daily_discounts) as total_discounts,
         sum(daily_taxes) as total_taxes,
         sum(daily_charge_count) as total_charge_count,
-        sum(daily_credit_count) as total_credit_count,
+        sum(daily_credit_count) as total_credit_count
     from transactions_grouped
     {{ dbt_utils.group_by(1) }}
 ),
