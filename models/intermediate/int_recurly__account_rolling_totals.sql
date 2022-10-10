@@ -26,8 +26,8 @@ account_rolling_overview as (
     from account_balances
 ),
 
-final as 
-( 
+final as (
+     
     select 
         coalesce(account_rolling_overview.account_id, balance_transaction_periods.account_id) as account_id,
         coalesce(account_rolling_overview.date_day, balance_transaction_periods.date_day) as date_day, 

@@ -5,6 +5,7 @@ with balance_transaction_joined as (
 ),
 
 final as (
+    
     select  
         account_id,
         cast({{ dbt_utils.date_trunc("day", "created_at") }} as date) as date_day,             

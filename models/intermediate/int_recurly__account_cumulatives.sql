@@ -11,6 +11,7 @@ balance_transaction_joined as (
 ),
  
 account_current_month as (
+        
         select account_id,
                 sum(case when {{ dbt_utils.date_trunc('month', date_timezone('date_day')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
                         then daily_transactions
@@ -46,6 +47,7 @@ account_current_month as (
 
 
 account_min_max as (
+
     select 
         account_id,
         min(case when lower(type) = 'charge' 

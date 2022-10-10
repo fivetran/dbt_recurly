@@ -16,46 +16,34 @@ account_partitions as (
             then 0 
             else 1 
                 end) over (order by account_id, date_day rows unbounded preceding) as invoice_partition,
-        
         sum(case when rolling_transactions is null 
             then 0 
             else 1 
                 end) over (order by account_id, date_day rows unbounded preceding) as transaction_partition,
-        
         sum(case when rolling_charge_balance is null 
             then 0 
             else 1 
                 end) over (order by account_id, date_day rows unbounded preceding) as charge_balance_partition,
-                
-        
         sum(case when rolling_credit_balance is null 
             then 0 
             else 1 
                 end) over (order by account_id, date_day rows unbounded preceding) as credit_balance_partition,
-
-
         sum(case when rolling_discount_balance is null 
             then 0 
             else 1 
                 end) over (order by account_id, date_day rows unbounded preceding) as discount_balance_partition,        
-
-
         sum(case when rolling_tax_balance is null 
             then 0 
             else 1 
-                end) over (order by account_id, date_day rows unbounded preceding) as tax_balance_partition,  
-
-
+                end) over (order by account_id, date_day rows unbounded preceding) as tax_balance_partition, 
         sum(case when rolling_charges is null 
             then 0 
             else 1 
                 end) over (order by account_id, date_day rows unbounded preceding) as charges_partition,  
-
         sum(case when rolling_credits is null 
             then 0 
             else 1 
                 end) over (order by account_id, date_day rows unbounded preceding) as credits_partition           
-
     from account_rolling_totals
 ),
 
@@ -64,14 +52,14 @@ final as (
     select
         account_id,
         date_day,        
+        {{ dbt_utils.surrogate_key(['account_id','date_day']) }} as account_daily_id,
         date_week, 
         date_month, 
         date_year,  
-        date_index,
-        balance_partition,
-        coalesce(daily_transactions,0) as daily_transactions,
+        date_index, 
+        coalesce(daily_transactions,0) as daily_transaction_count,
         coalesce(daily_balance,0) as daily_net_change,
-        coalesce(daily_invoices,0) as daily_invoices,
+        coalesce(daily_invoices,0) as daily_invoice_count,
         coalesce(daily_charges,0) as daily_charges,
         coalesce(daily_credits,0) as daily_credits,
         coalesce(daily_discounts,0) as daily_discounts,

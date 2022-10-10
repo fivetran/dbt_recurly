@@ -1,8 +1,20 @@
 version: 2
 
 models:
+  - name: int_recurly__account_cumulatives
+    description: Each record is an account and its aggregates in terms of balance and record history.
+
+  - name: int_recurly__account_rolling_totals
+    description: Each record is a historical look at an account's balance and its changes over time. 
+
+  - name: int_recurly__transactions_date_spine
+    description: This date spine allows us to construct a full date calendar for account rolling totals.
+
+  - name: int_recurly__transactions_grouped
+    description: Each record is a group of transactions brought together by account and day.  
+
   - name: recurly__account_daily_overview
-    description: Each record is a potential way to slice dice compiled account balances by time period.
+    description: Each record is a day in an account and its accumulated balance totals based on all line item transactions up to that day.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -10,6 +22,10 @@ models:
             - date_day      
     
     columns:
+      - name: account_daily_id
+        description: Unique account key, based on account id and date of balance data.
+        tests: 
+          - unique
       - name: account_id
         description: Account associated with balance transactions.
       - name: date_day
@@ -20,12 +36,44 @@ models:
         description: Date compiled transactions by month for this account balance took place.
       - name: date_year
         description: Date compiled transactions by year for this account balance took place.
-      - name: transactions
-        description: Number of transactions that took place this day.
-      - name: daily_balance
-        description: Total sum of all transactions. 
       - name: date_index
         description: The nth date in the transaction model. 
+      - name: daily_transactions
+        description: Number of transactions that took place this day for this account.
+      - name: daily_net_change
+        description: Total sum of all transactions that took place this day for this account and the balance change that ensued.
+      - name: daily_invoices
+        description: Number of invoices that day for this account.
+      - name: daily_charges
+        description: Total sum of all charges that took place this day for this account.
+      - name: daily_credits
+        description: Total sum of all credits that took place this day for this account.
+      - name: daily_discounts
+        description: Total sum of all discounts that took place this day for this account.
+      - name: daily_taxes
+        description: Total sum of all taxes that took place this day for this account.
+      - name: daily_charge_count
+        description: Number of charges that day for this account.
+      - name: daily_credit_count
+        description: Number of credits that day for this account.
+      - name: rolling_account_balance
+        description: Accumulated account balance based on previous daily transactions on this account.
+      - name: rolling_invoices
+        description: Number of invoices on this account since it was created to the current date.
+      - name: rolling_transactions
+        description: Number of transactions on this account since it was created to the current date.
+      - name: rolling_charge_balance
+        description: Accumulated charge balance based on previous daily charges on this account.
+      - name: rolling_credit_balance
+        description: Accumulated credit balance based on previous daily credits on this account.
+      - name: rolling_discount_balance
+        description: Accumulated discount balance based on previous daily discounts on this account.
+      - name: rolling_tax_balance
+        description: Accumulated tax balance based on previous daily taxes on this account.
+      - name: rolling_charges
+        description: Number of charges on this account since it was created to the current date.
+      - name: rolling_credits
+        description: Number of credits on this account since it was created to the current date.
 
   - name: recurly__account_overview
     description: Each record represents an account, enriched with metrics about their associated transactions.
@@ -321,10 +369,12 @@ models:
             - updated_at  
 
     columns:
-      - name: subscription_id
-        description: Unique identifier for the subscription.
+      - name: subscription_key
+        description: Unique identifier for the subscription daily overview table.
         tests:
           - unique
+      - name: subscription_id
+        description: Unique identifier for the subscription.
       - name: activated_at
         description: When the subscription was activated.  
       - name: add_ons_total
