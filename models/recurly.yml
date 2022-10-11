@@ -14,13 +14,7 @@ models:
     description: Each record is a group of transactions brought together by account and day.  
 
   - name: recurly__account_daily_overview
-    description: Each record is a day in an account and its accumulated balance totals based on all line item transactions up to that day.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - account_id
-            - date_day      
-    
+    description: Each record is a day in an account and its accumulated balance totals based on all line item transactions up to that day.   
     columns:
       - name: account_daily_id
         description: Unique account key, based on account id and date of balance data.
@@ -38,11 +32,11 @@ models:
         description: Date compiled transactions by year for this account balance took place.
       - name: date_index
         description: The nth date in the transaction model. 
-      - name: daily_transactions
+      - name: daily_transaction_count
         description: Number of transactions that took place this day for this account.
       - name: daily_net_change
         description: Total sum of all transactions that took place this day for this account and the balance change that ensued.
-      - name: daily_invoices
+      - name: daily_invoice_count
         description: Number of invoices that day for this account.
       - name: daily_charges
         description: Total sum of all charges that took place this day for this account.
@@ -118,7 +112,7 @@ models:
         description: All charges on this account from this current calendar month.
       - name: credits_this_month
         description: All credits on this account from this current calendar month.
-      - name: gross_transaction_amount_this_month
+      - name: balance_this_month
         description: Gross amount of all transactions made on this account from this current calendar month.
       - name: discounts_this_month
         description: Discounts issued on the account from this current calendar month.
@@ -236,6 +230,8 @@ models:
         description: Date invoice was marked paid or failed.
       - name: transaction_id
         description: The id of the transaction associated with the invoice.
+      - name: transaction_created_at
+        description: Time transaction was created.
       - name: transaction_type
         description: >
           Transaction types:
@@ -362,12 +358,6 @@ models:
 
   - name: recurly__subscription_overview
     description: Each record represents a subscription, enriched with metrics about time, revenue, state, and period.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - subscription_id
-            - updated_at  
-
     columns:
       - name: subscription_key
         description: Unique identifier for the subscription daily overview table.
