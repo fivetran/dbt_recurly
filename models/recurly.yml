@@ -19,7 +19,7 @@ models:
       - name: account_daily_id
         description: Unique account key, based on account id and date of balance data.
         tests: 
-          - unique
+          - unique 
       - name: account_id
         description: Account associated with balance transactions.
       - name: date_day
@@ -75,7 +75,7 @@ models:
       - name: account_id
         description: Primary key for the account.
         tests:
-          - unique
+          - unique 
       - name: account_created_at
         description: Timestamp of when the account entry was created.
       - name: account_email
@@ -139,7 +139,7 @@ models:
       - name: balance_transaction_id
         description: Unique identifier for the balance transaction line item
         tests:
-          - unique
+          - unique 
       - name: created_at
         description: When the line item was created.
       - name: updated_at
@@ -265,7 +265,7 @@ models:
       - name: subscription_id
         description: Unique identifier for the subscription.
         tests:
-          - unique
+          - unique 
       - name: activated_at
         description: When the subscription was activated.  
       - name: account_id
@@ -320,10 +320,10 @@ models:
   - name: recurly__monthly_recurring_revenue
     description: Each record represents an account and MRR generated on a monthly basis.
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - account_id
-            - account_month    
+      - dbt_utils.unique_combination_of_columns: 
+          combination_of_columns: 
+            - account_id 
+            - account_month     
     columns: 
       - name: account_id
         description: Primary key for the account.
@@ -362,7 +362,7 @@ models:
       - name: subscription_key
         description: Unique identifier for the subscription daily overview table.
         tests:
-          - unique
+          - unique 
       - name: subscription_id
         description: Unique identifier for the subscription.
       - name: activated_at
