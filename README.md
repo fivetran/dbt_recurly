@@ -9,6 +9,7 @@
     <a alt="PRs">
         <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
 </p>
+
 # Recurly Transformation dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
 
 # 📣 What does this dbt package do?
@@ -108,6 +109,9 @@ This dbt package is dependent on the following dbt packages. Please be aware tha
 > IMPORTANT: If you have any of these dependent packages in your own `packages.yml` file, we highly recommend that you remove them from your root `packages.yml` to avoid package version conflicts.
 ```yml
 packages:
+    - package: fivetran/recurly_source
+      version: [">=0.3.0", "<0.4.0"]
+
     - package: fivetran/fivetran_utils
       version: [">=0.3.0", "<0.4.0"]
 
