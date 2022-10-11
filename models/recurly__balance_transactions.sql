@@ -1,7 +1,7 @@
 with line_item_history as (
 
-    select * 
-    from {{ var('line_item_history')}}
+    select *  
+    from {{ var('line_item_history')}} 
 ),
 
 invoice_history as (
@@ -13,10 +13,9 @@ invoice_history as (
 
 transaction_history as (
 
-    select * 
-    from {{ var('transaction')}}
+    select *  
+    from {{ var('transaction')}} 
 ),
-
 
 final as (
 

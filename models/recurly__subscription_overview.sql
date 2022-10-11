@@ -7,8 +7,8 @@ with subscription_history as (
 
 plan_history as (
 
-    select * 
-    from {{ var('plan_history') }}
+    select *  
+    from {{ var('plan_history') }} 
 ),
 
 subscription_enhanced as (
@@ -40,7 +40,7 @@ plan_enhanced as (
 final as (
 
     select 
-        subscription_enhanced.subscription_id,
+        subscription_enhanced.subscription_id, 
         subscription_enhanced.updated_at,
         {{ dbt_utils.surrogate_key(['subscription_enhanced.subscription_id','subscription_enhanced.updated_at']) }} as subscription_key,
         subscription_enhanced.activated_at,

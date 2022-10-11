@@ -1,4 +1,4 @@
-{% macro date_timezone(column) -%}
+{% macro date_timezone(column) -%} 
 
 {{ adapter.dispatch('date_timezone', 'recurly')(column)  }}
 

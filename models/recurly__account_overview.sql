@@ -17,7 +17,7 @@ account_cumulatives as (
     from {{ ref('int_recurly__account_cumulatives') }}
 ),
 
-account_next_invoice as (
+account_next_invoice as ( 
 
     select 
         account_id, 
@@ -30,12 +30,12 @@ account_next_invoice as (
 final as ( 
 
     select 
-        account_history.account_id,
-        account_history.created_at as account_created_at,
-        account_history.email as account_email,
-        account_history.first_name as account_first_name,
-        account_history.last_name as account_last_name,
-        account_history.state as account_state,
+        account_history.account_id, 
+        account_history.created_at as account_created_at, 
+        account_history.email as account_email, 
+        account_history.first_name as account_first_name, 
+        account_history.last_name as account_last_name, 
+        account_history.state as account_state, 
         coalesce(account_cumulatives.total_transactions, 0) as total_transactions,
         coalesce(account_cumulatives.total_invoices, 0) as total_invoices,
         coalesce(account_cumulatives.total_charges, 0) as total_charges,
