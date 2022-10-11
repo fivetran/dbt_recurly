@@ -9,6 +9,7 @@
     <a alt="PRs">
         <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
 </p>
+
 # Recurly Transformation dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
 
 # 📣 What does this dbt package do?
