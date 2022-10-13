@@ -40,8 +40,6 @@ final as (
         account_history.first_name as account_first_name,
         account_history.is_tax_exempt as account_is_tax_exempt,
         account_history.last_name as account_last_name,
- 
-
         account_history.account_postal_code,
         account_history.account_region,
         account_history.state as account_state,
@@ -71,7 +69,7 @@ final as (
         account_cumulatives.most_recent_invoice_date,
         account_next_invoice.next_invoice_due_at,
         account_cumulatives.first_transaction_date,
-        account_cumulatives.most_recent_transaction_date,
+        account_cumulatives.most_recent_transaction_date
 
     from account_history
     left join account_cumulatives 
