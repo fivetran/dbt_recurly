@@ -40,6 +40,13 @@ To use this dbt package, you must have the following:
 - At least one Fivetran Recurly connector syncing data into your destination. 
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, **Databricks** destination.
 
+### Databricks Dispatch Configuration
+If you are using a Databricks destination with this package you will need to add the below (or a variation of the below) dispatch configuration within your `dbt_project.yml`. This is required in order for the package to accurately search for macros within the `dbt-labs/spark_utils` then the `dbt-labs/dbt_utils` packages respectively.
+```yml
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['spark_utils', 'dbt_utils']
+```
 
 ## Step 2: Install the package
 Include the following recurly_source package version in your `packages.yml` file.
@@ -48,7 +55,7 @@ Include the following recurly_source package version in your `packages.yml` file
 packages:
   - package: fivetran/recurly
     version: [">=0.1.0", "<0.2.0"]
-
+```
 ## Step 3: Define database and schema variables
 By default, this package runs using your destination and the `recurly` schema. If this is not where your recurly data is (for example, if your recurly schema is named `recurly_fivetran`), add the following configuration to your root `dbt_project.yml` file:
 
@@ -62,11 +69,6 @@ vars:
 Your Recurly connector may not be syncing all tabes that this package references. This might be because you are excluding those tables. If you are not using those tables, you can disable the corresponding functionality in the package by specifying the variable in your dbt_project.yml. By default, all packages are assumed to be true. You only have to add variables for tables you want to disable, like so:
 
 ```yml
-# dbt_project.yml
-
-...
-config-version: 2
-
 vars:
   credit_payment_history: false # Disable if you do not have the credit_payment_history table
   subscription_add_on_history: false # Disable if you do not have the subscription_add_on_history table
@@ -76,6 +78,20 @@ vars:
 ## (Optional) Step 5: Additional configurations
 <details><summary>Expand to view configurations</summary>
 
+### Passing Through Additional Fields
+This package includes all source columns defined in the macros folder. You can add more columns using our pass-through column variables. These variables allow for the pass-through fields to be aliased (`alias`) and casted (`transform_sql`) if desired, but not required. Datatype casting is configured via a sql snippet within the `transform_sql` key. You may add the desired sql while omitting the `as field_name` at the end and your custom pass-though fields will be casted accordingly. Use the below format for declaring the respective pass-through variables:
+
+```yml
+vars:
+    recurly_account_pass_through_columns: 
+      - name: "new_custom_field"
+        alias: "custom_field"
+        transform_sql: "cast(custom_field as string)"
+      - name: "another_one"
+    recurly_subscription_pass_through_columns:
+      - name: "this_field"
+        alias: "cool_field_name"
+```
 ### Change the build schema
 By default, this package builds the recurly staging models within a schema titled (`<target_schema>` + `_recurly`) in your destination. If this is not where you would like your recurly staging data to be written to, add the following configuration to your root `dbt_project.yml` file:
 

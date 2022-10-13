@@ -62,7 +62,7 @@ final as (
         {{ dbt_utils.datediff('subscription_enhanced.trial_started_at', 'subscription_enhanced.trial_ends_at', 'day') }} as trial_interval_days,
         subscription_enhanced.unit_amount
 
-        {{ fivetran_utils.persist_pass_through_columns('recurly_subscription_pass_through_columns', identifier='subscription_history') }},
+        {{ fivetran_utils.persist_pass_through_columns('recurly_subscription_pass_through_columns', identifier='subscription_enhanced') }},
 
         account_overview.account_id as account_id,
         account_overview.account_created_at,
