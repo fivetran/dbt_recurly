@@ -10,7 +10,7 @@ account_overview as (
 
     select * 
     from {{ ref('recurly__account_overview') }}
-)
+),
 
 account_partitions as (
 
