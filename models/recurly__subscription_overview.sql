@@ -9,6 +9,7 @@ plan_history as (
 
     select * 
     from {{ var('plan_history') }}
+    where is_most_recent_record
 ),
 
 subscription_enhanced as (
@@ -59,7 +60,10 @@ final as (
         subscription_enhanced.trial_ends_at,
         subscription_enhanced.trial_started_at,
         {{ dbt_utils.datediff('subscription_enhanced.trial_started_at', 'subscription_enhanced.trial_ends_at', 'day') }} as trial_interval_days,
-        subscription_enhanced.unit_amount, 
+        subscription_enhanced.unit_amount
+
+        {{ fivetran_utils.persist_pass_through_columns('recurly_subscription_pass_through_columns', identifier='subscription_history') }},
+
         account_overview.account_id as account_id,
         account_overview.account_created_at,
         account_overview.account_email,

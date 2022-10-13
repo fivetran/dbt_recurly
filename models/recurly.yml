@@ -20,8 +20,37 @@ models:
         description: Unique account key, based on account id and date of balance data.
         tests: 
           - unique
+          - not_null
       - name: account_id
         description: Account associated with balance transactions.
+      - name: account_created_at
+        description: Timestamp of when the account entry was created.
+      - name: account_city
+        description: City in the world the account is associated with.
+      - name: account_company
+        description: The company related with the account.
+      - name: account_code
+        description: >
+          The unique identifier of the account. This cannot be changed once the account is created. 
+          Provided during account creation.
+      - name: account_country
+        description: Country in the world the account is associated with.
+      - name: account_email
+        description: Email address associated with the account.
+      - name: account_first_name
+        description: First name associated with the account.
+      - name: account_is_tax_exempt
+        description: The tax status of the account. true exempts tax on the account, false applies tax on the account.
+      - name: account_last_name
+        description: Last name associated with the account.
+      - name: account_postal_code
+        description: Postal code in the world the account is associated with.
+      - name: account_region
+        description: Region in the world the account is associated with (usually would be state if it was a U.S. account.)
+      - name: account_state
+        description: Current state of the account.
+      - name: account_username
+        description: A secondary value for the account.
       - name: date_day
         description: Date compiled transactions by day for this account balance took place.
       - name: date_week
@@ -76,16 +105,35 @@ models:
         description: Primary key for the account.
         tests:
           - unique
+          - not_null
       - name: account_created_at
         description: Timestamp of when the account entry was created.
+      - name: account_city
+        description: City in the world the account is associated with.
+      - name: account_company
+        description: The company related with the account.
+      - name: account_code
+        description: >
+          The unique identifier of the account. This cannot be changed once the account is created. 
+          Provided during account creation.
+      - name: account_country
+        description: Country in the world the account is associated with.
       - name: account_email
         description: Email address associated with the account.
       - name: account_first_name
         description: First name associated with the account.
+      - name: account_is_tax_exempt
+        description: The tax status of the account. true exempts tax on the account, false applies tax on the account.
       - name: account_last_name
         description: Last name associated with the account.
+      - name: account_postal_code
+        description: Postal code in the world the account is associated with.
+      - name: account_region
+        description: Region in the world the account is associated with (usually would be state if it was a U.S. account.)
       - name: account_state
         description: Current state of the account.
+      - name: account_username
+        description: A secondary value for the account.
       - name: total_transactions
         description: Total amount of unique transactions issued to this account.
       - name: total_invoices
@@ -140,6 +188,7 @@ models:
         description: Unique identifier for the balance transaction line item
         tests:
           - unique
+          - not_null
       - name: created_at
         description: When the line item was created.
       - name: updated_at
@@ -266,6 +315,7 @@ models:
         description: Unique identifier for the subscription.
         tests:
           - unique
+          - not_null
       - name: activated_at
         description: When the subscription was activated.  
       - name: account_id
@@ -310,7 +360,7 @@ models:
       - name: churn_reason
         description: >
           Reason for churn. null if subscription has no expiration date.
-          Enum: "account closed", "canceled", "gift ended", "non-payment", "non-renewing", "tax location invalid", "trial ended"
+          Enum: "account closed", "canceled", "gift ended", "non-payment", "non-renewing", "trial ended"
       - name: churn_reason_type 
         description: >
           Type of churn, null if subscription has no expiration date.
@@ -319,14 +369,14 @@ models:
 
   - name: recurly__monthly_recurring_revenue
     description: Each record represents an account and MRR generated on a monthly basis.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - account_id
-            - account_month    
     columns: 
+      - name: account_monthly_id
+        description: Unique identifier associated by account id and month.
+        tests:
+          - unique
+          - not_null
       - name: account_id
-        description: Primary key for the account.
+        description: id associated with the account.
       - name: account_month
         description: Revenue details of the account by month. 
       - name: account_month_number

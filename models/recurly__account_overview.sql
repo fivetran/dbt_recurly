@@ -32,10 +32,23 @@ final as (
     select 
         account_history.account_id,
         account_history.created_at as account_created_at,
+        account_history.account_city,
+        account_history.code as account_code,       
+        account_history.company as account_company,
+        account_history.account_country,
         account_history.email as account_email,
         account_history.first_name as account_first_name,
+        account_history.is_tax_exempt as account_is_tax_exempt,
         account_history.last_name as account_last_name,
+ 
+
+        account_history.account_postal_code,
+        account_history.account_region,
         account_history.state as account_state,
+        account_history.username as account_username
+
+        {{ fivetran_utils.persist_pass_through_columns('recurly_account_pass_through_columns', identifier='account_history') }},
+
         coalesce(account_cumulatives.total_transactions, 0) as total_transactions,
         coalesce(account_cumulatives.total_invoices, 0) as total_invoices,
         coalesce(account_cumulatives.total_charges, 0) as total_charges,
@@ -58,7 +71,8 @@ final as (
         account_cumulatives.most_recent_invoice_date,
         account_next_invoice.next_invoice_due_at,
         account_cumulatives.first_transaction_date,
-        account_cumulatives.most_recent_transaction_date
+        account_cumulatives.most_recent_transaction_date,
+
     from account_history
     left join account_cumulatives 
         on account_history.account_id = account_cumulatives.account_id

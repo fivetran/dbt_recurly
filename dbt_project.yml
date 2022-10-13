@@ -28,3 +28,5 @@ vars:
     subscription_history: "{{ ref('stg_recurly__subscription_history') }}"
     transaction_subscription: "{{ ref('stg_recurly__transaction_subscription') }}"
     transaction: "{{ ref('stg_recurly__transaction') }}"
+  recurly_account_pass_through_columns: []
+  recurly_subscription_pass_through_columns: []

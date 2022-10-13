@@ -28,17 +28,22 @@ mrr_by_account as (
     select 
         account_id,
         account_month,
+        {{ dbt_utils.surrogate_key(['account_id', 'account_month']) }} as account_monthly_id,
         row_number() over (partition by account_id order by account_month) as account_month_number,
         sum(amount) as current_month_mrr
     from mrr_balance_transactions
-    group by 1,2
+    {{ dbt_utils.group_by(3) }}
 
 ),
 
 current_vs_previous_mrr as (
     
     select 
-        *,
+        account_monthly_id,
+        account_id,
+        account_month,
+        account_month_number,
+        current_month_mrr,
         lag(current_month_mrr) over (partition by account_id order by account_month) as previous_month_mrr
     from mrr_by_account
 ),

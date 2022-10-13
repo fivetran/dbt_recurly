@@ -13,31 +13,31 @@ balance_transaction_joined as (
 account_current_month as (
         
         select account_id,
-                sum(case when {{ dbt_utils.date_trunc('month', date_timezone('date_day')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
+                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
                         then daily_transactions
                         else 0 
                         end) as transactions_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', date_timezone('date_day')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
+                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
                         then daily_invoices
                         else 0 
                         end) as invoices_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', date_timezone('date_day')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
+                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
                         then daily_balance
                         else 0 
                         end) as balance_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', date_timezone('date_day')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
+                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
                         then daily_charges
                         else 0 
                         end) as charges_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', date_timezone('date_day')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
+                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
                         then daily_credits
                         else 0 
                         end) as credits_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', date_timezone('date_day')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
+                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
                         then daily_discounts
                         else 0 
                         end) as discounts_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', date_timezone('date_day')) }} = {{ dbt_utils.date_trunc('month', date_timezone(dbt_utils.current_timestamp())) }}
+                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
                         then daily_credits
                         else 0 
                         end) as taxes_this_month
@@ -51,15 +51,15 @@ account_min_max as (
     select 
         account_id,
         min(case when lower(type) = 'charge' 
-            then {{ date_timezone('created_at') }} 
+            then {{ 'created_at' }} 
             else null end) as first_charge_date,
         max(case when lower(type) = 'charge' 
-            then {{ date_timezone('created_at') }}
+            then {{ 'created_at' }}
             else null end) as most_recent_charge_date,
-        min( {{ date_timezone('invoice_created_at') }} ) as first_invoice_date,
-        max( {{ date_timezone('invoice_created_at') }} ) as most_recent_invoice_date,
-        min( {{ date_timezone('transaction_created_at') }} ) as first_transaction_date,
-        max( {{ date_timezone('transaction_created_at') }} ) as most_recent_transaction_date
+        min(invoice_created_at) as first_invoice_date,
+        max(invoice_created_at) as most_recent_invoice_date,
+        min(transaction_created_at) as first_transaction_date,
+        max(transaction_created_at) as most_recent_transaction_date
     from balance_transaction_joined
     {{ dbt_utils.group_by(1) }}
 ),

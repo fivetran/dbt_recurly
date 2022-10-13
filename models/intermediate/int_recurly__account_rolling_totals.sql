@@ -1,3 +1,5 @@
+{% set fields = ['rolling_account_balance','rolling_invoices','rolling_transactions','rolling_charge_balance','rolling_credit_balance','rolling_discount_balance','rolling_tax_balance','rolling_charges','rolling_credits'] %}
+
 with balance_transaction_periods as (
 
     select * 
@@ -43,42 +45,12 @@ final as (
         account_rolling_overview.daily_taxes,
         account_rolling_overview.daily_charge_count,
         account_rolling_overview.daily_credit_count,
-        case when account_rolling_overview.rolling_account_balance is null and date_index = 1
+        {% for f in fields %}
+        case when account_rolling_overview.{{ f }} is null and date_index = 1
             then 0
-            else account_rolling_overview.rolling_account_balance
-            end as rolling_account_balance,
-        case when account_rolling_overview.rolling_invoices is null and date_index = 1
-            then 0
-            else account_rolling_overview.rolling_invoices
-            end as rolling_invoices,
-        case when account_rolling_overview.rolling_transactions is null and date_index = 1
-            then 0
-            else account_rolling_overview.rolling_transactions
-            end as rolling_transactions,       
-        case when account_rolling_overview.rolling_charge_balance is null and date_index = 1
-            then 0
-            else account_rolling_overview.rolling_charge_balance
-            end as rolling_charge_balance,  
-        case when account_rolling_overview.rolling_credit_balance is null and date_index = 1
-            then 0
-            else account_rolling_overview.rolling_credit_balance
-            end as rolling_credit_balance,  
-        case when account_rolling_overview.rolling_discount_balance is null and date_index = 1
-            then 0
-            else account_rolling_overview.rolling_discount_balance
-            end as rolling_discount_balance,     
-        case when account_rolling_overview.rolling_tax_balance is null and date_index = 1
-            then 0
-            else account_rolling_overview.rolling_tax_balance
-            end as rolling_tax_balance,   
-        case when account_rolling_overview.rolling_charges is null and date_index = 1
-            then 0
-            else account_rolling_overview.rolling_charges
-            end as rolling_charges,   
-        case when account_rolling_overview.rolling_credits is null and date_index = 1
-            then 0
-            else account_rolling_overview.rolling_credits
-            end as rolling_credits,  
+            else account_rolling_overview.{{ f }}
+            end as {{ f }},
+        {% endfor %}
         balance_transaction_periods.date_index
     from balance_transaction_periods 
     left join account_rolling_overview

@@ -1,4 +1,4 @@
-with subscription_history as (
+with subscription_overview as (
 
     select *
     from {{ ref('recurly__subscription_overview') }}
@@ -33,10 +33,10 @@ subscription_churn_reason as (
             when lower(expiration_reason) = 'non renewing' then 'non-renewing'
 -- haven't confirmed the below, will revisit with production data
             when lower(expiration_reason) = 'tax location invalid' then 'tax location invalid' 
-            when lower(expiration_reason) like 'nonpayment_trial' then 'trial ended'
+            when lower(expiration_reason) = 'nonpayment_trial' then 'trial ended'
             else null 
         end as churn_reason
-    from subscription_history
+    from subscription_overview
 ),
 
 
@@ -45,7 +45,7 @@ final as
     select 
         *,
         case when churn_reason is null then null
-            when churn_reason in ('tax location invalid', 'non-renewing') then 'involuntary'
+            when churn_reason = 'non-payment' then 'involuntary'
             else 'voluntary'
             end as churn_reason_type
     from subscription_churn_reason

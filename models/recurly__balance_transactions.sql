@@ -2,6 +2,7 @@ with line_item_history as (
 
     select * 
     from {{ var('line_item_history')}}
+    where is_most_recent_record
 ),
 
 invoice_history as (
@@ -15,6 +16,7 @@ transaction_history as (
 
     select * 
     from {{ var('transaction')}}
+    where is_most_recent_record
 ),
 
 
