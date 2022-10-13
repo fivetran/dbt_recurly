@@ -44,7 +44,7 @@ final as (
         account_overview.account_state,
         account_overview.account_username 
 
-        {{ fivetran_utils.persist_pass_through_columns('recurly_account_pass_through_columns', identifier='account_history') }},
+        {{ fivetran_utils.persist_pass_through_columns('recurly_account_pass_through_columns', identifier='account_overview') }},
 
         date_day,        
         {{ dbt_utils.surrogate_key(['account_partitions.account_id','date_day']) }} as account_daily_id,
