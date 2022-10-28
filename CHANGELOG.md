@@ -12,4 +12,5 @@ __What does this dbt package do?__
   - Generates monthly recurring revenue table at the account level.
   - Generates churn analysis table at the subscription level.
   - Aggregates all relevant metrics into each of the reporting levels above.
+  - Generate a metrics table that allows you to better understand your account activity over time or at a customer level. These time-based metrics are available on a daily level.
 - Generates a comprehensive data dictionary of your source and modeled Recurly data via the [dbt docs site](fivetran.github.io/dbt_recurly/)
