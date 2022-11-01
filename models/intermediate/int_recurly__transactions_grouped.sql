@@ -8,10 +8,10 @@ final as (
     
     select  
         account_id,
-        cast({{ dbt_utils.date_trunc("day", "created_at") }} as date) as date_day,             
-        cast({{ dbt_utils.date_trunc("week", "created_at") }} as date) as date_week, 
-        cast({{ dbt_utils.date_trunc("month", "created_at") }} as date) as date_month, 
-        cast({{ dbt_utils.date_trunc("year", "created_at") }} as date) as date_year,  
+        cast({{ dbt.date_trunc("day", "created_at") }} as date) as date_day,             
+        cast({{ dbt.date_trunc("week", "created_at") }} as date) as date_week, 
+        cast({{ dbt.date_trunc("month", "created_at") }} as date) as date_month, 
+        cast({{ dbt.date_trunc("year", "created_at") }} as date) as date_year,  
         count(distinct transaction_id) as daily_transactions,
         count(distinct invoice_id) as daily_invoices,
         sum(case when lower(type) = 'charge' 
