@@ -4,6 +4,9 @@
 
 # IMPORTANT: MAKE SURE TO REVERT BACK BEFORE MERGING
 
-- git: https://github.com/fivetran/dbt_recurly_source.git
-  revision: MagicBot/dbt-utils-cross-db-migration
-  warn-unpinned: false
+# - git: https://github.com/fivetran/dbt_recurly_source.git
+#   revision: MagicBot/dbt-utils-cross-db-migration
+#   warn-unpinned: false
+
+packages: 
+  - local: ../dbt_recurly_source
