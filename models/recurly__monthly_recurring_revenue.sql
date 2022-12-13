@@ -28,7 +28,7 @@ mrr_by_account as (
     select 
         account_id,
         account_month,
-        {{ dbt_utils.generate_surrogate_key(['account_id', 'account_month']) }} as account_monthly_id,
+        {{ dbt_utils.surrogate_key(['account_id', 'account_month']) }} as account_monthly_id,
         row_number() over (partition by account_id order by account_month) as account_month_number,
         sum(amount) as current_month_mrr
     from mrr_balance_transactions

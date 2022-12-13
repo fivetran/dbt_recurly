@@ -5,5 +5,5 @@ packages:
 # IMPORTANT: MAKE SURE TO REVERT BACK BEFORE MERGING
 
   - git: https://github.com/fivetran/dbt_recurly_source.git
-    revision: MagicBot/dbt-utils-cross-db-migration
+    revision: main
     warn-unpinned: false

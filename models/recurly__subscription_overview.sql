@@ -43,7 +43,7 @@ final as (
     select 
         subscription_enhanced.subscription_id,
         subscription_enhanced.updated_at,
-        {{ dbt_utils.generate_surrogate_key(['subscription_enhanced.subscription_id','subscription_enhanced.updated_at']) }} as subscription_key,
+        {{ dbt_utils.surrogate_key(['subscription_enhanced.subscription_id','subscription_enhanced.updated_at']) }} as subscription_key,
         subscription_enhanced.activated_at,
         subscription_enhanced.add_ons_total, 
         subscription_enhanced.canceled_at,
@@ -55,11 +55,11 @@ final as (
         subscription_enhanced.subscription_period,  
         subscription_enhanced.state as subscription_state,
         subscription_enhanced.subscription_end_date,
-        {{ dbt.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.subscription_end_date', 'day') }} as subscription_interval_days,
+        {{ dbt_utils.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.subscription_end_date', 'day') }} as subscription_interval_days,
         subscription_enhanced.subtotal, 
         subscription_enhanced.trial_ends_at,
         subscription_enhanced.trial_started_at,
-        {{ dbt.datediff('subscription_enhanced.trial_started_at', 'subscription_enhanced.trial_ends_at', 'day') }} as trial_interval_days,
+        {{ dbt_utils.datediff('subscription_enhanced.trial_started_at', 'subscription_enhanced.trial_ends_at', 'day') }} as trial_interval_days,
         subscription_enhanced.unit_amount
 
         {{ fivetran_utils.persist_pass_through_columns('recurly_subscription_pass_through_columns', identifier='subscription_enhanced') }},
