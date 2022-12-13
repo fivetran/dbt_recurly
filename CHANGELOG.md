@@ -1,6 +1,6 @@
 # Feature updates
 - Refactored the `recurly__account_daily_overview` to prevent query timeouts.
-- Created intermediate models previously present in `recurly__account_daily_overview` to run the more advanced loop functions. 
+- Created intermediate models previously present in `recurly__account_daily_overview` to optimize runtime for advanced loop functions. 
 
 # dbt_recurly v0.2.0
 ## 🚨 Breaking Changes 🚨:
