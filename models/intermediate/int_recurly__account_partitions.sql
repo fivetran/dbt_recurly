@@ -6,11 +6,6 @@ with account_rolling_totals as (
     from {{ ref('int_recurly__account_rolling_totals') }}
 ),
 
-account_overview as (
-
-    select * 
-    from {{ ref('recurly__account_overview') }}
-),
 
 final as (
 

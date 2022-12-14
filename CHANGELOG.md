@@ -1,9 +1,10 @@
 # dbt_recurly v0.1.1
-# Features
+# Features  
 - Refactored the `recurly__account_daily_overview` to prevent query timeouts, brought up in [#8](https://github.com/fivetran/dbt_recurly/issues/8).
-- Created intermediate models previously present in `recurly__account_daily_overview` to optimize runtime for advanced loop functions. 
+- Created intermediate models previously present in `recurly__account_daily_overview` to optimize runtime for advanced loop functions, `int_recurly__account_partitions` and `int_recurly__account_running_totals`. 
+- Changed intermediate folder materializations from ephemeral to view because of complexity of calculations. 
 ## Under the Hood
-- Added BuildKite integration tests.  
+- Added Buildkite integration tests.  
 # dbt_recurly v0.1.0
 
 ## Initial Release

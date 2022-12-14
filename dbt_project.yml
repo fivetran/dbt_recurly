@@ -7,7 +7,7 @@ models:
     +schema: recurly
     +materialized: table
     intermediate:
-      +materialized: ephemeral
+      +materialized: view
 vars:
   recurly:
     account_balance_history: "{{ ref('stg_recurly__account_balance_history') }}"
