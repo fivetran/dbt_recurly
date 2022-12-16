@@ -16,7 +16,7 @@ mrr_balance_transactions as (
     select 
         account_id,
         amount,
-        {{ dbt.date_trunc('month', 'created_at') }} as account_month 
+        {{ dbt_utils.date_trunc('month', 'created_at') }} as account_month 
     from recurly__balance_transactions
     where lower(type) = 'charge' 
         and started_at is not null
