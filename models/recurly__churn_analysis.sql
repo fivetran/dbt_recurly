@@ -44,7 +44,7 @@ final as
     select 
         *,
         case when churn_reason is null then null
-            when churn_reason = 'non-payment' then 'involuntary'
+            when churn_reason in ('non-payment', 'tax location invalid') then 'involuntary'
             else 'voluntary'
             end as churn_reason_type
     from subscription_churn_reason
