@@ -37,6 +37,11 @@
 - `dbt_utils.surrogate_key` has also been updated to `dbt_utils.generate_surrogate_key`. Since the method for creating surrogate keys differ, we suggest all users do a `full-refresh` for the most accurate data. For more information, please refer to dbt-utils [release notes](https://github.com/dbt-labs/dbt-utils/releases) for this update.
 - Dependencies on `fivetran/fivetran_utils` have been upgraded, previously `[">=0.3.0", "<0.4.0"]` now `[">=0.4.0", "<0.5.0"]`.
 
+## Under the Hood
+- Updated the condition for involuntary churn to include `tax_location_invalid` in addition to `non-payment` types. ([#10](https://github.com/fivetran/dbt_recurly/pull/10))
+
+## Contributors
+- [@suelai](https://github.com/suelai) ([#10](https://github.com/fivetran/dbt_recurly/pull/10))
 # dbt_recurly v0.1.0
 
 ## Initial Release
