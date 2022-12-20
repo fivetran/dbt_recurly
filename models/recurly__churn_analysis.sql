@@ -31,7 +31,7 @@ subscription_churn_reason as (
             when lower(expiration_reason) = 'nonpayment_gift' then 'gift ended'
             when lower(expiration_reason) = 'nonpayment' then 'non-payment'
             when lower(expiration_reason) = 'non renewing' then 'non-renewing'
-            when lower(expiration_reason) = 'tax location invalid' then 'tax location invalid' 
+            when lower(expiration_reason) = 'tax_location_invalid' then 'tax location invalid' 
             when lower(expiration_reason) = 'nonpayment_trial' then 'trial ended'
             else null 
         end as churn_reason
