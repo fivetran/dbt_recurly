@@ -31,7 +31,7 @@ subscription_churn_reason as (
             when lower(expiration_reason) = 'nonpayment_gift' then 'gift ended'
             when lower(expiration_reason) = 'nonpayment' then 'non-payment'
             when lower(expiration_reason) = 'non renewing' then 'non-renewing'
-            when lower(expiration_reason) = 'tax location invalid' then 'tax location invalid' 
+            when lower(expiration_reason) = 'tax_location_invalid' then 'tax location invalid' 
             when lower(expiration_reason) = 'nonpayment_trial' then 'trial ended'
             else null 
         end as churn_reason
@@ -44,7 +44,7 @@ final as
     select 
         *,
         case when churn_reason is null then null
-            when churn_reason = 'non-payment' then 'involuntary'
+            when churn_reason in ('non-payment', 'tax location invalid') then 'involuntary'
             else 'voluntary'
             end as churn_reason_type
     from subscription_churn_reason
