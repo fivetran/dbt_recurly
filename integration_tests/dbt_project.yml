@@ -1,5 +1,5 @@
 name: 'recurly_integration_tests'
-version: '0.1.0'
+version: '0.2.0'
 profile: 'integration_tests'
 config-version: 2
 
@@ -39,13 +39,13 @@ seeds:
         deleted_at: timestamp
     credit_payment_history_data:
       +column_types: 
-        id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
-        account_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
-        applied_to_invoice_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
-        original_invoice_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
-        refund_transaction_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
-        original_credit_payment_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
-        uuid: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
+        id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
+        account_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
+        applied_to_invoice_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
+        original_invoice_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
+        refund_transaction_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
+        original_credit_payment_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
+        uuid: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
         amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     coupon_discount_data:
       +column_types:
@@ -81,10 +81,10 @@ seeds:
         expired_at: timestamp
     subscription_change_history_data:
       +column_types:
-        id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"  
-        plan_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
-        subscription_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
-        object: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
+        plan_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"
+        subscription_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"
+        object: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         quantity: "{{ 'INT64' if target.type == 'bigquery' else 'bigint' }}"
     subscription_history_data:

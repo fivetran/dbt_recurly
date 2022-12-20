@@ -13,31 +13,31 @@ balance_transaction_joined as (
 account_current_month as (
         
         select account_id,
-                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
+                sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_transactions
                         else 0 
                         end) as transactions_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
+                sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_invoices
                         else 0 
                         end) as invoices_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
+                sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_balance
                         else 0 
                         end) as balance_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
+                sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_charges
                         else 0 
                         end) as charges_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
+                sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_credits
                         else 0 
                         end) as credits_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
+                sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_discounts
                         else 0 
                         end) as discounts_this_month,
-                sum(case when {{ dbt_utils.date_trunc('month', 'date_day') }} = {{ dbt_utils.date_trunc('month', dbt_utils.current_timestamp()) }}
+                sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_credits
                         else 0 
                         end) as taxes_this_month
