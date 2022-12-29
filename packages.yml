@@ -1,3 +1,9 @@
 packages:
-  - package: fivetran/recurly_source
-    version: [">=0.2.0", "<0.3.0"]  
+#   - package: fivetran/recurly_source
+#     version: [">=0.2.0", "<0.3.0"]
+
+# IMPORTANT: MAKE SURE TO REVERT BACK BEFORE MERGING
+
+  - git: https://github.com/fivetran/dbt_recurly_source.git
+    revision: MagicBot/dbt-utils-cross-db-migration
+    warn-unpinned: false
