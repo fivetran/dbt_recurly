@@ -31,7 +31,7 @@ final as (
         account_overview.account_username
 
         {{ fivetran_utils.persist_pass_through_columns('recurly_account_pass_through_columns', identifier='account_overview') }},      
-        {{ dbt_utils.surrogate_key(['account_partitions.account_id','date_day']) }} as account_daily_id,
+        {{ dbt_utils.generate_surrogate_key(['account_partitions.account_id','date_day']) }} as account_daily_id,
 
         date_day,        
         date_week, 
