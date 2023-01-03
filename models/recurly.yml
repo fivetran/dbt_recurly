@@ -3,9 +3,15 @@ version: 2
 models:
   - name: int_recurly__account_cumulatives
     description: Each record is an account and its aggregates in terms of balance and record history.
+  
+  - name: int_recurly__account_partitions
+    description: Each record is a group of partitioned account totals updating null values with zeroes to eventually calculate running totals downstream.
 
   - name: int_recurly__account_rolling_totals
     description: Each record is a historical look at an account's balance and its changes over time. 
+
+  - name: int_recurly__account_running_totals
+    description: Each record is a historical look at an account's balance, changes over time, and daily running updates to key metrics 
 
   - name: int_recurly__transactions_date_spine
     description: This date spine allows us to construct a full date calendar for account rolling totals.
