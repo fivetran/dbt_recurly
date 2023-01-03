@@ -1,10 +1,3 @@
-
-# dbt_recurly v0.2.1
-# Features  
-- Refactored the `recurly__account_daily_overview` to prevent query timeouts, brought up in [#8](https://github.com/fivetran/dbt_recurly/issues/8).
-- Created intermediate models previously present in `recurly__account_daily_overview` to optimize runtime for advanced loop functions, `int_recurly__account_partitions` and `int_recurly__account_running_totals`. 
-- Changed intermediate folder materializations from ephemeral to table because of complexity of calculations. 
-
 # dbt_recurly v0.2.0
 ## 🚨 Breaking Changes 🚨:
 [PR #7](https://github.com/fivetran/dbt_recurly/pull/7) includes the following breaking changes:
@@ -43,6 +36,11 @@
     - `dbt.current_timestamp_in_utc_backcompat`
 - `dbt_utils.surrogate_key` has also been updated to `dbt_utils.generate_surrogate_key`. Since the method for creating surrogate keys differ, we suggest all users do a `full-refresh` for the most accurate data. For more information, please refer to dbt-utils [release notes](https://github.com/dbt-labs/dbt-utils/releases) for this update.
 - Dependencies on `fivetran/fivetran_utils` have been upgraded, previously `[">=0.3.0", "<0.4.0"]` now `[">=0.4.0", "<0.5.0"]`.
+
+# Features  
+- Refactored the `recurly__account_daily_overview` to prevent query timeouts, brought up in [#8](https://github.com/fivetran/dbt_recurly/issues/8).
+- Created intermediate models previously present in `recurly__account_daily_overview` to optimize runtime for advanced loop functions, `int_recurly__account_partitions` and `int_recurly__account_running_totals`. 
+- Changed intermediate folder materializations from ephemeral to table because of complexity of calculations. 
 
 ## Under the Hood
 - Updated the condition for involuntary churn to include `tax_location_invalid` in addition to `non-payment` types. ([#10](https://github.com/fivetran/dbt_recurly/pull/10))
