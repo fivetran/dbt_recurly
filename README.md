@@ -54,7 +54,7 @@ Include the following recurly_source package version in your `packages.yml` file
 ```yaml
 packages:
   - package: fivetran/recurly
-    version: [">=0.2.0", "<0.3.0"]
+    version: [">=0.3.0", "<0.4.0"]
 ```
 ## Step 3: Define database and schema variables
 By default, this package runs using your destination and the `recurly` schema. If this is not where your recurly data is (for example, if your recurly schema is named `recurly_fivetran`), add the following configuration to your root `dbt_project.yml` file:

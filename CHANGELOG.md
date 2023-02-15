@@ -1,3 +1,10 @@
+# dbt_recurly v0.3.0
+## 🚨 Breaking Change and 🎉 Feature
+- Intermediate models now materialize in their own schema named `recurly_int`. This is to reduce noise in the schema for the final model outputs. ([#15](https://github.com/fivetran/dbt_recurly/pull/15))
+  - **Note:** Before running this new version, we recommend that you manually remove any `int_recurly...` tables from the original output schema. 
+## 🔧 Bug Fixes
+- Updated how `date_week` is determined in model `int_recurly__account_rolling_totals`. ([#15](https://github.com/fivetran/dbt_recurly/pull/15))
+
 # dbt_recurly v0.2.0
 ## 🚨 Breaking Changes 🚨:
 [PR #7](https://github.com/fivetran/dbt_recurly/pull/7) includes the following breaking changes:
