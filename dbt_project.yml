@@ -9,7 +9,7 @@ models:
     +schema: recurly
     +materialized: table
     intermediate:
-      +schema: recurly_intermediate
+      +schema: recurly_int
       +materialized: table
 
 vars:
