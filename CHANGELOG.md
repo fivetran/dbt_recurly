@@ -1,3 +1,6 @@
+# dbt_recurly v0.3.1
+- Fix the yaml variable names in step 4 of the README doc
+
 # dbt_recurly v0.3.0
 ## 🚨 Breaking Change and 🎉 Feature
 - Intermediate models now materialize in their own schema named `recurly_int`. This is to reduce noise in the schema for the final model outputs. ([#15](https://github.com/fivetran/dbt_recurly/pull/15))
