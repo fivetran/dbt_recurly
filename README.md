@@ -70,9 +70,9 @@ Your Recurly connector may not be syncing all tabes that this package references
 
 ```yml
 vars:
-  credit_payment_history: false # Disable if you do not have the credit_payment_history table
-  subscription_add_on_history: false # Disable if you do not have the subscription_add_on_history table
-  subscription_change_history: false # Disable if you do not have the subscription_change_history table
+  recurly__using_credit_payment_history: false # Disable if you do not have the credit_payment_history table
+  recurly__using_subscription_add_on_history: false # Disable if you do not have the subscription_add_on_history table
+  recurly__using_subscription_change_history: false # Disable if you do not have the subscription_change_history table
 
 ```   
 ## (Optional) Step 5: Additional configurations
