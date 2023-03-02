@@ -1,5 +1,9 @@
 # dbt_recurly v0.3.1
-- Fix the yaml variable names in step 4 of the README doc
+## Documentation Update
+- Corrected the yaml variable names in [step 4 of the README doc](https://github.com/fivetran/dbt_recurly#step-4-disable-models-for-non-existent-sources) to reflect the proper names used within the package. ([#18](https://github.com/fivetran/dbt_recurly/pull/18))
+
+## Contributors
+- [@benigls](https://github.com/benigls) ([#18](https://github.com/fivetran/dbt_recurly/pull/18))
 
 # dbt_recurly v0.3.0
 ## 🚨 Breaking Change and 🎉 Feature
