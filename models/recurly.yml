@@ -194,7 +194,6 @@ models:
           combination_of_columns:
             - balance_transaction_id
             - transaction_id
-
     columns:
       - name: balance_transaction_id
         description: Unique identifier for the balance transaction line item

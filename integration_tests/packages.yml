@@ -1,2 +1,4 @@
-packages:
-    - local: ../
+packages: 
+  - git: https://github.com/fivetran/dbt_recurly_source.git
+    revision: bug/correct-source-tests
+    warn-unpinned: false
