@@ -1,3 +1,6 @@
+# dbt_recurly v0.3.2
+## 🪲 Bug Fixes 🔧
+- Created `unique_combination_of_columns` test on `recurly__balance_transactions` for `balance_transaction_id` and `transaction_id` to account for line items with multiple transactions. Modified relevant seed files to test these changes. ([#21](https://github.com/fivetran/dbt_recurly/pull/21))
 # dbt_recurly v0.3.1
 ## Documentation Update
 - Corrected the yaml variable names in [step 4 of the README doc](https://github.com/fivetran/dbt_recurly#step-4-disable-models-for-non-existent-sources) to reflect the proper names used within the package. ([#18](https://github.com/fivetran/dbt_recurly/pull/18))
