@@ -23,7 +23,7 @@ account_next_invoice as (
         account_id, 
         min(invoice_due_at) as next_invoice_due_at
     from balance_transaction_joined
-    where invoice_due_at > {{ dbt.date_trunc('day', dbt.current_timestamp()) }}
+    where invoice_due_at > {{ dbt.date_trunc('day', dbt.current_timestamp_backcompat()) }}
     group by 1  
 ),
 

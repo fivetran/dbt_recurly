@@ -1,3 +1,8 @@
+# dbt_recurly v0.3.2
+## 🪲 Bug Fixes 🔧
+- Created a `unique_combination_of_columns` test on the `balance_transaction_id` and `transaction_id` columns in `recurly__balance_transactions` to account for line items with multiple transactions. Also modified relevant seed files to test these changes ([PR #21](https://github.com/fivetran/dbt_recurly/pull/21)).
+- Updated `current_timestamp` macros in `int_recurly__account_cumulatives` and `recurly__account_overview` models to `current_timestamp_backcompat`, in accordance with the dbt-utils update from the v0.3.0 release ([#20](https://github.com/fivetran/dbt_recurly/issues/20)).
+
 # dbt_recurly v0.3.1
 ## Documentation Update
 - Corrected the yaml variable names in [step 4 of the README doc](https://github.com/fivetran/dbt_recurly#step-4-disable-models-for-non-existent-sources) to reflect the proper names used within the package. ([#18](https://github.com/fivetran/dbt_recurly/pull/18))

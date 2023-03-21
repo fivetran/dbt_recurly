@@ -189,11 +189,15 @@ models:
 
   - name: recurly__balance_transactions
     description: Each record represents a specific line item charge, credit, or other balance change that accumulates into the final invoices.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - balance_transaction_id
+            - transaction_id
     columns:
       - name: balance_transaction_id
         description: Unique identifier for the balance transaction line item
-        tests:
-          - unique
+        tests: 
           - not_null
       - name: created_at
         description: When the line item was created.
