@@ -1,3 +1,10 @@
+# dbt_recurly v0.UPDATE.UPDATE
+
+ ## Under the Hood:
+
+- Incorporated the new `fivetran_utils.drop_schemas_automation` macro into the end of each Buildkite integration test job.
+- Updated the pull request [templates](/.github).
+
 # dbt_recurly v0.3.2
 ## 🪲 Bug Fixes 🔧
 - Created a `unique_combination_of_columns` test on the `balance_transaction_id` and `transaction_id` columns in `recurly__balance_transactions` to account for line items with multiple transactions. Also modified relevant seed files to test these changes ([PR #21](https://github.com/fivetran/dbt_recurly/pull/21)).
