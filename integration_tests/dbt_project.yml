@@ -4,7 +4,7 @@ profile: 'integration_tests'
 config-version: 2
 
 vars:
-  recurly_schema: recurly_integration_tests
+  recurly_schema: recurly_integrations_tests
   recurly_source:
     account_balance_history_identifier: "account_balance_history_data"
     account_history_identifier: "account_history_data"
