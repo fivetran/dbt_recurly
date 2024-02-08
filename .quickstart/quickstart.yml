@@ -1,0 +1,18 @@
+database_key: recurly_database
+schema_key: recurly_schema
+
+dbt_versions: ">=1.3.0 <2.0.0"
+
+table_variables:
+  recurly__using_credit_payment_history:
+    - credit_payment_history
+  recurly__using_subscription_add_on_history:
+    - subscription_add_on_history
+  recurly__using_subscription_change_history:
+    - subscription_change_history
+
+destination_configurations:
+  databricks:
+    dispatch:
+      - macro_namespace: dbt_utils
+        search_order: [ 'spark_utils', 'dbt_utils' ]
