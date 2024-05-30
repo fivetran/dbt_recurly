@@ -33,6 +33,7 @@ The following table provides a detailed list of all models materialized within t
 | [recurly__churn_analysis](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__churn_analysis)    | Each record represents a subscription and their churn status and details.                                                                                                                           |
 | [recurly__monthly_recurring_revenue](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__monthly_recurring_revenue) | Each record represents an account and MRR generated on a monthly basis. |
 | [recurly__subscription_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__subscription_overview)       | Each record represents a subscription, enriched with metrics about time, revenue, state, and period.                                                                                         |
+| [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced)       | Each record represents a line item enriched with plan, subscription, payment, and refund information. This model has been built with the intention of retaining a common line item schema across all other Fivetran billing data models.         |
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Prerequisites
@@ -54,7 +55,7 @@ Include the following recurly_source package version in your `packages.yml` file
 ```yaml
 packages:
   - package: fivetran/recurly
-    version: [">=0.3.0", "<0.4.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.4.0", "<0.5.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 Do NOT include the `recurly_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
