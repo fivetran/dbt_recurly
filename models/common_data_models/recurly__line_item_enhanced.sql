@@ -53,17 +53,17 @@ subscriptions as (
 enhanced as (
 
     select
-        line_items.invoice_id,
+        line_items.invoice_id as header_id,
         line_items.line_item_id,
         row_number() over (partition by line_items.invoice_id order by line_items.created_at) as line_item_index,
         line_items.created_at,
         line_items.currency,
         line_items.state as line_item_status,
         invoices.state as header_status,
-        line_items.plan_id,
-        plans.name as plan_name,
-        line_items.origin as plan_type,
-        line_items.description as plan_category,
+        line_items.plan_id as product_id,
+        plans.name as product_name,
+        line_items.origin as product_type,
+        line_items.description as product_category,
         line_items.quantity,
         line_items.unit_amount,
         line_items.discount as discount_amount,
@@ -73,6 +73,7 @@ enhanced as (
         transactions.transaction_id as payment_id,
         transactions.payment_method_object as payment_method,
         transactions.collected_at as payment_at,
+        cast(null as {{ dbt.type_numeric() }}) as fee_amount,
         transactions.is_refunded,
         invoices.refundable_amount as refund_amount,
         transactions.created_at as refunded_at,
@@ -80,10 +81,13 @@ enhanced as (
         subscriptions.current_period_started_at as subscription_period_started_at,
         subscriptions.current_period_ended_at as subscription_period_ended_at,
         subscriptions.state as subscription_status,
-        line_items.account_id,
-        concat(accounts.first_name, ' ', accounts.last_name) as account_name,
-        accounts.company as account_company,
-        accounts.email as account_email
+        line_items.account_id as customer_id,
+        'account' as customer_level,
+        concat(accounts.first_name, ' ', accounts.last_name) as customer_name,
+        accounts.company as customer_company,
+        accounts.email as customer_email,
+        accounts.account_city as customer_city,
+        accounts.account_country as customer_country
     from line_items
     left join invoices
         on invoices.invoice_id = line_items.invoice_id
@@ -102,17 +106,18 @@ enhanced as (
 final as (
 
     select 
-        invoice_id,
+        header_id,
         line_item_id,
         line_item_index,
+        'line_item' as record_type,
         created_at,
         currency,
         line_item_status,
         header_status,
-        plan_id,
-        plan_name,
-        plan_type,
-        plan_category,
+        product_id,
+        product_name,
+        product_type,
+        product_category,
         quantity,
         unit_amount,
         discount_amount,
@@ -122,6 +127,7 @@ final as (
         payment_id,
         payment_method,
         payment_at,
+        fee_amount,
         cast(null as {{ dbt.type_string() }}) as refund_id,
         cast(null as {{ dbt.type_float() }}) as refund_amount,
         cast(null as {{ dbt.type_timestamp() }}) as refunded_at,
@@ -129,28 +135,31 @@ final as (
         subscription_period_started_at,
         subscription_period_ended_at,
         subscription_status,
-        account_id,
-        account_name,
-        account_company,
-        account_email,
-        'line_item' as source
+        customer_id,
+        customer_level,
+        customer_name,
+        customer_company,
+        customer_email,
+        customer_city,
+        customer_country
     from enhanced
 
     union all
 
     -- Refund information is only reliable at the invoice header. Therefore the below operation creates a new line to track the refund values.
     select
-        invoice_id,
+        header_id,
         line_item_id,
         line_item_index,
+        'header' as record_type,
         created_at,
         currency,
         line_item_status,
         header_status,
-        plan_id,
-        plan_name,
-        cast(null as {{ dbt.type_string() }}) as plan_type,
-        cast(null as {{ dbt.type_string() }}) as plan_category,
+        product_id,
+        product_name,
+        cast(null as {{ dbt.type_string() }}) as product_type,
+        cast(null as {{ dbt.type_string() }}) as product_category,
         cast(null as {{ dbt.type_float() }}) as quantity,
         cast(null as {{ dbt.type_float() }}) as unit_amount,
         cast(null as {{ dbt.type_float() }}) as discount_amount,
@@ -160,6 +169,7 @@ final as (
         payment_id,
         payment_method,
         payment_at,
+        fee_amount,
         payment_id as refund_id,
         refund_amount,
         refunded_at,
@@ -167,11 +177,13 @@ final as (
         subscription_period_started_at,
         subscription_period_ended_at,
         subscription_status,
-        account_id,
-        account_name,
-        account_company,
-        account_email,
-        'header' as source
+        customer_id,
+        customer_level,
+        customer_name,
+        customer_company,
+        customer_email,
+        customer_city,
+        customer_country
     from enhanced
     where is_refunded 
         and line_item_index = 1
