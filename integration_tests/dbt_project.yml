@@ -61,6 +61,7 @@ seeds:
         tax: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}" 
     line_item_history_data:
       +column_types:
+        subscription_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
         discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         subtotal: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
@@ -89,6 +90,7 @@ seeds:
         quantity: "{{ 'INT64' if target.type == 'bigquery' else 'bigint' }}"
     subscription_history_data:
       +column_types:
+        id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
         paused_at: timestamp
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         add_ons_total: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
