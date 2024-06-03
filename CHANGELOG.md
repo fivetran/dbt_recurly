@@ -1,7 +1,9 @@
-# dbt_recurly v0.UPDATE.UPDATE
+# dbt_recurly v0.4.0
 
- ## Under the Hood:
+## Feature Updates
+- Introduced the new `*__line_item_enhanced` model. This model includes a line item enriched with plan, subscription, payment, and refund information. This model has been built with the intention of retaining a common line item schema across all other Fivetran billing data models.
 
+## Under the Hood:
 - Incorporated the new `fivetran_utils.drop_schemas_automation` macro into the end of each Buildkite integration test job.
 - Updated the pull request [templates](/.github).
 
