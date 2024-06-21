@@ -84,7 +84,7 @@ enhanced as (
         subscriptions.state as subscription_status,
         line_items.account_id as customer_id,
         'account' as customer_level,
-        concat(accounts.first_name, cast(' ' as {{ dbt.type_string() }}), accounts.last_name) as customer_name,
+        {{ dbt.concat(["accounts.first_name", "''", "accounts.last_name"]) }} as customer_name,
         accounts.company as customer_company,
         accounts.email as customer_email,
         accounts.account_city as customer_city,
