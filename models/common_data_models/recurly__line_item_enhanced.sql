@@ -55,7 +55,7 @@ enhanced as (
     select
         line_items.invoice_id as header_id,
         line_items.line_item_id,
-        row_number() over (partition by line_items.invoice_id order by line_items.created_at) as line_item_index,
+        cast(row_number() over (partition by line_items.invoice_id order by line_items.created_at) as {{ dbt.type_int() }}) as line_item_index,
         line_items.created_at,
         line_items.currency,
         line_items.state as line_item_status,
@@ -84,7 +84,7 @@ enhanced as (
         subscriptions.state as subscription_status,
         line_items.account_id as customer_id,
         'account' as customer_level,
-        concat(accounts.first_name, ' ', accounts.last_name) as customer_name,
+        concat(accounts.first_name, cast(' ' as {{ dbt.type_string() }}), accounts.last_name) as customer_name,
         accounts.company as customer_company,
         accounts.email as customer_email,
         accounts.account_city as customer_city,
@@ -101,7 +101,7 @@ enhanced as (
             and subscriptions.current_period_started_at <= line_items.created_at
             and subscriptions.current_period_ended_at > line_items.created_at
     left join plans
-        on plans.plan_id = line_items.plan_id
+        on cast(plans.plan_id as {{ dbt.type_string() }}) = cast(line_items.plan_id as {{ dbt.type_string() }})
 ),
 
 final as (
