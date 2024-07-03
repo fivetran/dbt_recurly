@@ -54,8 +54,9 @@ Include the following recurly_source package version in your `packages.yml` file
 > TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 ```yaml
 packages:
-  - package: fivetran/recurly
-    version: [">=0.4.0", "<0.5.0"] # we recommend using ranges to capture non-breaking changes automatically
+  - git: https://github.com/fivetran/dbt_recurly.git
+    revision: feature/standardized-billing-line-item-model
+    warn-unpinned: false
 ```
 
 Do NOT include the `recurly_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
