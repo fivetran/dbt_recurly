@@ -18,6 +18,7 @@ transactions as (
     select * 
     from {{ var('transaction')}}
     where is_most_recent_record
+        and status = 'success'
 ),
 
 subscription_history as (
