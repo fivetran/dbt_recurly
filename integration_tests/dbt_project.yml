@@ -25,6 +25,10 @@ vars:
     transaction_identifier: "transaction_data"
     transaction_subscription_identifier: "transaction_subscription_data"
 
+# For use with validations
+models:
+  +schema: "recurly_{{ var('directed_schema','dev') }}"
+
 dispatch:
   - macro_namespace: dbt_utils
     search_order: ['spark_utils', 'dbt_utils']

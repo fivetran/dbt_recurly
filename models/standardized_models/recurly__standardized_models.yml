@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: recurly__line_item_enhanced
+    description: This model constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It’s designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). Visit the app for more details.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - header_id
+            - line_item_id
+    columns:
+      - name: header_id
+        description: Id of corresponding invoice.
+      - name: line_item_id
+        description: Invoice line item id.
+      - name: line_item_index
+        description: Unique index of each line item id for each invoice.
+      - name: record_type
+        description: header or line_item
+      - name: created_at
+        description: When the invoice was created
+      - name: header_status
+        description: Status of the invoice.
+      - name: billing_type
+        description: Type of invoice line item.
+      - name: currency
+        description: Currency used in the invoice.
+      - name: product_id
+        description: ID of the plan associated with the line item.
+      - name: product_name
+        description: Plan name
+      - name: product_type
+        description: Origin of the line item
+      - name: transaction_type
+        description: Type associated with the transaction.
+      - name: quantity
+        description: The number of units of this line item.
+      - name: unit_amount
+        description: Amount per unit.
+      - name: discount_amount
+        description: The discount amount associated with this invoice.
+      - name: tax_amount
+        description: The tax amount associated with this invoice.
+      - name: total_amount
+        description: Invoice total
+      - name: payment_id
+        description: ID of the associated transaction
+      - name: payment_method
+        description: Payment method object.
+      - name: payment_method_id
+        description: In Recurly there are no payment method IDs as these are abstracted from the transactions object. Therefore, this will always be null. 
+      - name: payment_at
+        description: Date transaction was collected.
+      - name: fee_amount
+        description: In Recurly there is currently no concept of fees. Therefore, this will be null for all records.
+      - name: refund_amount
+        description: Refund amount associated with this invoice.
+      - name: subscription_id
+        description: Subscription associated with this invoice.
+      - name: subscription_plan
+        description: The name of the plan which the subscription is associated.
+      - name: subscription_period_started_at
+        description: Subscription's current period start
+      - name: subscription_period_ended_at
+        description: Subscription's current period end
+      - name: subscription_status
+        description: Subscription status
+      - name: customer_id
+        description: Customer associated with this invoice.
+      - name: customer_created_at
+        description: Date which the customer was created in Recurly.
+      - name: customer_level
+        description: Whether 'account' or 'customer'. For Recurly, the level is 'account'.
+      - name: customer_name
+        description: Customer name
+      - name: customer_company
+        description: Associated account's company if applicable.
+      - name: customer_email
+        description: Customer email
+      - name: customer_city
+        description: Customer city
+      - name: customer_country
+        description: Customer country

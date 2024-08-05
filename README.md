@@ -33,7 +33,10 @@ The following table provides a detailed list of all models materialized within t
 | [recurly__churn_analysis](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__churn_analysis)    | Each record represents a subscription and their churn status and details.                                                                                                                           |
 | [recurly__monthly_recurring_revenue](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__monthly_recurring_revenue) | Each record represents an account and MRR generated on a monthly basis. |
 | [recurly__subscription_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__subscription_overview)       | Each record represents a subscription, enriched with metrics about time, revenue, state, and period.                                                                                         |
-| [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced)       | Each record represents a line item enriched with plan, subscription, payment, and refund information. This model has been built with the intention of retaining a common line item schema across all other Fivetran billing data models.         |
+| [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced)       | This model constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It’s designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). Visit the app for more details.  |
+
+## Example Visualizations
+Explore example visualizations produced by the [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) model in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). For further details and to see how these insights can be applied, visit the app.
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Prerequisites
@@ -54,9 +57,8 @@ Include the following recurly_source package version in your `packages.yml` file
 > TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 ```yaml
 packages:
-  - git: https://github.com/fivetran/dbt_recurly.git
-    revision: feature/standardized-billing-line-item-model
-    warn-unpinned: false
+  - package: fivetran/recurly
+    version: [">=0.4.0", "<0.5.0"]
 ```
 
 Do NOT include the `recurly_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
