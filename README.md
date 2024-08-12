@@ -37,10 +37,13 @@ The following table provides a detailed list of all models materialized within t
 | [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced)       | This model constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It’s designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, Shopify, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). Visit the app for more details.  |
 
 ## Example Visualizations
-Explore example visualizations produced by the [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) model in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). For further details and to see how these insights can be applied, visit the app.
+Curious what these models can do? Check out example visualizations from the [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) model in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/), and see how you can use these models in your own reporting. Below is a screenshot of an example report—explore the app for more.
 
-
-[<img src="https://raw.githubusercontent.com/fivetran/dbt_recurly/feature/standardized-billing-line-item-model/images/streamlit_example.png" alt="Streamlit Billing Model App" width="50%">](https://fivetran-billing-model.streamlit.app/)
+<p align="center">
+  <a href="https://fivetran-billing-model.streamlit.app/">
+    <img src="https://raw.githubusercontent.com/fivetran/dbt_recurly/feature/standardized-billing-line-item-model/images/streamlit_example.png" alt="Streamlit Billing Model App" width="75%">
+  </a>
+</p>
 
 <!--section-end-->
 
