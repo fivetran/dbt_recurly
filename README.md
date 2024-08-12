@@ -22,6 +22,7 @@
     - Generate a metrics tables allow you to better understand your account activity over time or at a customer level. These time-based metrics are available on a daily level.
 - Generates a comprehensive data dictionary of your source and modeled Recurly data through the [dbt docs site](https://fivetran.github.io/dbt_recurly/).
 
+<!--section="recurly_transformation_model"-->
 The following table provides a detailed list of all models materialized within this package by default. 
 > TIP: See more details about these models in the package's [dbt docs site](https://fivetran.github.io/dbt_recurly/#!/overview?g_v=1).
  
@@ -37,6 +38,11 @@ The following table provides a detailed list of all models materialized within t
 
 ## Example Visualizations
 Explore example visualizations produced by the [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) model in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). For further details and to see how these insights can be applied, visit the app.
+
+
+<img src="https://github.com/fivetran/dbt_recurly/blob/main/images/streamlit_example.png" alt="Streamlit Billing Model App" width="50%">
+
+<!--section-end-->
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Prerequisites
