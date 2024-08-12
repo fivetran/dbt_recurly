@@ -40,7 +40,7 @@ The following table provides a detailed list of all models materialized within t
 Explore example visualizations produced by the [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) model in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). For further details and to see how these insights can be applied, visit the app.
 
 
-<img src="https://github.com/fivetran/dbt_recurly/blob/main/images/streamlit_example.png" alt="Streamlit Billing Model App" width="50%">
+[<img src="https://raw.githubusercontent.com/fivetran/dbt_recurly/feature/standardized-billing-line-item-model/images/streamlit_example.png" alt="Streamlit Billing Model App" width="50%">](https://fivetran-billing-model.streamlit.app/)
 
 <!--section-end-->
 
