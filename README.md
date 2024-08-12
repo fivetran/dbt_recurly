@@ -41,7 +41,7 @@ Curious what these models can do? Check out example visualizations from the [rec
 
 <p align="center">
   <a href="https://fivetran-billing-model.streamlit.app/">
-    <img src="https://raw.githubusercontent.com/fivetran/dbt_recurly/feature/standardized-billing-line-item-model/images/streamlit_example.png" alt="Streamlit Billing Model App" width="75%">
+    <img src="https://raw.githubusercontent.com/fivetran/dbt_recurly/main/images/streamlit_example.png" alt="Streamlit Billing Model App" width="75%">
   </a>
 </p>
 
