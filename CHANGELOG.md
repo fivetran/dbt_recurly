@@ -10,7 +10,7 @@
 - Added consistency test within integration_tests for the `recurly__line_item_enhanced` model.
 - Included auto-releaser GitHub Actions workflow to automate future releases.
 - Incorporated the new `fivetran_utils.drop_schemas_automation` macro into the end of each Buildkite integration test job.
-- Updated the pull request [templates](/.github).
+- Updated the pull request templates.
 
 # dbt_recurly v0.3.2
 ## 🪲 Bug Fixes 🔧
