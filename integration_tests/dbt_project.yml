@@ -26,8 +26,8 @@ vars:
     transaction_subscription_identifier: "transaction_subscription_data"
 
 # For use with validations
-models:
-  +schema: "recurly_{{ var('directed_schema','dev') }}"
+# models:
+#   +schema: "recurly_{{ var('directed_schema','dev') }}"
 
 dispatch:
   - macro_namespace: dbt_utils
