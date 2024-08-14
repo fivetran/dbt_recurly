@@ -1,9 +1,16 @@
-# dbt_recurly v0.UPDATE.UPDATE
+# dbt_recurly v0.4.0
 
- ## Under the Hood:
+[PR #26](https://github.com/fivetran/dbt_recurly/pull/26) includes the following breaking changes:
 
+## Feature Updates
+- Addition of the `recurly__line_item_enhanced` model. This model constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It’s designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, Shopify, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). Visit the app for more details.
+  -  This model is currently disabled by default. You may enable it by setting the `recurly__standardized_billing_model_enabled` as `true` in your `dbt_project.yml`.
+
+## Under the Hood:
+- Added consistency test within integration_tests for the `recurly__line_item_enhanced` model.
+- Included auto-releaser GitHub Actions workflow to automate future releases.
 - Incorporated the new `fivetran_utils.drop_schemas_automation` macro into the end of each Buildkite integration test job.
-- Updated the pull request [templates](/.github).
+- Updated the pull request templates.
 
 # dbt_recurly v0.3.2
 ## 🪲 Bug Fixes 🔧

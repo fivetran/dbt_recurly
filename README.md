@@ -22,6 +22,7 @@
     - Generate a metrics tables allow you to better understand your account activity over time or at a customer level. These time-based metrics are available on a daily level.
 - Generates a comprehensive data dictionary of your source and modeled Recurly data through the [dbt docs site](https://fivetran.github.io/dbt_recurly/).
 
+<!--section="recurly_transformation_model"-->
 The following table provides a detailed list of all models materialized within this package by default. 
 > TIP: See more details about these models in the package's [dbt docs site](https://fivetran.github.io/dbt_recurly/#!/overview?g_v=1).
  
@@ -33,6 +34,18 @@ The following table provides a detailed list of all models materialized within t
 | [recurly__churn_analysis](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__churn_analysis)    | Each record represents a subscription and their churn status and details.                                                                                                                           |
 | [recurly__monthly_recurring_revenue](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__monthly_recurring_revenue) | Each record represents an account and MRR generated on a monthly basis. |
 | [recurly__subscription_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__subscription_overview)       | Each record represents a subscription, enriched with metrics about time, revenue, state, and period.                                                                                         |
+| [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced)       | This model constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It’s designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, Shopify, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). Visit the app for more details.  |
+
+## Example Visualizations
+Curious what these models can do? Check out example visualizations from the [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) model in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/), and see how you can use these models in your own reporting. Below is a screenshot of an example report—explore the app for more.
+
+<p align="center">
+  <a href="https://fivetran-billing-model.streamlit.app/">
+    <img src="https://raw.githubusercontent.com/fivetran/dbt_recurly/main/images/streamlit_example.png" alt="Streamlit Billing Model App" width="75%">
+  </a>
+</p>
+
+<!--section-end-->
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Prerequisites
@@ -54,7 +67,7 @@ Include the following recurly_source package version in your `packages.yml` file
 ```yaml
 packages:
   - package: fivetran/recurly
-    version: [">=0.3.0", "<0.4.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.4.0", "<0.5.0"]
 ```
 
 Do NOT include the `recurly_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
@@ -80,7 +93,15 @@ vars:
 
 ```   
 ## (Optional) Step 5: Additional configurations
-<details><summary>Expand to view configurations</summary>
+<details open><summary>Expand to view configurations</summary>
+
+### Enabling Standardized Billing Model
+This package contains the `recurly__line_item_enhanced` model which constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It’s designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, Shopify, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). For the time being, this model is disabled by default. If you would like to enable this model you will need to adjust the `recurly__standardized_billing_model_enabled` variable to be `true` within your `dbt_project.yml`:
+
+```yml
+vars:
+  recurly__standardized_billing_model_enabled: true # false by default.
+```
 
 ### Passing Through Additional Fields
 This package includes all source columns defined in the macros folder. You can add more columns using our pass-through column variables. These variables allow for the pass-through fields to be aliased (`alias`) and casted (`transform_sql`) if desired, but not required. Datatype casting is configured via a sql snippet within the `transform_sql` key. You may add the desired sql while omitting the `as field_name` at the end and your custom pass-though fields will be casted accordingly. Use the below format for declaring the respective pass-through variables:

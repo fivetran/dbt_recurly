@@ -9,6 +9,8 @@ target/
 dbt_modules/
 logs/
 dbt_packages/
+env/
+package-lock.yml
 
 ### MacOS ###
 .DS_Store

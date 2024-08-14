@@ -1,10 +1,10 @@
 name: 'recurly_integration_tests'
-version: '0.3.2'
+version: '0.4.0'
 profile: 'integration_tests'
 config-version: 2
 
 vars:
-  recurly_schema: recurly_integrations_tests
+  recurly_schema: recurly_integrations_tests_1
   recurly_source:
     account_balance_history_identifier: "account_balance_history_data"
     account_history_identifier: "account_history_data"
@@ -24,6 +24,10 @@ vars:
     subscription_history_identifier: "subscription_history_data"
     transaction_identifier: "transaction_data"
     transaction_subscription_identifier: "transaction_subscription_data"
+
+# For use with validations
+models:
+  +schema: "recurly_{{ var('directed_schema','dev') }}"
 
 dispatch:
   - macro_namespace: dbt_utils
@@ -61,6 +65,7 @@ seeds:
         tax: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}" 
     line_item_history_data:
       +column_types:
+        subscription_id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
         discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         subtotal: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
@@ -89,6 +94,7 @@ seeds:
         quantity: "{{ 'INT64' if target.type == 'bigquery' else 'bigint' }}"
     subscription_history_data:
       +column_types:
+        id: "{{ 'string' if target.name in ('bigquery', 'spark', 'databricks') else 'varchar' }}"  
         paused_at: timestamp
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         add_ons_total: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
