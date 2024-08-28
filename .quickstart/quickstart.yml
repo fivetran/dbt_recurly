@@ -16,3 +16,12 @@ destination_configurations:
     dispatch:
       - macro_namespace: dbt_utils
         search_order: [ 'spark_utils', 'dbt_utils' ]
+
+public_models: [
+  "recurly__account_daily_overview",
+  "recurly__balance_transactions",
+  "recurly__account_overview",
+  "recurly__subscription_overview",
+  "recurly__churn_analysis",
+  "recurly__monthly_recurring_revenue"
+]
