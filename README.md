@@ -23,10 +23,10 @@
 - Generates a comprehensive data dictionary of your source and modeled Recurly data through the [dbt docs site](https://fivetran.github.io/dbt_recurly/).
 
 <!--section="recurly_transformation_model"-->
-The following table provides a detailed list of all models materialized within this package by default.
-> TIP: See more details about these models in the package's [dbt docs site](https://fivetran.github.io/dbt_recurly/#!/overview?g_v=1).
+The following table provides a detailed list of all tables materialized within this package by default.
+> TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_recurly/#!/overview?g_v=1).
 
-| **model**                         | **description**                                                                                                                                                                                                                             |
+| **Table**                         | **Description**                                                                                                                                                                                                                             |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [recurly__account_daily_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_daily_overview)    |  Each record is a day in an account and its accumulated balance totals based on all line item transactions up to that day.                            |
 | [recurly__account_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_overview)    |  Each record represents an account, enriched with metrics about their associated transactions.                                                                                                     |

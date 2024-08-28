@@ -23,5 +23,6 @@ public_models: [
   "recurly__account_overview",
   "recurly__subscription_overview",
   "recurly__churn_analysis",
-  "recurly__monthly_recurring_revenue"
+  "recurly__monthly_recurring_revenue",
+  "recurly__line_item_enhanced"
 ]
