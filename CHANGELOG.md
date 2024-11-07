@@ -1,7 +1,7 @@
 # dbt_recurly v0.5.0
 [PR #29](https://github.com/fivetran/dbt_recurly/pull/29) includes the following breaking changes:
 ## Breaking Changes
-- Removed unused fields from `stg_recurly__subscription_history` in the upstream `dbt_recurly_source` package (see [CHANGELOG](https://github.com/fivetran/dbt_recurly_source/blob/main/CHANGELOG.md#dbt_recurly_source-v030)):
+- Removed unused fields from `stg_recurly__subscription_history` in the upstream `dbt_recurly_source` package (see [release notes](https://github.com/fivetran/dbt_recurly_source/releases/tag/v0.3.0)):
   - `converted_at`
   - `has_started_with_gift`
 - While this change does not directly affect fields in this package’s models, it is classified as a breaking change due to modifications in `stg_recurly__subscription_history`.
