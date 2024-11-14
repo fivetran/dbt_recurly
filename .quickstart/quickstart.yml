@@ -19,10 +19,9 @@ destination_configurations:
 
 public_models: [
   "recurly__account_daily_overview",
-  "recurly__balance_transactions",
   "recurly__account_overview",
-  "recurly__subscription_overview",
+  "recurly__balance_transactions",
   "recurly__churn_analysis",
   "recurly__monthly_recurring_revenue",
-  "recurly__line_item_enhanced"
+  "recurly__subscription_overview"
 ]
