@@ -1,3 +1,9 @@
+# dbt_recurly v0.5.1
+[PR #30](https://github.com/fivetran/dbt_recurly/pull/30) includes the following breaking changes:
+
+## Under the Hood
+- Updated `quickstart.yml` to list only the relevant `public_models`.
+
 # dbt_recurly v0.5.0
 [PR #29](https://github.com/fivetran/dbt_recurly/pull/29) includes the following breaking changes:
 
