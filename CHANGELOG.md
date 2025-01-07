@@ -1,3 +1,9 @@
+# dbt_recurly version.version
+
+## Documentation
+- Added Quickstart model counts to README. ([#32](https://github.com/fivetran/dbt_recurly/pull/32))
+- Corrected references to connectors and connections in the README. ([#32](https://github.com/fivetran/dbt_recurly/pull/32))
+
 # dbt_recurly v0.5.1
 [PR #30](https://github.com/fivetran/dbt_recurly/pull/30) includes the following breaking changes:
 

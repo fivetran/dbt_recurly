@@ -45,12 +45,14 @@ Curious what these models can do? Check out example visualizations from the [rec
 </a>
 </p>
 
+### Materialized Models
+Each Quickstart transformation job run materializes 47 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 <!--section-end-->
 
 ## How do I use the dbt package?
 ### Step 1: Prerequisites
 To use this dbt package, you must have the following:
-- At least one Fivetran Recurly connector syncing data into your destination.
+- At least one Fivetran Recurly connection syncing data into your destination.
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, **Databricks** destination.
 
 #### Databricks Dispatch Configuration
