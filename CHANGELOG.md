@@ -1,4 +1,9 @@
-# dbt_recurly version.version
+# dbt_recurly 6.0
+This release includes the following changes:
+
+## Features
+- Enabled the `recurly__line_item_enhanced` model by default. Previously, this model required opting in via the `recurly__standardized_billing_model_enabled` variable. This change ensures the model is available by default for Quickstart users. ([#33](https://github.com/fivetran/dbt_recurly/pull/33))
+  - Users can still disable the model by setting the variable to `false` in `dbt_project.yml`.
 
 ## Documentation
 - Added Quickstart model counts to README. ([#32](https://github.com/fivetran/dbt_recurly/pull/32))
