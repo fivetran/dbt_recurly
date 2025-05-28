@@ -1,4 +1,4 @@
-# dbt_recurly 6.0
+# dbt_recurly v0.6.0
 This release includes the following changes:
 
 ## Schema/Data Changes
