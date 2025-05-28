@@ -1,4 +1,4 @@
-{{ config(enabled= var('recurly__standardized_billing_model_enabled', True)) }}
+{{ config(enabled=var('recurly__standardized_billing_model_enabled', True)) }}
 
 with line_items as (
 
