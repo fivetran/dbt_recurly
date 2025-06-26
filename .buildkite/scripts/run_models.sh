@@ -17,6 +17,7 @@ echo `pwd`
 cd integration_tests
 dbt deps
 dbt seed --target "$db" --full-refresh
+dbt source freshness --target "$db" || echo "...Only verifying freshness runs…"
 dbt run --target "$db" --full-refresh
 dbt test --target "$db"
 dbt run --vars '{recurly__standardized_billing_model_enabled: false}' --target "$db" --full-refresh
