@@ -71,7 +71,6 @@ seeds:
         discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         subtotal: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
-        discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         tax: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         credit_applied: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         end_date: timestamp
