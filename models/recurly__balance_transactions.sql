@@ -1,21 +1,21 @@
 with line_item_history as (
 
     select * 
-    from {{ var('line_item_history')}}
+    from {{ ref('stg_recurly__line_item_history') }}
     where is_most_recent_record
 ),
 
 invoice_history as (
 
     select *
-    from {{ var('invoice_history')}}
+    from {{ ref('stg_recurly__invoice_history') }}
     where is_most_recent_record
 ),
 
 transaction_history as (
 
     select * 
-    from {{ var('transaction')}}
+    from {{ ref('stg_recurly__transaction') }}
     where is_most_recent_record
 ),
 

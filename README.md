@@ -69,10 +69,10 @@ Include the following recurly_source package version in your `packages.yml` file
 ```yaml
 packages:
   - package: fivetran/recurly
-    version: [">=0.7.0", "<0.8.0"]
+    version: [">=1.0.0", "<1.1.0"]
 ```
 
-Do NOT include the `recurly_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
+> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/recurly_source` in your `packages.yml` since this package has been deprecated.
 
 
 ### Step 3: Define database and schema variables
@@ -125,7 +125,9 @@ By default, this package builds the recurly staging models within a schema title
 ```yml
 models:
     recurly:
-      +schema: my_new_schema_name # leave blank for just the target_schema
+      +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
+      staging:
+        +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
 ```
 
 #### Change the source table references
@@ -152,9 +154,6 @@ This dbt package is dependent on the following dbt packages. These dependencies 
 > IMPORTANT: If you have any of these dependent packages in your own `packages.yml` file, we highly recommend that you remove them from your root `packages.yml` to avoid package version conflicts.
 ```yml
 packages:
-    - package: fivetran/recurly_source
-      version: [">=0.4.0", "<0.5.0"]
-
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]
 

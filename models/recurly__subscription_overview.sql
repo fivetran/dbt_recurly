@@ -1,14 +1,14 @@
 with subscription_history as (
 
     select * 
-    from {{ var('subscription_history') }}
+    from {{ ref('stg_recurly__subscription_history') }}
     where is_most_recent_record
 ),
 
 plan_history as (
 
     select * 
-    from {{ var('plan_history') }}
+    from {{ ref('stg_recurly__plan_history') }}
     where is_most_recent_record
 ),
 

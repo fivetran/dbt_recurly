@@ -3,21 +3,21 @@
 with line_items as (
 
     select * 
-    from {{ var('line_item_history')}}
+    from {{ ref('stg_recurly__line_item_history') }}
     where is_most_recent_record
 ),
 
 invoices as (
 
     select *
-    from {{ var('invoice_history')}}
+    from {{ ref('stg_recurly__invoice_history') }}
     where is_most_recent_record
 ),
 
 transactions as (
 
     select * 
-    from {{ var('transaction')}}
+    from {{ ref('stg_recurly__transaction') }}
     where is_most_recent_record
         and status = 'success'
 ),
@@ -27,20 +27,20 @@ subscription_history as (
     select 
         *,
         row_number() over (partition by subscription_id, current_period_started_at, current_period_ended_at order by updated_at desc) = 1 as is_latest_period
-    from {{ var('subscription_history') }}
+    from {{ ref('stg_recurly__subscription_history') }}
 ),
 
 plans as (
 
     select * 
-    from {{ var('plan_history') }}
+    from {{ ref('stg_recurly__plan_history') }}
     where is_most_recent_record
 ),
 
 accounts as (
 
     select * 
-    from {{ var('account_history') }}
+    from {{ ref('stg_recurly__account_history') }}
     where is_most_recent_record
 ),
 
