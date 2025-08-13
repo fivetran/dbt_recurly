@@ -12,7 +12,9 @@ models:
       +materialized: table
     staging:
       +schema: recurly_source
-      +materialized: view
+      +materialized: table
+      tmp:
+        +materialized: view
 
 vars:
   recurly:

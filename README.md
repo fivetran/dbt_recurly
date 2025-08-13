@@ -1,5 +1,4 @@
-
-# Recurly Transformation dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
+# Recurly  dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
 
 <p align="left">
     <a alt="License"
@@ -42,6 +41,12 @@ The following table provides a detailed list of all tables materialized within t
 ### Example Visualizations
 Curious what these models can do? Check out example visualizations from the [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) model in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/), and see how you can use these models in your own reporting. Below is a screenshot of an example report—explore the app for more.
 
+<p align="center">
+<a href="https://fivetran-billing-model.streamlit.app/">
+    <img src="https://raw.githubusercontent.com/fivetran/dbt_recurly/main/images/streamlit_example.png" alt="Streamlit Billing Model App" width="75%">
+</a>
+</p>
+
 ### Materialized Models
 Each Quickstart transformation job run materializes 47 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 <!--section-end-->
@@ -61,7 +66,7 @@ dispatch:
 ```
 
 ### Step 2: Install the package
-Include the following recurly_source package version in your `packages.yml` file.
+Include the following recurly package version in your `packages.yml` file.
 > TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 ```yaml
 packages:
@@ -116,7 +121,7 @@ vars:
         alias: "cool_field_name"
 ```
 #### Change the build schema
-By default, this package builds the recurly staging models within a schema titled (`<target_schema>` + `_recurly`) in your destination. If this is not where you would like your recurly staging data to be written to, add the following configuration to your root `dbt_project.yml` file:
+By default, this package builds the Recurly staging models within a schema titled (<target_schema> + `_recurly_source`) and the Recurly transformation models within a schema titled (<target_schema> + `_recurly`) in your destination. If this is not where you would like your recurly staging data to be written to, add the following configuration to your root `dbt_project.yml` file:
 
 ```yml
 models:
@@ -128,7 +133,7 @@ models:
 
 #### Change the source table references
 If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
-> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_recurly_source/blob/main/dbt_project.yml) variable declarations to see the expected names.
+> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_recurly/blob/main/dbt_project.yml) variable declarations to see the expected names.
 
 ```yml
 vars:
