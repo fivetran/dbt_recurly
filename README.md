@@ -1,20 +1,22 @@
-<p align="center">
+# Recurly  dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
+
+<p align="left">
     <a alt="License"
         href="https://github.com/fivetran/dbt_recurly/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
     <a alt="dbt-core">
-        <img src="https://img.shields.io/badge/dbt_Core™_version->=1.3.0_<2.0.0-orange.svg" /></a>
+        <img src="https://img.shields.io/badge/dbt_Core™_version->=1.3.0_,<2.0.0-orange.svg" /></a>
     <a alt="Maintained?">
         <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" /></a>
     <a alt="PRs">
         <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
+    <a alt="Fivetran Quickstart Compatible"
+        href="https://fivetran.com/docs/transformations/dbt/quickstart">
+        <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatible%3F-yes-green.svg" /></a>
 </p>
-
-# Recurly Transformation dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
 
 ## What does this dbt package do?
 - Produces modeled tables that leverage Recurly data from [Fivetran's connector](https://fivetran.com/docs/applications/recurly) in the format described by [this ERD](https://fivetran.com/docs/applications/recurly#schemainformation) and build off the output of our [Recurly source package](https://github.com/fivetran/dbt_recurly_source).
-
 
 - Enables you to better understand your Recurly data. The package achieves this by performing the following:
     - Enhance the balance transaction entries with useful fields from related tables. 
@@ -64,16 +66,15 @@ dispatch:
 ```
 
 ### Step 2: Install the package
-Include the following recurly_source package version in your `packages.yml` file.
+Include the following recurly package version in your `packages.yml` file.
 > TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 ```yaml
 packages:
   - package: fivetran/recurly
-    version: [">=0.7.0", "<0.8.0"]
+    version: [">=1.0.0", "<1.1.0"]
 ```
 
-Do NOT include the `recurly_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
-
+> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/recurly_source` in your `packages.yml` since this package has been deprecated.
 
 ### Step 3: Define database and schema variables
 By default, this package runs using your destination and the `recurly` schema. If this is not where your recurly data is (for example, if your recurly schema is named `recurly_fivetran`), add the following configuration to your root `dbt_project.yml` file:
@@ -120,41 +121,39 @@ vars:
         alias: "cool_field_name"
 ```
 #### Change the build schema
-By default, this package builds the recurly staging models within a schema titled (`<target_schema>` + `_recurly`) in your destination. If this is not where you would like your recurly staging data to be written to, add the following configuration to your root `dbt_project.yml` file:
+By default, this package builds the Recurly staging models within a schema titled (<target_schema> + `_recurly_source`) and the Recurly transformation models within a schema titled (<target_schema> + `_recurly`) in your destination. If this is not where you would like your recurly staging data to be written to, add the following configuration to your root `dbt_project.yml` file:
 
 ```yml
 models:
     recurly:
-      +schema: my_new_schema_name # leave blank for just the target_schema
+      +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
+      staging:
+        +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
 ```
 
 #### Change the source table references
 If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
-> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_recurly_source/blob/main/dbt_project.yml) variable declarations to see the expected names.
+> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_recurly/blob/main/dbt_project.yml) variable declarations to see the expected names.
 
 ```yml
 vars:
     <default_source_table_name>_identifier: your_table_name 
 ```
 
-
 </details>
 
 ### (Optional) Step 6: Orchestrate your models with Fivetran Transformations for dbt Core™
 <details><summary>Expand to view details</summary>
 <br>
-    
+
 Fivetran offers the ability for you to orchestrate your dbt project through [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt). Learn how to set up your project for orchestration through Fivetran in our [Transformations for dbt Core setup guides](https://fivetran.com/docs/transformations/dbt#setupguide).
 </details>
-    
+
 ## Does this package have dependencies?
 This dbt package is dependent on the following dbt packages. These dependencies are installed by default within this package. For more information on the following packages, refer to the [dbt hub](https://hub.getdbt.com/) site.
 > IMPORTANT: If you have any of these dependent packages in your own `packages.yml` file, we highly recommend that you remove them from your root `packages.yml` to avoid package version conflicts.
 ```yml
 packages:
-    - package: fivetran/recurly_source
-      version: [">=0.4.0", "<0.5.0"]
-
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]
 
@@ -164,7 +163,7 @@ packages:
     - package: dbt-labs/spark_utils
       version: [">=0.3.0", "<0.4.0"]
 ```
-          
+
 ## How is this package maintained and can I contribute?
 ### Package Maintenance
 The Fivetran team maintaining this package _only_ maintains the latest version of the package. We highly recommend that you stay consistent with the [latest version](https://hub.getdbt.com/fivetran/recurly/latest/) of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_recurly/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.

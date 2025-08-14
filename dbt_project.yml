@@ -1,5 +1,5 @@
 name: 'recurly'
-version: '0.7.0'
+version: '1.0.0'
 config-version: 2
 require-dbt-version: [">=1.3.0", "<2.0.0"]
 
@@ -10,26 +10,31 @@ models:
     intermediate:
       +schema: recurly_int
       +materialized: table
+    staging:
+      +schema: recurly_source
+      +materialized: table
+      tmp:
+        +materialized: view
 
 vars:
   recurly:
-    account_balance_history: "{{ ref('stg_recurly__account_balance_history') }}"
-    account_history: "{{ ref('stg_recurly__account_history') }}"
-    account_note_history: "{{ ref('stg_recurly__account_note_history') }}"
-    billing_info_history: "{{ ref('stg_recurly__billing_info_history') }}"
-    coupon_discount: "{{ ref('stg_recurly__coupon_discount') }}"
-    coupon_redemption_history: "{{ ref('stg_recurly__coupon_redemption_history') }}"
-    credit_payment_history: "{{ ref('stg_recurly__credit_payment_history') }}"
-    invoice_coupon_redemption_history: "{{ ref('stg_recurly__invoice_coupon_redemption_history') }}"
-    invoice_history: "{{ ref('stg_recurly__invoice_history') }}"
-    invoice_subscription_history: "{{ ref('stg_recurly__invoice_subscription_history') }}"
-    line_item_history: "{{ ref('stg_recurly__line_item_history') }}"
-    plan_currency_history: "{{ ref('stg_recurly__plan_currency_history') }}"
-    plan_history: "{{ ref('stg_recurly__plan_history') }}"
-    subscription_add_on_history: "{{ ref('stg_recurly__subscription_add_on_history') }}"
-    subscription_change_history: "{{ ref('stg_recurly__subscription_change_history') }}"
-    subscription_history: "{{ ref('stg_recurly__subscription_history') }}"
-    transaction_subscription: "{{ ref('stg_recurly__transaction_subscription') }}"
-    transaction: "{{ ref('stg_recurly__transaction') }}"
+    account_balance_history: "{{ source('recurly', 'account_balance_history') }}"
+    account_history: "{{ source('recurly', 'account_history') }}"
+    account_note_history: "{{ source('recurly', 'account_note_history') }}"
+    billing_info_history: "{{ source('recurly', 'billing_info_history') }}"
+    coupon_discount: "{{ source('recurly', 'coupon_discount') }}"
+    coupon_redemption_history: "{{ source('recurly', 'coupon_redemption_history') }}"
+    credit_payment_history: "{{ source('recurly', 'credit_payment_history') }}"
+    invoice_coupon_redemption_history: "{{ source('recurly', 'invoice_coupon_redemption_history') }}"
+    invoice_history: "{{ source('recurly', 'invoice_history') }}"
+    invoice_subscription_history: "{{ source('recurly', 'invoice_subscription_history') }}"
+    line_item_history: "{{ source('recurly', 'line_item_history') }}"
+    plan_currency_history: "{{ source('recurly', 'plan_currency_history') }}"
+    plan_history: "{{ source('recurly', 'plan_history') }}"
+    subscription_add_on_history: "{{ source('recurly', 'subscription_add_on_history') }}"
+    subscription_change_history: "{{ source('recurly', 'subscription_change_history') }}"
+    subscription_history: "{{ source('recurly', 'subscription_history') }}"
+    transaction_subscription: "{{ source('recurly', 'transaction_subscription') }}"
+    transaction: "{{ source('recurly', 'transaction') }}"
   recurly_account_pass_through_columns: []
   recurly_subscription_pass_through_columns: []

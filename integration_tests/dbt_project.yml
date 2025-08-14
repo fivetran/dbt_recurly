@@ -1,11 +1,11 @@
 name: 'recurly_integration_tests'
-version: '0.7.0'
+version: '1.0.0'
 profile: 'integration_tests'
 config-version: 2
 
 vars:
   recurly_schema: recurly_integrations_tests_1
-  recurly_source:
+  recurly:
     account_balance_history_identifier: "account_balance_history_data"
     account_history_identifier: "account_history_data"
     account_note_history_identifier: "account_note_history_data"
@@ -34,6 +34,8 @@ dispatch:
     search_order: ['spark_utils', 'dbt_utils']
 
 seeds:
+  +docs:
+    show: False
   recurly_integration_tests:
     account_balance_history_data:
       +column_types: 
@@ -69,7 +71,6 @@ seeds:
         discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         unit_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         subtotal: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
-        discount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         tax: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         credit_applied: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         end_date: timestamp
@@ -105,3 +106,5 @@ seeds:
 
 flags:
   send_anonymous_usage_stats: False
+
+  use_colors: True
