@@ -1,2 +1,7 @@
-select * 
-from {{ var('transaction_subscription') }}
+{{
+    recurly.recurly_union_connections(
+        connection_dictionary='recurly_sources',
+        single_source_name='recurly',
+        single_table_name='transaction_subscription'
+    )
+}}

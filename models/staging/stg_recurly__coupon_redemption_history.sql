@@ -13,19 +13,21 @@ fields as (
                 staging_columns=get_coupon_redemption_history_columns()
             )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
-    
-    select 
+
+    select
+        source_relation,
         id as coupon_redemption_id,
         cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         account_id,
         coupon_id,
         cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
-        currency, 
-        discounted, 
+        currency,
+        discounted,
         cast(removed_at as {{ dbt.type_timestamp() }}) as removed_at,
         state
     from fields

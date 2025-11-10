@@ -5,15 +5,16 @@
 
 {% set exclude_cols = var('consistency_test_exclude_metrics', []) %}
 
+-- this test ensures the recurly__monthly_recurring_revenue end model matches the prior version
 with prod as (
-    select {{ dbt_utils.star(from=ref('recurly__line_item_enhanced'), except=exclude_cols) }}
-    from {{ target.schema }}_recurly_prod.recurly__line_item_enhanced
+    select {{ dbt_utils.star(from=ref('recurly__monthly_recurring_revenue'), except=exclude_cols) }}
+    from {{ target.schema }}_recurly_prod.recurly__monthly_recurring_revenue
 ),
 
 dev as (
-    select {{ dbt_utils.star(from=ref('recurly__line_item_enhanced'), except=exclude_cols) }}
-    from {{ target.schema }}_recurly_dev.recurly__line_item_enhanced
-), 
+    select {{ dbt_utils.star(from=ref('recurly__monthly_recurring_revenue'), except=exclude_cols) }}
+    from {{ target.schema }}_recurly_dev.recurly__monthly_recurring_revenue
+),
 
 prod_not_in_dev as (
     -- rows from prod not found in dev

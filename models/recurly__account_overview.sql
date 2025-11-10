@@ -19,21 +19,23 @@ account_cumulatives as (
 
 account_next_invoice as (
 
-    select 
-        account_id, 
+    select
+        source_relation,
+        account_id,
         min(invoice_due_at) as next_invoice_due_at
     from balance_transaction_joined
     where invoice_due_at > {{ dbt.date_trunc('day', dbt.current_timestamp_backcompat()) }}
-    group by 1  
+    group by 1, 2
 ),
 
-final as ( 
+final as (
 
-    select 
+    select
+        account_history.source_relation,
         account_history.account_id,
         account_history.created_at as account_created_at,
         account_history.account_city,
-        account_history.code as account_code,       
+        account_history.code as account_code,
         account_history.company as account_company,
         account_history.account_country,
         account_history.email as account_email,
@@ -72,10 +74,12 @@ final as (
         account_cumulatives.most_recent_transaction_date
 
     from account_history
-    left join account_cumulatives 
+    left join account_cumulatives
         on account_history.account_id = account_cumulatives.account_id
+        and account_history.source_relation = account_cumulatives.source_relation
     left join account_next_invoice
         on account_cumulatives.account_id = account_next_invoice.account_id
+        and account_cumulatives.source_relation = account_next_invoice.source_relation
 )
 
 select * 

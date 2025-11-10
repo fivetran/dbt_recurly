@@ -13,12 +13,14 @@ fields as (
                 staging_columns=get_coupon_discount_columns()
             )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
-    
-    select 
+
+    select
+        source_relation,
         coupon_id,
         cast(amount as {{ dbt.type_float() }}) as amount,
         currency,

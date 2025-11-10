@@ -6,19 +6,21 @@ with base as (
 
 fields as (
     select
-        {{ 
+        {{
             fivetran_utils.fill_staging_columns(
                 source_columns = adapter.get_columns_in_relation(ref('stg_recurly__billing_info_history_tmp')),
                 staging_columns = get_billing_info_history_columns()
-            ) 
+            )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
 
     select
-        id as billing_id, 
+        source_relation,
+        id as billing_id,
         cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         account_id,
         billing_city,
@@ -29,7 +31,7 @@ final as (
         billing_street_1,
         billing_street_2,
         company,
-        cast(created_at as {{ dbt.type_timestamp() }}) as created_at, 
+        cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
         first_name,
         valid as is_valid,
         last_name,
@@ -38,7 +40,7 @@ final as (
         updated_by_country,
         updated_by_ip,
         vat_number,
-        row_number() over (partition by id order by updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by updated_at desc) = 1 as is_most_recent_record
     from fields
 )
 

@@ -15,6 +15,7 @@ account_overview as (
 final as (
 
     select
+        account_partitions.source_relation,
         account_partitions.account_id,
         account_overview.account_created_at,
         account_overview.account_city,
@@ -30,14 +31,14 @@ final as (
         account_overview.account_state,
         account_overview.account_username
 
-        {{ fivetran_utils.persist_pass_through_columns('recurly_account_pass_through_columns', identifier='account_overview') }},      
-        {{ dbt_utils.generate_surrogate_key(['account_partitions.account_id','date_day']) }} as account_daily_id,
+        {{ fivetran_utils.persist_pass_through_columns('recurly_account_pass_through_columns', identifier='account_overview') }},
+        {{ dbt_utils.generate_surrogate_key(['account_partitions.source_relation','account_partitions.account_id','date_day']) }} as account_daily_id,
 
-        date_day,        
-        date_week, 
-        date_month, 
-        date_year,  
-        date_index, 
+        date_day,
+        date_week,
+        date_month,
+        date_year,
+        date_index,
         coalesce(daily_transactions,0) as daily_transaction_count,
         coalesce(daily_balance,0) as daily_net_change,
         coalesce(daily_invoices,0) as daily_invoice_count,
@@ -48,13 +49,14 @@ final as (
         coalesce(daily_charge_count,0) as daily_charge_count,
         coalesce(daily_credit_count,0) as daily_credit_count,
         {% for f in fields %}
-        coalesce({{ f }},   
-            first_value({{ f }}) over (partition by {{ f }}_partition order by date_day rows unbounded preceding)) as {{ f }}
+        coalesce({{ f }},
+            first_value({{ f }}) over (partition by account_partitions.source_relation, account_partitions.account_id, {{ f }}_partition order by date_day rows unbounded preceding)) as {{ f }}
         {%- if not loop.last -%},{%- endif -%}
         {% endfor %}
     from account_partitions
     left join account_overview
         on account_partitions.account_id = account_overview.account_id
+        and account_partitions.source_relation = account_overview.source_relation
 )    
 
 select *

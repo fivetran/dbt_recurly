@@ -22,7 +22,8 @@ transaction_history as (
 
 final as (
 
-    select 
+    select
+        line_item_history.source_relation,
         line_item_history.line_item_id as balance_transaction_id,
         line_item_history.created_at,
         line_item_history.updated_at,
@@ -42,12 +43,12 @@ final as (
         line_item_history.refunded_quantity,
         line_item_history.currency,
         line_item_history.amount,
-        line_item_history.credit_applied, 
+        line_item_history.credit_applied,
         line_item_history.quantity,
         line_item_history.unit_amount,
         line_item_history.subtotal,
         line_item_history.started_at,
-        line_item_history.ended_at,    
+        line_item_history.ended_at,
         line_item_history.original_line_item_invoice_id,
         line_item_history.previous_line_item_id,
         invoice_history.state as invoice_state,
@@ -55,20 +56,22 @@ final as (
         invoice_history.type as invoice_type,
         invoice_history.created_at as invoice_created_at,
         invoice_history.due_at as invoice_due_at,
-        invoice_history.closed_at as invoice_closed_at, 
+        invoice_history.closed_at as invoice_closed_at,
         transaction_history.transaction_id,
         transaction_history.created_at as transaction_created_at,
         transaction_history.type as transaction_type,
         transaction_history.origin as transaction_origin,
-        transaction_history.status as transaction_status, 
-        transaction_history.billing_country as transaction_billing_country, 
+        transaction_history.status as transaction_status,
+        transaction_history.billing_country as transaction_billing_country,
         transaction_history.status_message as transaction_status_message,
         transaction_history.payment_method_object as transaction_payment_method_object
-    from line_item_history 
+    from line_item_history
     left join invoice_history
         on line_item_history.invoice_id = invoice_history.invoice_id
-    left join transaction_history 
+        and line_item_history.source_relation = invoice_history.source_relation
+    left join transaction_history
         on invoice_history.invoice_id = transaction_history.invoice_id
+        and invoice_history.source_relation = transaction_history.source_relation
 )
 
 select * 

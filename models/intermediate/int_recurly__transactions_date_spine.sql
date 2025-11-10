@@ -77,13 +77,14 @@ date_spine as (
 final as (
 
     select distinct
+        account_overview.source_relation,
         account_overview.account_id,
         date_spine.date_day,
         date_spine.date_week,
         date_spine.date_month,
         date_spine.date_year,
         date_spine.date_index
-    from account_overview 
+    from account_overview
     cross join date_spine
 )
 

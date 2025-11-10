@@ -1,12 +1,13 @@
 version: 2
 sources:
   - name: recurly
-    database: "{% if target.type != 'spark'%}{{ var ('recurly_database', target.database) }}{% endif %}"    
+    database: "{% if target.type != 'spark'%}{{ var ('recurly_database', target.database) }}{% endif %}"
     schema: "{{var ('recurly_schema', 'recurly')}}"
-    
+
     loader: fivetran
 
     config:
+      enabled: "{{ var('recurly_sources', []) == [] }}"
       loaded_at_field: _fivetran_synced
       freshness:
         warn_after: { count: 72, period: hour }
@@ -232,11 +233,11 @@ sources:
       - name: credit_payment_history
         identifier: "{{ var('credit_payment_history_identifier', 'credit_payment_history') }}"
         description: >
-          A history of outstanding credit balance to pay an invoice, 
-          but does include the record of write-offs, credit balance removals, 
+          A history of outstanding credit balance to pay an invoice,
+          but does include the record of write-offs, credit balance removals,
           and credit payments later refunded as cash transaction.
-        config: 
-          enabled: "{{ var('recurly__using_credit_payment_history', true) }}"
+        config:
+          enabled: "{{ var('recurly__using_credit_payment_history', true) and var('recurly_sources', []) == [] }}"
         columns:
           - name: id 
             description: Unique identifier for the credit payment.
@@ -629,9 +630,9 @@ sources:
 
       - name: subscription_add_on_history
         identifier: "{{ var('subscription_add_on_history_identifier', 'subscription_add_on_history') }}"
-        description: History of subscription add-ons to a particular plan. 
-        config: 
-          enabled: "{{ var('recurly__using_subscription_add_on_history', true) }}"
+        description: History of subscription add-ons to a particular plan.
+        config:
+          enabled: "{{ var('recurly__using_subscription_add_on_history', true) and var('recurly_sources', []) == [] }}"
         columns:
           - name: id
             description: Unique identifier for subscription add-on. 
@@ -655,8 +656,8 @@ sources:
       - name: subscription_change_history
         identifier: "{{ var('subscription_change_history_identifier', 'subscription_change_history') }}"
         description: History of subscription changes, particularly upgrades and downgrades, but also changes to how subscription is invoiced.
-        config: 
-          enabled: "{{ var('recurly__using_subscription_change_history', true) }}"
+        config:
+          enabled: "{{ var('recurly__using_subscription_change_history', true) and var('recurly_sources', []) == [] }}"
         columns:
           - name: id 
             description: Unique identifier for subscription change.

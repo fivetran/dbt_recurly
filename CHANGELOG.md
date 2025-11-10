@@ -1,3 +1,23 @@
+# dbt_recurly v1.1.0
+
+## Schema/Data Change
+**5 total changes • 4 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | ----| --- | ----- |
+| `recurly__account_overview` | Bug fix | `taxes_this_month` = `daily_credits` | `taxes_this_month` = `daily_taxes` | Fixed incorrect calculation in `int_recurly__account_cumulatives` that was using credits instead of taxes |
+| All models | New column | | `source_relation` | Identifies the source connection when using multiple Recurly connections |
+| `int_recurly__account_running_totals` | Updated surrogate key | `account_daily_id` = `account_id` + `date_day` | `account_daily_id` = `source_relation` + `account_id` + `date_day` | Updated to include `source_relation` |
+| `recurly__monthly_recurring_revenue` | Updated surrogate key | `account_monthly_id` = `account_id` + `account_month` | `account_monthly_id` = `source_relation` + `account_id` + `account_month` | Updated to include `source_relation` |
+| `recurly__subscription_overview` | Updated surrogate key | `subscription_key` = `subscription_id` + `updated_at` | `subscription_key` = `source_relation` + `subscription_id` + `updated_at` | Updated to include `source_relation` |
+
+## Feature Update
+- **Union Data Functionality**: This release supports running the package on multiple Recurly source connections. See the [README](https://github.com/fivetran/dbt_recurly/tree/main?tab=readme-ov-file#step-3-define-database-and-schema-variables) for details on how to leverage this feature.
+
+## Tests Update
+- Removes uniqueness tests. The new unioning feature requires combination-of-column tests to consider the new `source_relation` column in addition to the existing primary key, but this is not supported across dbt versions.
+- These tests will be reintroduced once a version-agnostic solution is available.
+
 # dbt_recurly v1.0.0
 
 [PR #37](https://github.com/fivetran/dbt_recurly/pull/37) includes the following updates:
