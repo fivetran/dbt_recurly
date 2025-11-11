@@ -16,15 +16,15 @@ account_rolling_overview as (
 
     select
         *,
-        sum(daily_balance) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_account_balance,
-        sum(daily_invoices) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_invoices,
-        sum(daily_transactions) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_transactions,
-        sum(daily_charges) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_charge_balance,
-        sum(daily_credits) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_credit_balance,
-        sum(daily_discounts) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_discount_balance,
-        sum(daily_taxes) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_tax_balance,
-        sum(daily_charge_count) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_charges,
-        sum(daily_credit_count) over (partition by source_relation, account_id order by date_day, account_id rows unbounded preceding) as rolling_credits
+        sum(daily_balance) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_account_balance,
+        sum(daily_invoices) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_invoices,
+        sum(daily_transactions) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_transactions,
+        sum(daily_charges) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_charge_balance,
+        sum(daily_credits) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_credit_balance,
+        sum(daily_discounts) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_discount_balance,
+        sum(daily_taxes) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_tax_balance,
+        sum(daily_charge_count) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_charges,
+        sum(daily_credit_count) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by date_day, account_id rows unbounded preceding) as rolling_credits
     from account_balances
 ),
 

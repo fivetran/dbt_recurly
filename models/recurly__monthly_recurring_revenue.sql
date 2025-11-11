@@ -31,7 +31,7 @@ mrr_by_account as (
         account_id,
         account_month,
         {{ dbt_utils.generate_surrogate_key(['source_relation', 'account_id', 'account_month']) }} as account_monthly_id,
-        row_number() over (partition by source_relation, account_id order by account_month) as account_month_number,
+        row_number() over (partition by account_id {{ recurly.partition_by_source_relation() }} order by account_month) as account_month_number,
         sum(amount) as current_month_mrr
     from mrr_balance_transactions
     {{ dbt_utils.group_by(4) }}
@@ -47,7 +47,7 @@ current_vs_previous_mrr as (
         account_month,
         account_month_number,
         current_month_mrr,
-        lag(current_month_mrr) over (partition by source_relation, account_id order by account_month) as previous_month_mrr
+        lag(current_month_mrr) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by account_month) as previous_month_mrr
     from mrr_by_account
 ),
 
