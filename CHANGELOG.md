@@ -1,5 +1,7 @@
 # dbt_recurly v1.1.0
 
+[PR #40](https://github.com/fivetran/dbt_recurly/pull/40) includes the following updates:
+
 ## Schema/Data Change
 **5 total changes • 4 possible breaking changes**
 
@@ -16,6 +18,7 @@
 
 ## Tests Update
 - Removes uniqueness tests. The new unioning feature requires combination-of-column tests to consider the new `source_relation` column in addition to the existing primary key, but this is not supported across dbt versions.
+  - Note that surrogate keys are unaffected and retain their uniqueness tests.
 - These tests will be reintroduced once a version-agnostic solution is available.
 
 # dbt_recurly v1.0.0

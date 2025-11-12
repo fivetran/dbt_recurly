@@ -50,7 +50,7 @@ final as (
         coalesce(daily_credit_count,0) as daily_credit_count,
         {% for f in fields %}
         coalesce({{ f }},
-            first_value({{ f }}) over (partition by account_partitions.account_id, {{ f }}_partition {{ recurly.partition_by_source_relation(alias='account_partitions') }} order by date_day rows unbounded preceding)) as {{ f }}
+            first_value({{ f }}) over (partition by {{ f }}_partition {{ recurly.partition_by_source_relation(alias='account_partitions') }} order by date_day rows unbounded preceding)) as {{ f }}
         {%- if not loop.last -%},{%- endif -%}
         {% endfor %}
     from account_partitions
