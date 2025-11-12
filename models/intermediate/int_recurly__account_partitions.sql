@@ -12,12 +12,12 @@ final as (
     select
         *,
         {% for f in fields %}
-        sum(case when {{ f }} is null  
-            then 0  
-            else 1  
-                end) over (order by account_id, date_day rows unbounded preceding) as {{ f }}_partition
+        sum(case when {{ f }} is null
+            then 0
+            else 1
+                end) over ({{ partition_by_source_relation(has_other_partitions='no') }} order by account_id, date_day rows unbounded preceding) as {{ f }}_partition
         {%- if not loop.last -%},{%- endif -%}
-        {% endfor %}                  
+        {% endfor %}
     from account_rolling_totals
 )
 

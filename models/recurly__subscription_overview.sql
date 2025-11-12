@@ -14,10 +14,10 @@ plan_history as (
 
 subscription_enhanced as (
 
-    select 
+    select
         *,
         coalesce(canceled_at, current_period_ended_at) as subscription_end_date,
-        row_number() over (partition by subscription_id order by current_period_started_at) - 1 as subscription_period
+        row_number() over (partition by subscription_id {{ recurly.partition_by_source_relation() }} order by current_period_started_at) - 1 as subscription_period
         from subscription_history
 ),
 
@@ -40,23 +40,24 @@ plan_enhanced as (
 
 final as (
 
-    select 
+    select
+        subscription_enhanced.source_relation,
         subscription_enhanced.subscription_id,
         subscription_enhanced.updated_at,
-        {{ dbt_utils.generate_surrogate_key(['subscription_enhanced.subscription_id','subscription_enhanced.updated_at']) }} as subscription_key,
+        {{ dbt_utils.generate_surrogate_key(['subscription_enhanced.source_relation','subscription_enhanced.subscription_id','subscription_enhanced.updated_at']) }} as subscription_key,
         subscription_enhanced.activated_at,
-        subscription_enhanced.add_ons_total, 
+        subscription_enhanced.add_ons_total,
         subscription_enhanced.canceled_at,
         subscription_enhanced.current_period_ended_at,
         subscription_enhanced.current_period_started_at,
-        subscription_enhanced.expiration_reason, 
+        subscription_enhanced.expiration_reason,
         subscription_enhanced.expires_at,
         subscription_enhanced.has_auto_renew,
-        subscription_enhanced.subscription_period,  
+        subscription_enhanced.subscription_period,
         subscription_enhanced.state as subscription_state,
         subscription_enhanced.subscription_end_date,
         {{ dbt.datediff('subscription_enhanced.current_period_started_at', 'subscription_enhanced.subscription_end_date', 'day') }} as subscription_interval_days,
-        subscription_enhanced.subtotal, 
+        subscription_enhanced.subtotal,
         subscription_enhanced.trial_ends_at,
         subscription_enhanced.trial_started_at,
         {{ dbt.datediff('subscription_enhanced.trial_started_at', 'subscription_enhanced.trial_ends_at', 'day') }} as trial_interval_days,
@@ -67,8 +68,8 @@ final as (
         account_overview.account_id as account_id,
         account_overview.account_created_at,
         account_overview.account_email,
-        account_overview.account_first_name, 
-        account_overview.account_last_name, 
+        account_overview.account_first_name,
+        account_overview.account_last_name,
         account_overview.account_state as account_state,
         plan_enhanced.code as plan_code,
         plan_enhanced.created_at as plan_created_at,
@@ -81,8 +82,10 @@ final as (
     from subscription_enhanced
     left join account_overview
         on subscription_enhanced.account_id = account_overview.account_id
+        and subscription_enhanced.source_relation = account_overview.source_relation
     left join plan_enhanced
         on subscription_enhanced.plan_id = plan_enhanced.plan_id
+        and subscription_enhanced.source_relation = plan_enhanced.source_relation
 )
 
 select * 

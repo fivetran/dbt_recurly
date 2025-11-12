@@ -15,16 +15,18 @@ fields as (
                 staging_columns=get_subscription_change_history_columns()
             )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
-    
-    select 
-        id as subscription_change_id, 
-        cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at, 
+
+    select
+        source_relation,
+        id as subscription_change_id,
+        cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         cast(activate_at as {{ dbt.type_timestamp() }}) as activate_at,
-        activated, 
+        activated,
         cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
         cast(deleted_at as {{ dbt.type_timestamp() }}) as deleted_at,
         object,
@@ -32,7 +34,7 @@ final as (
         quantity,
         subscription_id,
         unit_amount,
-        row_number() over (partition by id order by updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by updated_at desc) = 1 as is_most_recent_record
     from fields
 ) 
 

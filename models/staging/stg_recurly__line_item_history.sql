@@ -6,20 +6,22 @@ with base as (
 
 fields as (
 
-    select 
-        {{ 
+    select
+        {{
             fivetran_utils.fill_staging_columns(
                 source_columns = adapter.get_columns_in_relation(ref('stg_recurly__line_item_history_tmp')),
                 staging_columns = get_line_item_history_columns()
-            ) 
+            )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
 
     select
-        id as line_item_id, 
+        source_relation,
+        id as line_item_id,
         cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         account_id,
         add_on_code,
@@ -34,7 +36,7 @@ final as (
         refund as has_refund,
         invoice_id,
         invoice_number,
-        row_number() over (partition by id order by updated_at desc) = 1 as is_most_recent_record,
+        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by updated_at desc) = 1 as is_most_recent_record,
         taxable as is_taxable,
         original_line_item_invoice_id,
         origin,

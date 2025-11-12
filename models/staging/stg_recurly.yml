@@ -2,8 +2,10 @@ version: 2
 
 models:
   - name: stg_recurly__account_balance_history
-    description: The customer account balance is made up of any open or past due invoices on the account alongside any charge or credit adjustments that are left uninvoiced and open on the account respectively. 
+    description: The customer account balance is made up of any open or past due invoices on the account alongside any charge or credit adjustments that are left uninvoiced and open on the account respectively.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: The account the balance update is associated with.  
         tests: 
@@ -20,10 +22,12 @@ models:
 
   - name: stg_recurly__account_history
     description: >
-      The account object stores the entire Recurly history of your customer and 
-      acts as the entry point for working with a customer's billing information, subscription data, transactions, invoices and more. 
+      The account object stores the entire Recurly history of your customer and
+      acts as the entry point for working with a customer's billing information, subscription data, transactions, invoices and more.
       Once an account is created, all values (with the exception of the account code) may be updated.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Uniquely identifies your customers in Recurly. No two customers can share the same account id. Part of the PK
         tests:
@@ -81,7 +85,9 @@ models:
   - name: stg_recurly__account_note_history
     description: A history of notes your team can leave on an account to add context. Notes are internal and not exposed to customers.
 
-    columns: 
+    columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_note_id
         description: Uniquely identifies the account note created.
         tests: 
@@ -105,6 +111,8 @@ models:
     description: Stored payment information for an account. Filled out by the customer upon purchase or when they update information.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: billing_id
         description: Unique identifier for the billing info object.
         tests:
@@ -150,9 +158,11 @@ models:
 
 
   - name: stg_recurly__coupon_discount
-    description: Coupon details and the discounts set for customer purchases.   
+    description: Coupon details and the discounts set for customer purchases.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: fivetran_id
         description: Combined unique surrogate key for the model.
         tests:
@@ -178,6 +188,8 @@ models:
     description: History of coupons redeemed by accounts.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: coupon_redemption_id
         description: Unique identifier for the coupon redemption created. 
         tests: 
@@ -201,10 +213,12 @@ models:
       
   - name: stg_recurly__credit_payment_history
     description: >
-          A history of outstanding credit balance to pay an invoice, 
-          but does include the record of write-offs, credit balance removals, 
-          and credit payments later refunded as cash transaction.    
+          A history of outstanding credit balance to pay an invoice,
+          but does include the record of write-offs, credit balance removals,
+          and credit payments later refunded as cash transaction.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: credit_payment_id
         description: Unique identifier for the credit payment.
         tests: 
@@ -246,6 +260,8 @@ models:
   - name: stg_recurly__invoice_coupon_redemption_history
     description: History of coupons redeemed and applied to specific invoices.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: coupon_redemption_id
         description: Unique identifier for the credit payment.
         tests: 
@@ -257,12 +273,14 @@ models:
 
   - name: stg_recurly__invoice_history
     description: >
-      An invoice relates charges, credits, and payments together. 
-      When a subscription is created or renewed or a charge is created on the account, 
-      Recurly will sum the charges, discount or tax as appropriate, and send the invoice out for collection. 
+      An invoice relates charges, credits, and payments together.
+      When a subscription is created or renewed or a charge is created on the account,
+      Recurly will sum the charges, discount or tax as appropriate, and send the invoice out for collection.
       The table holds the lineage of the invoice.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: invoice_id
         description: Unique identifier for the object.
         tests: 
@@ -348,10 +366,12 @@ models:
 
   - name: stg_recurly__invoice_subscription_history
     description: >
-      The connection between invoices and subscription. 
+      The connection between invoices and subscription.
       FK on invoice are both invoice_id and invoice_updated_at, and on subscription is subscription_id.
       The table holds the lineage of the invoice - subscription connection.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: invoice_id
         description: The id of the invoice associated with the subscription.
         tests:
@@ -367,8 +387,10 @@ models:
     description: >
       Line items are the charges and credits on your customer's invoices.
       The table holds the lineage of the line item.
-  
+
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: line_item_id
         description: Unique identifier for the object.
         tests:
@@ -480,6 +502,8 @@ models:
     description: Plan prices
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: plan_id
         description: The id of the plan. 
         tests:
@@ -499,6 +523,8 @@ models:
       The table holds the lineage of the plan.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: plan_id
         description: Unique identifier for the object.
         tests:
@@ -564,9 +590,11 @@ models:
 
 
   - name: stg_recurly__subscription_add_on_history
-    description: History of subscription add-ons to a particular plan. 
+    description: History of subscription add-ons to a particular plan.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: subscription_add_on_id
         description: Unique identifier for subscription add-on. 
         tests:
@@ -592,6 +620,8 @@ models:
     description: History of subscription changes, particularly upgrades and downgrades, but also changes to how subscription is invoiced.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: subscription_change_id
         description: Unique identifier for subscription change.
         tests:
@@ -619,11 +649,13 @@ models:
       
   - name: stg_recurly__subscription_history
     description: >
-      Subscriptions are created when your customers subscribe to one of your plans. 
+      Subscriptions are created when your customers subscribe to one of your plans.
       The customer's subscription tells Recurly when and how much to bill the customer.
       The table holds the lineage of the subscription.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: subscription_id
         description: Unique identifier for the subscription.
         tests:
@@ -709,10 +741,12 @@ models:
 
   - name: stg_recurly__transaction_subscription
     description: >
-      The connection between transaction and subscription. 
+      The connection between transaction and subscription.
       FK on transaction is transaction_id, and on subscription is subscription_id.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: transaction_id
         description: The id of the transaction associated with the subscription.
         tests:
@@ -724,10 +758,12 @@ models:
 
   - name: stg_recurly__transaction
     description: >
-      Purchasing information is sent to your payment gateway in an action called a transaction. 
+      Purchasing information is sent to your payment gateway in an action called a transaction.
       This includes the customer's billing information and the amount of money to be charged, voided, or refunded.
 
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: transaction_id
         description: Unique identifier for the object.
         tests:

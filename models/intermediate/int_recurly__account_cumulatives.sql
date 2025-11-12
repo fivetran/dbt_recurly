@@ -11,49 +11,52 @@ balance_transaction_joined as (
 ),
  
 account_current_month as (
-        
-        select account_id,
+
+        select
+                source_relation,
+                account_id,
                 sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_transactions
-                        else 0 
+                        else 0
                         end) as transactions_this_month,
                 sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_invoices
-                        else 0 
+                        else 0
                         end) as invoices_this_month,
                 sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_balance
-                        else 0 
+                        else 0
                         end) as balance_this_month,
                 sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_charges
-                        else 0 
+                        else 0
                         end) as charges_this_month,
                 sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_credits
-                        else 0 
+                        else 0
                         end) as credits_this_month,
                 sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
                         then daily_discounts
-                        else 0 
+                        else 0
                         end) as discounts_this_month,
                 sum(case when {{ dbt.date_trunc('month', 'date_day') }} = {{ dbt.date_trunc('month', dbt.current_timestamp_backcompat()) }}
-                        then daily_credits
-                        else 0 
+                        then daily_taxes
+                        else 0
                         end) as taxes_this_month
         from transactions_grouped
-        {{ dbt_utils.group_by(1) }}  
+        {{ dbt_utils.group_by(2) }}
 ),
 
 
 account_min_max as (
 
-    select 
+    select
+        source_relation,
         account_id,
-        min(case when lower(type) = 'charge' 
-            then {{ 'created_at' }} 
+        min(case when lower(type) = 'charge'
+            then {{ 'created_at' }}
             else null end) as first_charge_date,
-        max(case when lower(type) = 'charge' 
+        max(case when lower(type) = 'charge'
             then {{ 'created_at' }}
             else null end) as most_recent_charge_date,
         min(invoice_created_at) as first_invoice_date,
@@ -61,13 +64,14 @@ account_min_max as (
         min(transaction_created_at) as first_transaction_date,
         max(transaction_created_at) as most_recent_transaction_date
     from balance_transaction_joined
-    {{ dbt_utils.group_by(1) }}
+    {{ dbt_utils.group_by(2) }}
 ),
 
 
 account_totals as (
 
-    select 
+    select
+        source_relation,
         account_id,
         sum(daily_transactions) as total_transactions,
         sum(daily_invoices) as total_invoices,
@@ -79,7 +83,7 @@ account_totals as (
         sum(daily_charge_count) as total_charge_count,
         sum(daily_credit_count) as total_credit_count
     from transactions_grouped
-    {{ dbt_utils.group_by(1) }}
+    {{ dbt_utils.group_by(2) }}
 ),
 
 final as (
@@ -100,10 +104,12 @@ final as (
         account_min_max.first_transaction_date,
         account_min_max.most_recent_transaction_date
     from account_totals
-    left join account_current_month 
+    left join account_current_month
         on account_totals.account_id = account_current_month.account_id
+        and account_totals.source_relation = account_current_month.source_relation
     left join account_min_max
         on account_totals.account_id = account_min_max.account_id
+        and account_totals.source_relation = account_min_max.source_relation
 )
 
 select *

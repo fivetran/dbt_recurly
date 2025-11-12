@@ -13,16 +13,18 @@ fields as (
                 staging_columns=get_invoice_coupon_redemption_history_columns()
             )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
-    
-    select 
+
+    select
+        source_relation,
         coupon_redemption_id,
         invoice_id,
         cast(invoice_updated_at as {{ dbt.type_timestamp() }}) as invoice_updated_at,
-        row_number() over (partition by coupon_redemption_id order by invoice_updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by coupon_redemption_id {{ recurly.partition_by_source_relation() }} order by invoice_updated_at desc) = 1 as is_most_recent_record
     from fields
 )
 

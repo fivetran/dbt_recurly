@@ -13,38 +13,41 @@ recurly__balance_transactions as (
 
 mrr_balance_transactions as (
 
-    select 
+    select
+        source_relation,
         account_id,
         amount,
-        {{ dbt.date_trunc('month', 'created_at') }} as account_month 
+        {{ dbt.date_trunc('month', 'created_at') }} as account_month
     from recurly__balance_transactions
-    where lower(type) = 'charge' 
+    where lower(type) = 'charge'
         and started_at is not null
         and ended_at is not null
 ), 
 
 mrr_by_account as (
 
-    select 
+    select
+        source_relation,
         account_id,
         account_month,
-        {{ dbt_utils.generate_surrogate_key(['account_id', 'account_month']) }} as account_monthly_id,
-        row_number() over (partition by account_id order by account_month) as account_month_number,
+        {{ dbt_utils.generate_surrogate_key(['source_relation', 'account_id', 'account_month']) }} as account_monthly_id,
+        row_number() over (partition by account_id {{ recurly.partition_by_source_relation() }} order by account_month) as account_month_number,
         sum(amount) as current_month_mrr
     from mrr_balance_transactions
-    {{ dbt_utils.group_by(3) }}
+    {{ dbt_utils.group_by(4) }}
 
 ),
 
 current_vs_previous_mrr as (
-    
-    select 
+
+    select
+        source_relation,
         account_monthly_id,
         account_id,
         account_month,
         account_month_number,
         current_month_mrr,
-        lag(current_month_mrr) over (partition by account_id order by account_month) as previous_month_mrr
+        lag(current_month_mrr) over (partition by account_id {{ recurly.partition_by_source_relation() }} order by account_month) as previous_month_mrr
     from mrr_by_account
 ),
 
@@ -68,7 +71,7 @@ mrr_type_enhanced as (
 
 final as (
 
-    select 
+    select
         mrr_type_enhanced.*,
         account_history.code as account_code,
         account_history.created_at as account_created_at,
@@ -77,7 +80,9 @@ final as (
         account_history.last_name as account_last_name,
         account_history.username as account_username
     from mrr_type_enhanced
-    left join account_history on mrr_type_enhanced.account_id = account_history.account_id
+    left join account_history
+        on mrr_type_enhanced.account_id = account_history.account_id
+        and mrr_type_enhanced.source_relation = account_history.source_relation
 )
 
 select * 

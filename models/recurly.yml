@@ -20,12 +20,13 @@ models:
     description: Each record is a group of transactions brought together by account and day.  
 
   - name: recurly__account_daily_overview
-    description: Each record is a day in an account and its accumulated balance totals based on all line item transactions up to that day.   
+    description: Each record is a day in an account and its accumulated balance totals based on all line item transactions up to that day.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_daily_id
-        description: Unique account key, based on account id and date of balance data.
-        tests: 
-          - unique
+        description: Unique account key, based on source_relation, account id, and date of balance data.
+        tests:
           - not_null
       - name: account_id
         description: Account associated with balance transactions.
@@ -107,10 +108,11 @@ models:
   - name: recurly__account_overview
     description: Each record represents an account, enriched with metrics about their associated transactions.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Primary key for the account.
         tests:
-          - unique
           - not_null
       - name: account_created_at
         description: Timestamp of when the account entry was created.
@@ -190,6 +192,8 @@ models:
   - name: recurly__balance_transactions
     description: Each record represents a specific line item charge, credit, or other balance change that accumulates into the final invoices.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: balance_transaction_id
         description: Unique identifier for the balance transaction line item
         tests: 
@@ -314,12 +318,13 @@ models:
           "sepadirectdebit", "wire_transfer"
 
   - name: recurly__churn_analysis
-    description: Each record represents a subscription and their churn status and details. 
-    columns: 
+    description: Each record represents a subscription and their churn status and details.
+    columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: subscription_id
         description: Unique identifier for the subscription.
         tests:
-          - unique
           - not_null
       - name: activated_at
         description: When the subscription was activated.  
@@ -374,11 +379,12 @@ models:
 
   - name: recurly__monthly_recurring_revenue
     description: Each record represents an account and MRR generated on a monthly basis.
-    columns: 
+    columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_monthly_id
-        description: Unique identifier associated by account id and month.
+        description: Unique identifier associated by source_relation, account id, and month.
         tests:
-          - unique
           - not_null
       - name: account_id
         description: id associated with the account.
@@ -414,10 +420,10 @@ models:
   - name: recurly__subscription_overview
     description: Each record represents a subscription, enriched with metrics about time, revenue, state, and period.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: subscription_key
-        description: Unique identifier for the subscription daily overview table.
-        tests:
-          - unique
+        description: Unique identifier for the subscription daily overview table, based on source_relation, subscription_id, and updated_at.
       - name: subscription_id
         description: Unique identifier for the subscription.
       - name: activated_at

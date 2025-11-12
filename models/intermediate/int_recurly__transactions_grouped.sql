@@ -5,36 +5,37 @@ with balance_transaction_joined as (
 ),
 
 final as (
-    
-    select  
+
+    select
+        source_relation,
         account_id,
-        cast({{ dbt.date_trunc("day", "created_at") }} as date) as date_day,             
-        cast({{ dbt.date_trunc("week", "created_at") }} as date) as date_week, 
-        cast({{ dbt.date_trunc("month", "created_at") }} as date) as date_month, 
-        cast({{ dbt.date_trunc("year", "created_at") }} as date) as date_year,  
+        cast({{ dbt.date_trunc("day", "created_at") }} as date) as date_day,
+        cast({{ dbt.date_trunc("week", "created_at") }} as date) as date_week,
+        cast({{ dbt.date_trunc("month", "created_at") }} as date) as date_month,
+        cast({{ dbt.date_trunc("year", "created_at") }} as date) as date_year,
         count(distinct transaction_id) as daily_transactions,
         count(distinct invoice_id) as daily_invoices,
-        sum(case when lower(type) = 'charge' 
+        sum(case when lower(type) = 'charge'
             then amount
-            else 0 
+            else 0
             end) as daily_charges,
-        sum(case when lower(type) = 'credit' 
+        sum(case when lower(type) = 'credit'
             then amount
-            else 0 
+            else 0
             end) as daily_credits,
         sum(amount) as daily_balance,
         sum(discount) as daily_discounts,
         sum(tax) as daily_taxes,
-        sum(case when lower(type) = 'charge' 
+        sum(case when lower(type) = 'charge'
             then 1
-            else 0 
+            else 0
             end) as daily_charge_count,
-        sum(case when lower(type) = 'credit' 
+        sum(case when lower(type) = 'credit'
             then 1
-            else 0 
+            else 0
             end) as daily_credit_count
     from balance_transaction_joined
-    {{ dbt_utils.group_by(5) }}
+    {{ dbt_utils.group_by(6) }}
 ) 
 
 select * 

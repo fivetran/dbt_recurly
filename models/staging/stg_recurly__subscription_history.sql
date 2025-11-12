@@ -6,19 +6,21 @@ with base as (
 
 fields as (
 
-    select 
-        {{ 
+    select
+        {{
             fivetran_utils.fill_staging_columns(
                 source_columns = adapter.get_columns_in_relation(ref('stg_recurly__subscription_history_tmp')),
                 staging_columns = get_subscription_history_columns()
-            ) 
+            )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
 
-    select  
+    select
+        source_relation,
         id as subscription_id,
         cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         account_id,
@@ -35,9 +37,9 @@ final as (
         expiration_reason,
         cast(expires_at as {{ dbt.type_timestamp() }}) as expires_at,
         auto_renew as has_auto_renew,
-        row_number() over (partition by id order by current_period_started_at desc) = 1 as is_most_recent_record,
+        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by current_period_started_at desc) = 1 as is_most_recent_record,
         object,
-        cast(paused_at as {{ dbt.type_timestamp() }}) as paused_at, 
+        cast(paused_at as {{ dbt.type_timestamp() }}) as paused_at,
         plan_id,
         quantity,
         remaining_billing_cycles,

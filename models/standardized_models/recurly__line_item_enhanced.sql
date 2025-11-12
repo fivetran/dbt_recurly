@@ -24,9 +24,9 @@ transactions as (
 
 subscription_history as (
 
-    select 
+    select
         *,
-        row_number() over (partition by subscription_id, current_period_started_at, current_period_ended_at order by updated_at desc) = 1 as is_latest_period
+        row_number() over (partition by subscription_id, current_period_started_at, current_period_ended_at {{ recurly.partition_by_source_relation() }} order by updated_at desc) = 1 as is_latest_period
     from {{ ref('stg_recurly__subscription_history') }}
 ),
 
@@ -55,9 +55,10 @@ subscriptions as (
 enhanced as (
 
     select
+        line_items.source_relation,
         line_items.invoice_id as header_id,
         line_items.line_item_id,
-        cast(row_number() over (partition by line_items.invoice_id order by line_items.created_at) as {{ dbt.type_int() }}) as line_item_index,
+        cast(row_number() over (partition by line_items.invoice_id {{ recurly.partition_by_source_relation(alias='line_items') }} order by line_items.created_at) as {{ dbt.type_int() }}) as line_item_index,
         line_items.created_at,
         line_items.currency,
         line_items.state as line_item_status,
@@ -97,21 +98,27 @@ enhanced as (
     from line_items
     left join invoices
         on invoices.invoice_id = line_items.invoice_id
+        and invoices.source_relation = line_items.source_relation
     left join transactions
         on transactions.invoice_id = invoices.invoice_id
+        and transactions.source_relation = invoices.source_relation
     left join accounts
         on accounts.account_id = line_items.account_id
+        and accounts.source_relation = line_items.source_relation
     left join subscriptions
         on subscriptions.subscription_id = line_items.subscription_id
+            and subscriptions.source_relation = line_items.source_relation
             and subscriptions.current_period_started_at <= line_items.created_at
             and subscriptions.current_period_ended_at > line_items.created_at
     left join plans
         on cast(plans.plan_id as {{ dbt.type_string() }}) = cast(line_items.plan_id as {{ dbt.type_string() }})
+        and plans.source_relation = line_items.source_relation
 ),
 
 final as (
 
-    select 
+    select
+        source_relation,
         header_id,
         line_item_id,
         line_item_index,
@@ -154,6 +161,7 @@ final as (
 
     -- Refund information is only reliable at the invoice header. Therefore the below operation creates a new line to track the refund values.
     select
+        source_relation,
         header_id,
         line_item_id,
         cast(0 as {{ dbt.type_int() }}) as line_item_index,
@@ -191,7 +199,7 @@ final as (
         customer_city,
         customer_country
     from enhanced
-    where is_refunded 
+    where is_refunded
         and line_item_index = 1
 )
 

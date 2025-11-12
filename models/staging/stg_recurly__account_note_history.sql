@@ -13,13 +13,15 @@ fields as (
                 staging_columns=get_account_note_history_columns()
             )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
-    
-    select 
-        id as account_note_id, 
+
+    select
+        source_relation,
+        id as account_note_id,
         account_id,
         cast(account_updated_at as {{ dbt.type_timestamp() }}) as account_updated_at,
         cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
@@ -27,7 +29,7 @@ final as (
         object,
         user_email,
         user_id,
-        row_number() over (partition by id order by account_updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by account_updated_at desc) = 1 as is_most_recent_record
     from fields
 )
 

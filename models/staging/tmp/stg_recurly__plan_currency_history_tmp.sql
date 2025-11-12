@@ -1,2 +1,7 @@
-select *
-from {{ var('plan_currency_history') }}
+{{
+    recurly.recurly_union_connections(
+        connection_dictionary='recurly_sources',
+        single_source_name='recurly',
+        single_table_name='plan_currency_history'
+    )
+}}

@@ -15,16 +15,18 @@ fields as (
                 staging_columns=get_credit_payment_history_columns()
             )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
-    
-    select 
+
+    select
+        source_relation,
         id as credit_payment_id,
         cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         account_id,
-        action,        
+        action,
         cast(amount as {{ dbt.type_float() }}) as amount,
         applied_to_invoice_id,
         cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
@@ -34,7 +36,7 @@ final as (
         original_invoice_id,
         uuid,
         cast(voided_at as {{ dbt.type_timestamp() }}) as voided_at,
-        row_number() over (partition by id order by updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by updated_at desc) = 1 as is_most_recent_record
     from fields
 ) 
 

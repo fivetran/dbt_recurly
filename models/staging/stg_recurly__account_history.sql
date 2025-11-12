@@ -6,38 +6,40 @@ with base as (
 
 fields as (
 
-    select 
+    select
         {{
             fivetran_utils.fill_staging_columns(
                 source_columns = adapter.get_columns_in_relation(ref('stg_recurly__account_history_tmp')),
                 staging_columns = get_account_history_columns()
             )
         }}
+        {{ recurly.apply_source_relation() }}
     from base
 ),
 
 final as (
 
     select
-        id as account_id, 
-        cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at, 
+        source_relation,
+        id as account_id,
+        cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         account_city,
-        account_country, 
+        account_country,
         account_postal_code,
         account_region,
-        bill_to, 
-        cc_emails, 
-        code, 
-        company, 
+        bill_to,
+        cc_emails,
+        code,
+        company,
         cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
         cast(deleted_at as {{ dbt.type_timestamp() }}) as deleted_at,
-        email,  
+        email,
         first_name,
-        row_number() over (partition by id order by updated_at desc) = 1 as is_most_recent_record,
-        tax_exempt as is_tax_exempt, 
+        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by updated_at desc) = 1 as is_most_recent_record,
+        tax_exempt as is_tax_exempt,
         last_name,
-        state, 
-        username, 
+        state,
+        username,
         vat_number
 
         --The below macro adds the fields defined within your accounts_pass_through_columns variable into the staging model
