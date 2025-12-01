@@ -1,3 +1,10 @@
+# dbt_recurly v1.2.0
+
+[PR #41](https://github.com/fivetran/dbt_recurly/pull/41) includes the following updates:
+
+## Features
+  - Increases the required dbt version upper limit to v3.0.0
+
 # dbt_recurly v1.1.0
 
 [PR #40](https://github.com/fivetran/dbt_recurly/pull/40) includes the following updates:
