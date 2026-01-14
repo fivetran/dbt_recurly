@@ -49,11 +49,11 @@ public_models: [
 supported_vars:
   recurly_account_pass_through_columns:
     type: dictionary
-    description: "Addtional `ACCOUNT_HISTORY` columns to include in `recurly__account_overview`"
+    description: "Additional `ACCOUNT_HISTORY` columns to include in `recurly__account_overview`"
     display_name: "Additional Account History Columns"
 
   recurly_subscription_pass_through_columns:
     type: dictionary
-    description: "Addtional `SUBSCRIPTION_HISTORY` columns to include in `recurly__subscription_overview`"
+    description: "Additional `SUBSCRIPTION_HISTORY` columns to include in `recurly__subscription_overview`"
     display_name: "Additional Subscription History Columns"
 
