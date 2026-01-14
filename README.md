@@ -1,4 +1,5 @@
-# Recurly  dbt package ([Docs](https://fivetran.github.io/dbt_recurly/))
+<!--section="recurly_transformation_model"-->
+# Recurly dbt Package
 
 <p align="left">
     <a alt="License"
@@ -15,31 +16,50 @@
         <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatible%3F-yes-green.svg" /></a>
 </p>
 
+This dbt package transforms data from Fivetran's Recurly connector into analytics-ready tables.
+
+## Resources
+
+- Number of materialized models¹: 47
+- Connector documentation
+  - [Recurly connector documentation](https://fivetran.com/docs/connectors/applications/recurly)
+  - [Recurly ERD](https://fivetran.com/docs/connectors/applications/recurly#schemainformation)
+- dbt package documentation
+  - [GitHub repository](https://github.com/fivetran/dbt_recurly)
+  - [dbt Docs](https://fivetran.github.io/dbt_recurly/#!/overview)
+  - [DAG](https://fivetran.github.io/dbt_recurly/#!/overview?g_v=1)
+  - [Changelog](https://github.com/fivetran/dbt_recurly/blob/main/CHANGELOG.md)
+
 ## What does this dbt package do?
-- Produces modeled tables that leverage Recurly data from [Fivetran's connector](https://fivetran.com/docs/applications/recurly) in the format described by [this ERD](https://fivetran.com/docs/applications/recurly#schemainformation) and build off the output of our [Recurly source package](https://github.com/fivetran/dbt_recurly_source).
+This package enables you to enhance balance transaction entries with useful fields, create customized analysis tables to examine churn and monthly recurring revenue, and generate metrics tables for account activity analysis. It creates enriched models with metrics focused on transactions, subscriptions, and customer behavior.
 
-- Enables you to better understand your Recurly data. The package achieves this by performing the following:
-    - Enhance the balance transaction entries with useful fields from related tables.
-    - Create customized analysis tables to examine churn by subscriptions and monthly recurring revenue by account.
-    - Generate a metrics table that allows you to better understand your account activity over time or at a customer level. These time-based metrics are available on a daily level.
-- Generates a comprehensive data dictionary of your source and modeled Recurly data through the [dbt docs site](https://fivetran.github.io/dbt_recurly/).
+### Output schema
+Final output tables are generated in the following target schema:
 
-<!--section="recurly_transformation_model"-->
-The following table provides a detailed list of all tables materialized within this package by default.
-> TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_recurly/#!/overview?g_v=1).
+```
+<your_database>.<connector/schema_name>_recurly
+```
 
-| **Table**                         | **Description**                                                                                                                                                                                                                             |
-|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [recurly__account_daily_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_daily_overview)    |  Each record is a day in an account and its accumulated balance totals based on all line item transactions up to that day.                            |
-| [recurly__account_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_overview)    |  Each record represents an account, enriched with metrics about their associated transactions.                                                                                                     |
-| [recurly__balance_transactions](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__balance_transactions)      | Each record represents a specific line item charge, credit, or other balance change that accumulates into the final invoices.                                                                                                  |
-| [recurly__churn_analysis](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__churn_analysis)    | Each record represents a subscription and their churn status and details.                                                                                                                           |
-| [recurly__monthly_recurring_revenue](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__monthly_recurring_revenue) | Each record represents an account and MRR generated on a monthly basis. |
-| [recurly__subscription_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__subscription_overview)       | Each record represents a subscription, enriched with metrics about time, revenue, state, and period.                                                                                         |
-| [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced)       | This model constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It’s designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, Shopify, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). Visit the app for more details.  |
+### Final output tables
 
-### Example Visualizations
-Curious what these models can do? Check out example visualizations from the [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) model in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/), and see how you can use these models in your own reporting. Below is a screenshot of an example report—explore the app for more.
+By default, this package materializes the following final tables:
+
+| Table | Description |
+| :---- | :---- |
+| [recurly__account_daily_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_daily_overview) | Provides daily account snapshots with transaction counts, invoices, charges, credits, discounts, taxes, and rolling balance totals to track account financial health and payment activity evolution over time. <br></br>**Example Analytics Questions:**<ul><li>How does the rolling_account_balance evolve day-by-day for each account?</li><li>What are the daily trends in daily_charges versus daily_credits by account?</li><li>Which accounts have the highest rolling_transactions and rolling_invoices counts?</li></ul>|
+| [recurly__account_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_overview) | Consolidates account profiles with comprehensive transaction metrics including total invoices, charges, credits, balances, discounts, taxes, and monthly totals to understand account financial performance and relationships. <br></br>**Example Analytics Questions:**<ul><li>Which accounts have the highest total_balance and total_charges?</li><li>How do charges_this_month and credits_this_month compare to historical totals?</li><li>What is the time between first_charge_date and most_recent_charge_date by account segment?</li></ul>|
+| [recurly__balance_transactions](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__balance_transactions) | Chronicles individual balance transactions including charges, credits, discounts, taxes, and refunds by type and state with product details to provide granular visibility into invoice components and balance calculations. <br></br>**Example Analytics Questions:**<ul><li>Which transaction types have the highest total amount and discount values?</li><li>How do charges versus credits accumulate by account_id and invoice_id?</li><li>What is the distribution of transactions by state (pending, completed, etc.) and type?</li></ul>|
+| [recurly__churn_analysis](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__churn_analysis) | Analyzes subscription churn with activation dates, cancellation dates, expiration info, subscription states, churn reasons, and period details to identify retention risks and understand cancellation drivers. <br></br>**Example Analytics Questions:**<ul><li>What are the most common expiration_reason and churn_reason values by subscription?</li><li>How long do subscriptions last (activated_at to canceled_at) before churning by plan_name?</li><li>Which subscription states and churn_reason_type combinations have the highest cancellation rates?</li></ul>|
+| [recurly__monthly_recurring_revenue](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__monthly_recurring_revenue) | Tracks monthly recurring revenue (MRR) by account and MRR type (new, expansion, contraction, churn) comparing current month MRR to previous month MRR to measure subscription business health and revenue trends. <br></br>**Example Analytics Questions:**<ul><li>What is the current_month_mrr by account and how does it compare to previous_month_mrr?</li><li>How does MRR break down by mrr_type (new, expansion, contraction, churn)?</li><li>Which accounts show the strongest MRR growth from previous to current month?</li></ul>|
+| [recurly__subscription_overview](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__subscription_overview) | Provides detailed subscription profiles with activation dates, cancellation dates, expiration info, subscription states, billing periods, renewal settings, pricing, and trial details to monitor subscription lifecycle and financial contribution. <br></br>**Example Analytics Questions:**<ul><li>Which subscriptions have the longest subscription_period and highest subtotal values?</li><li>How do subscriptions with has_auto_renew = true compare to false in terms of lifetime?</li><li>What is the average trial_interval_days and how many convert after trial_ends_at?</li></ul>|
+| [recurly__line_item_enhanced](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__line_item_enhanced) | This model constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It's designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, Shopify, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). Visit the app for more details. |
+
+¹ Each Quickstart transformation job run materializes these models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
+
+---
+
+## Visualizations
+Many of the above reports are now configurable for [visualization via Streamlit](https://github.com/fivetran/streamlit_recurly). Check out some [sample reports here](https://fivetran-billing-model.streamlit.app/).
 
 <p align="center">
 <a href="https://fivetran-billing-model.streamlit.app/">
@@ -47,15 +67,30 @@ Curious what these models can do? Check out example visualizations from the [rec
 </a>
 </p>
 
-### Materialized Models
-Each Quickstart transformation job run materializes 47 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
-<!--section-end-->
+## Prerequisites
+To use this dbt package, you must have the following:
+
+- At least one Fivetran Recurly connection syncing data into your destination.
+- A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
 ## How do I use the dbt package?
-### Step 1: Prerequisites
-To use this dbt package, you must have the following:
-- At least one Fivetran Recurly connection syncing data into your destination.
-- A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, **Databricks** destination.
+You can either add this dbt package in the Fivetran dashboard or import it into your dbt project:
+
+- To add the package in the Fivetran dashboard, follow our [Quickstart guide](https://fivetran.com/docs/transformations/dbt).
+- To add the package to your dbt project, follow the setup instructions in the dbt package's [README file](https://github.com/fivetran/dbt_recurly/blob/main/README.md#how-do-i-use-the-dbt-package) to use this package.
+
+<!--section-end-->
+
+### Install the package
+Include the following recurly package version in your `packages.yml` file.
+> TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
+```yaml
+packages:
+  - package: fivetran/recurly
+    version: [">=1.3.0", "<1.4.0"]
+```
+
+> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/recurly_source` in your `packages.yml` since this package has been deprecated.
 
 #### Databricks Dispatch Configuration
 If you are using a Databricks destination with this package you will need to add the below (or a variation of the below) dispatch configuration within your `dbt_project.yml`. This is required for the package to accurately search for macros within the `dbt-labs/spark_utils` then the `dbt-labs/dbt_utils` packages respectively.
@@ -65,18 +100,7 @@ dispatch:
     search_order: ['spark_utils', 'dbt_utils']
 ```
 
-### Step 2: Install the package
-Include the following recurly package version in your `packages.yml` file.
-> TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
-```yaml
-packages:
-  - package: fivetran/recurly
-    version: [">=1.2.0", "<1.3.0"]
-```
-
-> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/recurly_source` in your `packages.yml` since this package has been deprecated.
-
-### Step 3: Define database and schema variables
+### Define database and schema variables
 
 #### Option A: Single connection
 By default, this package runs using your [destination](https://docs.getdbt.com/docs/running-a-dbt-project/using-the-command-line-interface/configure-your-profile) and the `recurly` schema. If this is not where your Recurly data is (for example, if your Recurly schema is named `recurly_fivetran`), add the following configuration to your root `dbt_project.yml` file:
@@ -135,7 +159,7 @@ sources:
     tables: # copy and paste from recurly/models/staging/src_recurly.yml - see https://support.atlassian.com/bitbucket-cloud/docs/yaml-anchors/ for how to use anchors to only do so once
 ```
 
-> **Note**: If there are source tables you do not have (see [Step 4](#step-4-disable-models-for-non-existent-sources)), you may still include them, as long as you have set the right variables to `False`.
+> **Note**: If there are source tables you do not have (see [Disable models for non-existent sources](#disable-models-for-non-existent-sources)), you may still include them, as long as you have set the right variables to `False`.
 
 2. Set the `has_defined_sources` variable (scoped to the `recurly` package) to `True`, like such:
 ```yml
@@ -145,7 +169,7 @@ vars:
     has_defined_sources: true
 ```
 
-### Step 4: Disable models for non-existent sources
+### Disable models for non-existent sources
 Your Recurly connection may not sync every table that this package expects. This might be because you are excluding those tables. If you are not using those tables, you can disable the corresponding functionality in the package by specifying the variable in your dbt_project.yml. By default, all packages are assumed to be true. You only have to add variables for tables you want to disable, like so:
 
 ```yml
@@ -155,11 +179,11 @@ vars:
   recurly__using_subscription_change_history: false # Disable if you do not have the subscription_change_history table
 
 ```   
-### (Optional) Step 5: Additional configurations
+### (Optional) Additional configurations
 <details open><summary>Expand to view configurations</summary>
 
 #### Enabling Standardized Billing Model
-This package contains the `recurly__line_item_enhanced` model which constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It’s designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, Shopify, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). This model is enabled by default. To disable it, set the `recurly__standardized_billing_model_enabled` variable to `false` in your `dbt_project.yml`:
+This package contains the `recurly__line_item_enhanced` model which constructs a comprehensive, denormalized analytical table that enables reporting on key revenue, subscription, customer, and product metrics from your billing platform. It's designed to align with the schema of the `*__line_item_enhanced` model found in Recurly, Recharge, Stripe, Shopify, and Zuora, offering standardized reporting across various billing platforms. To see the kinds of insights this model can generate, explore example visualizations in the [Fivetran Billing Model Streamlit App](https://fivetran-billing-model.streamlit.app/). This model is enabled by default. To disable it, set the `recurly__standardized_billing_model_enabled` variable to `false` in your `dbt_project.yml`:
 
 ```yml
 vars:
@@ -202,7 +226,7 @@ vars:
 
 </details>
 
-### (Optional) Step 6: Orchestrate your models with Fivetran Transformations for dbt Core™
+### (Optional) Orchestrate your models with Fivetran Transformations for dbt Core™
 <details><summary>Expand to view details</summary>
 <br>
 
@@ -224,14 +248,18 @@ packages:
       version: [">=0.3.0", "<0.4.0"]
 ```
 
+<!--section="recurly_maintenance"-->
 ## How is this package maintained and can I contribute?
+
 ### Package Maintenance
-The Fivetran team maintaining this package _only_ maintains the latest version of the package. We highly recommend that you stay consistent with the [latest version](https://hub.getdbt.com/fivetran/recurly/latest/) of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_recurly/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.
+The Fivetran team maintaining this package only maintains the [latest version](https://hub.getdbt.com/fivetran/recurly/latest/) of the package. We highly recommend you stay consistent with the latest version of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_recurly/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.
 
 ### Contributions
 A small team of analytics engineers at Fivetran develops these dbt packages. However, the packages are made better by community contributions.
 
-We highly encourage and welcome contributions to this package. Check out [this dbt Discourse article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657) to learn how to contribute to a dbt package.
+We highly encourage and welcome contributions to this package. Learn how to contribute to a package in dbt's [Contributing to an external dbt package article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657).
+
+<!--section-end-->
 
 ## Are there any resources available?
 - If you have questions or want to reach out for help, see the [GitHub Issue](https://github.com/fivetran/dbt_recurly_source/issues/new/choose) section to find the right avenue of support for you.
