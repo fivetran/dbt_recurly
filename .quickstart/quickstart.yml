@@ -10,6 +10,24 @@ table_variables:
     - subscription_add_on_history
   recurly__using_subscription_change_history:
     - subscription_change_history
+  _fivetran_quickstart_plan_currency_history:
+    - plan_currency_history
+  _fivetran_quickstart_invoice_subscription_history:
+    - invoice_subscription_history
+  _fivetran_quickstart_transaction_subscription:
+    - transaction_subscription
+  _fivetran_quickstart_account_balance_history:
+    - account_balance_history
+  _fivetran_quickstart_coupon_redemption_history:
+    - coupon_redemption_history
+  _fivetran_quickstart_coupon_discount:
+    - coupon_discount
+  _fivetran_quickstart_invoice_coupon_redemption_history:
+    - invoice_coupon_redemption_history
+  _fivetran_quickstart_billing_info_history:
+    - billing_info_history
+  _fivetran_quickstart_account_note_history:
+    - account_note_history
 
 destination_configurations:
   databricks:
@@ -26,3 +44,15 @@ public_models: [
   "recurly__subscription_overview",
   "recurly__line_item_enhanced"
 ]
+
+supported_vars:
+  recurly_account_pass_through_columns:
+    type: dictionary
+    description: "Additional `ACCOUNT_HISTORY` columns to include in `recurly__account_overview`"
+    display_name: "Additional Account History Columns"
+
+  recurly_subscription_pass_through_columns:
+    type: dictionary
+    description: "Additional `SUBSCRIPTION_HISTORY` columns to include in `recurly__subscription_overview`"
+    display_name: "Additional Subscription History Columns"
+
