@@ -10,7 +10,6 @@ table_variables:
     - subscription_add_on_history
   recurly__using_subscription_change_history:
     - subscription_change_history
-
   _fivetran_quickstart_plan_currency_history:
     - plan_currency_history
   _fivetran_quickstart_invoice_subscription_history:

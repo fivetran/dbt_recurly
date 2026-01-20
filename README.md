@@ -262,5 +262,5 @@ We highly encourage and welcome contributions to this package. Learn how to cont
 <!--section-end-->
 
 ## Are there any resources available?
-- If you have questions or want to reach out for help, see the [GitHub Issue](https://github.com/fivetran/dbt_recurly_source/issues/new/choose) section to find the right avenue of support for you.
+- If you have questions or want to reach out for help, see the [GitHub Issue](https://github.com/fivetran/dbt_recurly/issues/new/choose) section to find the right avenue of support for you.
 - If you would like to provide feedback to the dbt package team at Fivetran or would like to request a new dbt package, fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
