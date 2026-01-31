@@ -1,3 +1,15 @@
+# dbt_recurly v1.3.1
+
+## Bug Fixes
+- Adds rounding to current and previous month mrr in `recurly__monthly_recurring_revenue` to ensure proper classification of `mrr_type`.
+- Fixes non-deterministic `line_item_index` ordering in `recurly__line_item_enhanced` by changing `ORDER BY` from `created_at` (which can be the same for line items) to `line_item_id` (unique values).
+
+## Under the Hood
+- Updates and adds consistency tests for `recurly__account_daily_overview` and `recurly__monthly_recurring_revenue` to properly resolve rounding errors. 
+
+## Documentation Update
+- Fixes link to `streamlit_fivetran_billing_model` repo in the README. 
+
 # dbt_recurly v1.3.0
 
 [PR #42](https://github.com/fivetran/dbt_recurly/pull/42) includes the following updates:
