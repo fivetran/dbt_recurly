@@ -53,17 +53,17 @@ current_vs_previous_mrr as (
 
 mrr_type_enhanced as (
 
-    select 
+    select
         *,
-        case when round(current_month_mrr, 2) > round(previous_month_mrr, 2) then 'expansion'
-            when round(current_month_mrr, 2) < round(previous_month_mrr, 2) then 'contraction'
-            when round(current_month_mrr, 2) = round(previous_month_mrr, 2) then 'unchanged'
+        case when round(cast(current_month_mrr as {{ dbt.type_numeric() }}), 2) > round(cast(previous_month_mrr as {{ dbt.type_numeric() }}), 2) then 'expansion'
+            when round(cast(current_month_mrr as {{ dbt.type_numeric() }}), 2) < round(cast(previous_month_mrr as {{ dbt.type_numeric() }}), 2) then 'contraction'
+            when round(cast(current_month_mrr as {{ dbt.type_numeric() }}), 2) = round(cast(previous_month_mrr as {{ dbt.type_numeric() }}), 2) then 'unchanged'
             when previous_month_mrr is null then 'new'
             when (current_month_mrr = 0.0 or current_month_mrr is null)
                 and (previous_month_mrr != 0.0)
                 then 'churned'
-            when (previous_month_mrr = 0.0 and current_month_mrr > 0.0 
-                and account_month_number >= 3) 
+            when (previous_month_mrr = 0.0 and current_month_mrr > 0.0
+                and account_month_number >= 3)
                 then 'reactivation'
             end as mrr_type
     from current_vs_previous_mrr
