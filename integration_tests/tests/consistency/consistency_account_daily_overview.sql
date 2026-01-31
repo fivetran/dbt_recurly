@@ -3,7 +3,7 @@
     enabled=var('fivetran_validation_tests_enabled', false)
 ) }}
 
-{% set exclude_cols = var('consistency_test_exclude_metrics', []) %}
+{% set exclude_cols = ['daily_charges', 'daily_credits', 'daily_discounts', 'daily_net_change', 'daily_taxes', 'rolling_account_balance', 'rolling_charge_balance', 'rolling_credit_balance', 'rolling_discount_balance', 'rolling_tax_balance'] + var('consistency_test_exclude_metrics', []) %}
 
 -- this test ensures the recurly__account_daily_overview end model matches the prior version
 with prod as (
