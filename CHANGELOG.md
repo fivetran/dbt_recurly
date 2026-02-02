@@ -1,8 +1,14 @@
 # dbt_recurly v1.3.1
 
-## Bug Fixes
-- Adds rounding to current and previous month mrr in `recurly__monthly_recurring_revenue` to ensure proper classification of `mrr_type`.
-- Fixes non-deterministic `line_item_index` ordering in `recurly__line_item_enhanced` by changing `ORDER BY` from `created_at` (which can be the same for line items) to `line_item_id` (unique values).
+[PR #43](https://github.com/fivetran/dbt_recurly/pull/43) includes the following updates:
+
+## Schema/Data Change
+**2 total changes • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ---------- | ----------- | -------- | -------- | ----- |
+| `recurly__monthly_recurring_revenue` | Logic update | `mrr_type` calculated by comparing unrounded MRR values | `mrr_type` calculated by rounding monetary values to two decimal points | Adds rounding with numeric casting to ensure proper classification of `mrr_type` |
+| `recurly__line_item_enhanced` | Logic update | `line_item_index` window function ordered by `created_at` only | `line_item_index` window function now orders by `created_at`, then `line_item_id` | Ensures deterministic ordering when multiple line items have the same `created_at` timestamp |
 
 ## Under the Hood
 - Updates and adds consistency tests for `recurly__account_daily_overview` and `recurly__monthly_recurring_revenue` to properly resolve rounding errors. 
