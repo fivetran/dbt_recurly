@@ -11,10 +11,10 @@
 | `recurly__line_item_enhanced` | Logic update | `line_item_index` window function ordered by `created_at` only | `line_item_index` window function now orders by `created_at`, then `line_item_id` | Ensures deterministic ordering when multiple line items have the same `created_at` timestamp |
 
 ## Under the Hood
-- Updates and adds consistency tests for `recurly__account_daily_overview` and `recurly__monthly_recurring_revenue` to properly resolve rounding errors. 
+- Adds consistency tests for `recurly__account_daily_overview` and `recurly__monthly_recurring_revenue` to compare field amounts with rounding discrepancies. Updates existing consistency tests to remove above amount fields. 
 
 ## Documentation Update
-- Fixes link to `streamlit_fivetran_billing_model` repo in the README. 
+- Fixes link to `streamlit_fivetran_billing_model` [repo](https://github.com/fivetran/streamlit_fivetran_billing_model) in the README. 
 
 # dbt_recurly v1.3.0
 
