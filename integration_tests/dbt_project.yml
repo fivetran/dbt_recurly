@@ -27,6 +27,9 @@ vars:
 
 # For use with validations
 models:
+  +persist_docs:
+    relation: true
+    columns: "{{ false if target.type in ('databricks') else true }}"
   +schema: "recurly_{{ var('directed_schema','dev') }}"
 
 dispatch:
