@@ -3,7 +3,7 @@
 [PR #43](https://github.com/fivetran/dbt_recurly/pull/43) includes the following updates:
 
 ## Schema/Data Change
-**19 total changes • 19 possible breaking changes**
+**20 total changes • 19 possible breaking changes**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ---------- | ----------- | -------- | -------- | ----- |
@@ -13,6 +13,7 @@
 | `recurly__monthly_recurring_revenue` | Data type | `float` | `numeric` | Applies to `current_month_mrr`, `previous_month_mrr` |
 | `recurly__subscription_overview` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `unit_amount` <br> `int` → `numeric`: `add_ons_total`, `subtotal` |
 | `recurly__line_item_enhanced` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `unit_amount`, `discount_amount`, `total_amount` <br> `int` → `numeric`: `tax_amount`, `refund_amount` |
+| `recurly__line_item_enhanced` | Logic update | `line_item_index` window function ordered by `created_at` only | `line_item_index` window function now orders by `created_at`, then `line_item_id` | Ensures deterministic ordering when multiple line items have the same `created_at` timestamp |
 | `int_recurly__transactions_grouped` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `daily_charges`, `daily_credits`, `daily_balance`, `daily_discounts` <br> `int` → `numeric`: `daily_taxes` |
 | `int_recurly__account_cumulatives` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `total_charges`, `total_credits`, `total_balance`, `total_discounts`, `charges_this_month`, `credits_this_month`, `balance_this_month`, `discounts_this_month` <br> `int` → `numeric`: `total_taxes`, `taxes_this_month` |
 | `int_recurly__account_rolling_totals` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `daily_charges`, `daily_credits`, `daily_balance`, `daily_discounts`, `rolling_account_balance`, `rolling_charge_balance`, `rolling_credit_balance`, `rolling_discount_balance` <br> `int` → `numeric`: `daily_taxes`, `rolling_tax_balance` |
