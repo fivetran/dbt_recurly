@@ -25,7 +25,7 @@ final as (
         cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         account_id,
         cast(activated_at as {{ dbt.type_timestamp() }}) as activated_at,
-        add_ons_total,
+        cast(add_ons_total as {{ dbt.type_numeric() }}) as add_ons_total,
         cast(canceled_at as {{ dbt.type_timestamp() }}) as canceled_at,
         collection_method,
         cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
@@ -46,11 +46,11 @@ final as (
         remaining_pause_cycles,
         renewal_billing_cycles,
         state,
-        subtotal,
+        cast(subtotal as {{ dbt.type_numeric() }}) as subtotal,
         total_billing_cycles,
         cast(trial_ends_at as {{ dbt.type_timestamp() }}) as trial_ends_at,
         cast(trial_started_at as {{ dbt.type_timestamp() }}) as trial_started_at,
-        cast(unit_amount as {{ dbt.type_float() }}) as unit_amount,
+        cast(unit_amount as {{ dbt.type_numeric() }}) as unit_amount,
         uuid
 
         --The below macro adds the fields defined within your accounts_pass_through_columns variable into the staging model

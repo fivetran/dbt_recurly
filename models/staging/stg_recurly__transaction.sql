@@ -24,7 +24,7 @@ final as (
         id as transaction_id,
         cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
         account_id,
-        cast(amount as {{ dbt.type_float() }}) as amount,
+        cast(amount as {{ dbt.type_numeric() }}) as amount,
         billing_city,
         billing_country,
         billing_first_name,

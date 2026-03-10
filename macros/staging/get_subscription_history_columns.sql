@@ -26,10 +26,10 @@
     {"name": "paused_at", "datatype": dbt.type_timestamp()},
     {"name": "remaining_pause_cycles", "datatype": dbt.type_int()},
     {"name": "currency", "datatype": dbt.type_string()},
-    {"name": "unit_amount", "datatype": dbt.type_int()},
+    {"name": "unit_amount", "datatype": dbt.type_float()},
     {"name": "quantity", "datatype": dbt.type_int()},
-    {"name": "add_ons_total", "datatype": dbt.type_int()},
-    {"name": "subtotal", "datatype": dbt.type_int()},
+    {"name": "add_ons_total", "datatype": dbt.type_float()},
+    {"name": "subtotal", "datatype": dbt.type_float()},
     {"name": "collection_method", "datatype": dbt.type_string()},
     {"name": "expiration_reason", "datatype": dbt.type_string()}
 ] %}
