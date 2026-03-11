@@ -1,6 +1,6 @@
 # dbt_recurly v1.4.0
 
-[PR #43](https://github.com/fivetran/dbt_recurly/pull/43) includes the following updates:
+[PR #45](https://github.com/fivetran/dbt_recurly/pull/45) includes the following updates:
 
 ## Schema/Data Change
 **20 total changes • 19 possible breaking changes**
