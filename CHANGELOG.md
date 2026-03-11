@@ -28,11 +28,11 @@
 | `stg_recurly__subscription_add_on_history` | Data type | `float` | `numeric` | Applies to `unit_amount` |
 | `stg_recurly__transaction` | Data type | `float` | `numeric` | Applies to `amount` |
 
-## Bug Fixes
+## Bug Fix
 - Corrected `get_*_columns` macro fields for `invoice_history`, `line_item_history`, `subscription_history` that were incorrectly cast as `int` instead of `float` to match the Recurly API type (`number <float>`). This caused decimal values to be truncated and downstream monetary aggregations to be inaccurate.
 
-## Documentation Update
-- Fixes link to `streamlit_fivetran_billing_model` [repo](https://github.com/fivetran/streamlit_fivetran_billing_model) in the README. 
+## Documentation
+- Fixes link to `streamlit_fivetran_billing_model` [repo](https://github.com/fivetran/streamlit_fivetran_billing_model) in the README.
 
 # dbt_recurly v1.3.0
 
