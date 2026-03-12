@@ -7,29 +7,105 @@
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ---------- | ----------- | -------- | -------- | ----- |
-| `recurly__account_overview` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `total_charges`, `total_credits`, `total_balance`, `total_discounts`, `charges_this_month`, `credits_this_month`, `balance_this_month`, `discounts_this_month` <br> `int` → `numeric`: `total_taxes`, `taxes_this_month` |
-| `recurly__account_daily_overview` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `daily_net_change`, `daily_charges`, `daily_credits`, `daily_discounts`, `rolling_account_balance`, `rolling_charge_balance`, `rolling_credit_balance`, `rolling_discount_balance` <br> `int` → `numeric`: `daily_taxes`, `rolling_tax_balance` |
-| `recurly__balance_transactions` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `amount`, `credit_applied`, `discount`, `unit_amount` <br> `int` → `numeric`: `tax`, `subtotal` |
-| `recurly__monthly_recurring_revenue` | Data type | `float` | `numeric` | Applies to `current_month_mrr`, `previous_month_mrr` |
-| `recurly__subscription_overview` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `unit_amount` <br> `int` → `numeric`: `add_ons_total`, `subtotal` |
-| `recurly__line_item_enhanced` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `unit_amount`, `discount_amount`, `total_amount` <br> `int` → `numeric`: `tax_amount`, `refund_amount` |
+| `recurly__account_overview` | Data type | `float` or `int` | `numeric` | |
+| `recurly__account_daily_overview` | Data type | `float` or `int` | `numeric` | |
+| `recurly__balance_transactions` | Data type | `float` or `int` | `numeric` | |
+| `recurly__monthly_recurring_revenue` | Data type | `float` | `numeric` | |
+| `recurly__subscription_overview` | Data type | `float` or `int` | `numeric` | |
+| `recurly__line_item_enhanced` | Data type | `float` or `int` | `numeric` | |
 | `recurly__line_item_enhanced` | Logic update | `line_item_index` window function ordered by `created_at` only | `line_item_index` window function now orders by `created_at`, then `line_item_id` | Ensures deterministic ordering when multiple line items have the same `created_at` timestamp |
-| `int_recurly__transactions_grouped` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `daily_charges`, `daily_credits`, `daily_balance`, `daily_discounts` <br> `int` → `numeric`: `daily_taxes` |
-| `int_recurly__account_cumulatives` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `total_charges`, `total_credits`, `total_balance`, `total_discounts`, `charges_this_month`, `credits_this_month`, `balance_this_month`, `discounts_this_month` <br> `int` → `numeric`: `total_taxes`, `taxes_this_month` |
-| `int_recurly__account_rolling_totals` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `daily_charges`, `daily_credits`, `daily_balance`, `daily_discounts`, `rolling_account_balance`, `rolling_charge_balance`, `rolling_credit_balance`, `rolling_discount_balance` <br> `int` → `numeric`: `daily_taxes`, `rolling_tax_balance` |
-| `int_recurly__account_running_totals` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `daily_charges`, `daily_credits`, `daily_balance`, `daily_discounts`, `rolling_account_balance`, `rolling_charge_balance`, `rolling_credit_balance`, `rolling_discount_balance` <br> `int` → `numeric`: `daily_taxes`, `rolling_tax_balance` |
-| `stg_recurly__invoice_history` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `balance` <br> `int` → `numeric`: `discount`, `paid`, `refundable_amount`, `subtotal`, `tax`, `total` |
-| `stg_recurly__subscription_history` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `unit_amount` <br> `int` → `numeric`: `add_ons_total`, `subtotal` |
-| `stg_recurly__line_item_history` | Data type | `float` or `int` | `numeric` | `float` → `numeric`: `amount`, `credit_applied`, `discount`, `unit_amount` <br> `int` → `numeric`: `subtotal`, `tax` |
-| `stg_recurly__account_balance_history` | Data type | `float` | `numeric` | Applies to `amount` |
-| `stg_recurly__coupon_discount` | Data type | `float` | `numeric` | Applies to `amount` |
-| `stg_recurly__credit_payment_history` | Data type | `float` | `numeric` | Applies to `amount` |
-| `stg_recurly__plan_currency_history` | Data type | `float` | `numeric` | Applies to `setup_fees`, `unit_amount` |
-| `stg_recurly__subscription_add_on_history` | Data type | `float` | `numeric` | Applies to `unit_amount` |
-| `stg_recurly__transaction` | Data type | `float` | `numeric` | Applies to `amount` |
+| `int_recurly__transactions_grouped` | Data type | `float` or `int` | `numeric` | |
+| `int_recurly__account_cumulatives` | Data type | `float` or `int` | `numeric` | |
+| `int_recurly__account_rolling_totals` | Data type | `float` or `int` | `numeric` | |
+| `int_recurly__account_running_totals` | Data type | `float` or `int` | `numeric` | |
+| All `stg_recurly__*` models | Data type | `float` or `int` | `numeric` | |
 
-## Bug Fix
-- Corrected `get_*_columns` macro fields for `invoice_history`, `line_item_history`, `subscription_history` that were incorrectly cast as `int` instead of `float` to match the Recurly API type (`number <float>`). This caused decimal values to be truncated and downstream monetary aggregations to be inaccurate.
+### Field-level data type change details
+
+- `recurly__account_overview`
+  - `float` → `numeric`
+    - `total_charges`, `total_credits`, `total_balance`, `total_discounts`, `charges_this_month`, `credits_this_month`, `balance_this_month`, `discounts_this_month`
+  - `int` → `numeric`
+    - `total_taxes`, `taxes_this_month`
+- `recurly__account_daily_overview`
+  - `float` → `numeric`
+    - `daily_net_change`, `daily_charges`, `daily_credits`, `daily_discounts`, `rolling_account_balance`, `rolling_charge_balance`, `rolling_credit_balance`, `rolling_discount_balance`
+  - `int` → `numeric`
+    - `daily_taxes`, `rolling_tax_balance`
+- `recurly__balance_transactions`
+  - `float` → `numeric`
+    - `amount`, `credit_applied`, `discount`, `unit_amount`
+  - `int` → `numeric`
+    - `tax`, `subtotal`
+- `recurly__monthly_recurring_revenue`
+  - `float` → `numeric`
+    - `current_month_mrr`, `previous_month_mrr`
+- `recurly__subscription_overview`
+  - `float` → `numeric`
+    - `unit_amount`
+  - `int` → `numeric`
+    - `add_ons_total`, `subtotal`
+- `recurly__line_item_enhanced`
+  - `float` → `numeric`
+    - `unit_amount`, `discount_amount`, `total_amount`
+  - `int` → `numeric`
+    - `tax_amount`, `refund_amount`
+- `int_recurly__transactions_grouped`
+  - `float` → `numeric`
+    - `daily_charges`, `daily_credits`, `daily_balance`, `daily_discounts`
+  - `int` → `numeric`
+    - `daily_taxes`
+- `int_recurly__account_cumulatives`
+  - `float` → `numeric`
+    - `total_charges`, `total_credits`, `total_balance`, `total_discounts`, `charges_this_month`, `credits_this_month`, `balance_this_month`, `discounts_this_month`
+  - `int` → `numeric`
+    - `total_taxes`, `taxes_this_month`
+- `int_recurly__account_rolling_totals`
+  - `float` → `numeric`
+    - `daily_charges`, `daily_credits`, `daily_balance`, `daily_discounts`, `rolling_account_balance`, `rolling_charge_balance`, `rolling_credit_balance`, `rolling_discount_balance`
+  - `int` → `numeric`
+    - `daily_taxes`, `rolling_tax_balance`
+- `int_recurly__account_running_totals`
+  - `float` → `numeric`
+    - `daily_charges`, `daily_credits`, `daily_balance`, `daily_discounts`, `rolling_account_balance`, `rolling_charge_balance`, `rolling_credit_balance`, `rolling_discount_balance`
+  - `int` → `numeric`
+    - `daily_taxes`, `rolling_tax_balance`
+- `stg_recurly__invoice_history`
+  - `float` → `numeric`
+    - `balance`
+  - `int` → `numeric`
+    - `discount`, `paid`, `refundable_amount`, `subtotal`, `tax`, `total`
+- `stg_recurly__subscription_history`
+  - `float` → `numeric`
+    - `unit_amount`
+  - `int` → `numeric`
+    - `add_ons_total`, `subtotal`
+- `stg_recurly__line_item_history`
+  - `float` → `numeric`
+    - `amount`, `credit_applied`, `discount`, `unit_amount`
+  - `int` → `numeric`
+    - `subtotal`, `tax`
+- `stg_recurly__account_balance_history`
+  - `float` → `numeric`
+    - `amount`
+- `stg_recurly__coupon_discount`
+  - `float` → `numeric`
+    - `amount`
+- `stg_recurly__credit_payment_history`
+  - `float` → `numeric`
+    - `amount`
+- `stg_recurly__plan_currency_history`
+  - `float` → `numeric`
+    - `setup_fees`, `unit_amount`
+- `stg_recurly__subscription_add_on_history`
+  - `float` → `numeric`
+    - `unit_amount`
+- `stg_recurly__transaction`
+  - `float` → `numeric`
+    - `amount`
+
+## Under the Hood
+- Corrected `get_*_columns` macro fields for `invoice_history`, `line_item_history`, `subscription_history` that were cast as `int` instead of `float` to match the Recurly API type (`number <float>`).
 
 ## Documentation
 - Fixes link to `streamlit_fivetran_billing_model` [repo](https://github.com/fivetran/streamlit_fivetran_billing_model) in the README.
