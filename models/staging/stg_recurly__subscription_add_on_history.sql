@@ -31,7 +31,7 @@ final as (
         plan_add_on_id,
         quantity,
         subscription_id,
-        cast(unit_amount as {{ dbt.type_float() }}) as unit_amount,
+        cast(unit_amount as {{ dbt.type_numeric() }}) as unit_amount,
         row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by updated_at desc) = 1 as is_most_recent_record
     from fields
 )

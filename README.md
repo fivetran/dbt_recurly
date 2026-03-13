@@ -46,7 +46,7 @@ By default, this package materializes the following final tables:
 ---
 
 ## Visualizations
-Many of the above reports are now configurable for [visualization via Streamlit](https://github.com/fivetran/streamlit_recurly). Check out some [sample reports here](https://fivetran-billing-model.streamlit.app/).
+Many of the above reports are now configurable for [visualization via Streamlit](https://github.com/fivetran/streamlit_fivetran_billing_model). Check out some [sample reports here](https://fivetran-billing-model.streamlit.app/).
 
 <p align="center">
 <a href="https://fivetran-billing-model.streamlit.app/">
@@ -74,7 +74,7 @@ Include the following recurly package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/recurly
-    version: [">=1.3.0", "<1.4.0"]
+    version: [">=1.4.0", "<1.5.0"]
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/recurly_source` in your `packages.yml` since this package has been deprecated.

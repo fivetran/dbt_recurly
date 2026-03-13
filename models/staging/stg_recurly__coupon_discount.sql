@@ -22,7 +22,7 @@ final as (
     select
         source_relation,
         coupon_id,
-        cast(amount as {{ dbt.type_float() }}) as amount,
+        cast(amount as {{ dbt.type_numeric() }}) as amount,
         currency,
         fivetran_id,
         percentage,

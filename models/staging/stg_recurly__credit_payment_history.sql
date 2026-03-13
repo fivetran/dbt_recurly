@@ -27,7 +27,7 @@ final as (
         cast(updated_at as {{ dbt.type_timestamp() }}) as updated_at,
         account_id,
         action,
-        cast(amount as {{ dbt.type_float() }}) as amount,
+        cast(amount as {{ dbt.type_numeric() }}) as amount,
         applied_to_invoice_id,
         cast(created_at as {{ dbt.type_timestamp() }}) as created_at,
         currency,
