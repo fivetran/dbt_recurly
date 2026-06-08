@@ -1,5 +1,5 @@
 name: 'recurly_integration_tests'
-version: '1.4.0'
+version: '1.5.0'
 profile: 'integration_tests'
 config-version: 2
 
@@ -39,6 +39,7 @@ dispatch:
 seeds:
   +docs:
     show: False
+  +quote_columns: "{{ target.type == 'redshift' or var('fivetran_using_source_casing', false) }}"
   recurly_integration_tests:
     account_balance_history_data:
       +column_types: 

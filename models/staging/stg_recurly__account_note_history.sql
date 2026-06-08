@@ -13,7 +13,7 @@ fields as (
                 staging_columns=get_account_note_history_columns()
             )
         }}
-        {{ recurly.apply_source_relation() }}
+        {{ fivetran_utils.apply_source_relation(package_name='recurly') }}
     from base
 ),
 
@@ -29,7 +29,7 @@ final as (
         object,
         user_email,
         user_id,
-        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by account_updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by account_updated_at desc) = 1 as is_most_recent_record
     from fields
 )
 

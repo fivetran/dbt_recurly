@@ -26,7 +26,7 @@ subscription_history as (
 
     select
         *,
-        row_number() over (partition by subscription_id, current_period_started_at, current_period_ended_at {{ recurly.partition_by_source_relation() }} order by updated_at desc) = 1 as is_latest_period
+        row_number() over (partition by subscription_id, current_period_started_at, current_period_ended_at {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by updated_at desc) = 1 as is_latest_period
     from {{ ref('stg_recurly__subscription_history') }}
 ),
 
@@ -58,7 +58,7 @@ enhanced as (
         line_items.source_relation,
         line_items.invoice_id as header_id,
         line_items.line_item_id,
-        cast(row_number() over (partition by line_items.invoice_id {{ recurly.partition_by_source_relation(alias='line_items') }} order by line_items.created_at, line_items.line_item_id) as {{ dbt.type_int() }}) as line_item_index,
+        cast(row_number() over (partition by line_items.invoice_id {{ fivetran_utils.partition_by_source_relation(package_name='recurly', alias='line_items') }} order by line_items.created_at, line_items.line_item_id) as {{ dbt.type_int() }}) as line_item_index,
         line_items.created_at,
         line_items.currency,
         line_items.state as line_item_status,

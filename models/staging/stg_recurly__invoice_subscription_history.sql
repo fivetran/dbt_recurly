@@ -13,7 +13,7 @@ fields as (
                 staging_columns = get_invoice_subscription_history_columns()
             )
         }}
-        {{ recurly.apply_source_relation() }}
+        {{ fivetran_utils.apply_source_relation(package_name='recurly') }}
     from base
 ),
 
@@ -24,7 +24,7 @@ final as (
         invoice_id,
         cast(invoice_updated_at as {{ dbt.type_timestamp() }}) as invoice_updated_at,
         subscription_id,
-        row_number() over (partition by invoice_id {{ recurly.partition_by_source_relation() }} order by invoice_updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by invoice_id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by invoice_updated_at desc) = 1 as is_most_recent_record
     from fields
 )
 select *

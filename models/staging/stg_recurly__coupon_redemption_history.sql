@@ -13,7 +13,7 @@ fields as (
                 staging_columns=get_coupon_redemption_history_columns()
             )
         }}
-        {{ recurly.apply_source_relation() }}
+        {{ fivetran_utils.apply_source_relation(package_name='recurly') }}
     from base
 ),
 
