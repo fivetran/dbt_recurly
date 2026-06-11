@@ -5,6 +5,7 @@
 ## Under the Hood
 - Migrates the `union_connections`, `apply_source_relation`, and `partition_by_source_relation` macros to the `dbt_fivetran_utils` package.
 - Adds the `fivetran_using_source_casing` variable for case-sensitive destination support. When enabled, downstream transformations respect source casing to ensure consistent results. See the [Additional Configurations](https://github.com/fivetran/dbt_recurly/#source-casing-for-case-sensitive-destinations) section of the README for details.
+- Removed column from `get_billing_info_history_columns()` macro which is not referenced in staging model.
 
 # dbt_recurly v1.4.0
 
