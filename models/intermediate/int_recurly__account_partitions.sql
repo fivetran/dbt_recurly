@@ -15,7 +15,7 @@ final as (
         sum(case when {{ f }} is null
             then 0
             else 1
-                end) over ({{ partition_by_source_relation(has_other_partitions='no') }} order by account_id, date_day rows unbounded preceding) as {{ f }}_partition
+                end) over ({{ fivetran_utils.partition_by_source_relation(package_name='recurly', has_other_partitions='no') }} order by account_id, date_day rows unbounded preceding) as {{ f }}_partition
         {%- if not loop.last -%},{%- endif -%}
         {% endfor %}
     from account_rolling_totals

@@ -25,7 +25,6 @@
     {"name": "payment_method_exp_year", "datatype": dbt.type_int()},
     {"name": "fraud_score", "datatype": dbt.type_string()},
     {"name": "fraud_decision", "datatype": dbt.type_string()},
-    {"name": "fraud_risk_rules_triggered", "datatype": "variant"},
     {"name": "created_at", "datatype": dbt.type_timestamp()},
     {"name": "updated_by_ip", "datatype": dbt.type_string()},
     {"name": "updated_by_country", "datatype": dbt.type_string()} 

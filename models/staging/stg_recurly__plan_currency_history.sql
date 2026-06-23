@@ -13,7 +13,7 @@ fields as (
                 staging_columns = get_plan_currency_history_columns()
             )
         }}
-        {{ recurly.apply_source_relation() }}
+        {{ fivetran_utils.apply_source_relation(package_name='recurly') }}
     from base
 ),
 
@@ -26,7 +26,7 @@ final as (
         currency,
         cast(setup_fees as {{ dbt.type_numeric() }}) as setup_fees,
         cast(unit_amount as {{ dbt.type_numeric() }}) as unit_amount,
-        row_number() over (partition by plan_id {{ recurly.partition_by_source_relation() }} order by plan_updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by plan_id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by plan_updated_at desc) = 1 as is_most_recent_record
     from fields
 )
 

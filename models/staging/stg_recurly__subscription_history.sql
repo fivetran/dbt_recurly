@@ -13,7 +13,7 @@ fields as (
                 staging_columns = get_subscription_history_columns()
             )
         }}
-        {{ recurly.apply_source_relation() }}
+        {{ fivetran_utils.apply_source_relation(package_name='recurly') }}
     from base
 ),
 
@@ -37,7 +37,7 @@ final as (
         expiration_reason,
         cast(expires_at as {{ dbt.type_timestamp() }}) as expires_at,
         auto_renew as has_auto_renew,
-        row_number() over (partition by id {{ recurly.partition_by_source_relation() }} order by current_period_started_at desc) = 1 as is_most_recent_record,
+        row_number() over (partition by id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by current_period_started_at desc) = 1 as is_most_recent_record,
         object,
         cast(paused_at as {{ dbt.type_timestamp() }}) as paused_at,
         plan_id,

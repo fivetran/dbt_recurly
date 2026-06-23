@@ -15,7 +15,7 @@ sources:
 
     tables:
       - name: account_balance_history
-        identifier: "{{ var('account_balance_history_identifier', 'account_balance_history') }}"
+        identifier: "{{ var('recurly_account_balance_history_identifier', 'account_balance_history') }}"
         description: The customer account balance is made up of any open or past due invoices on the account alongside any charge or credit adjustments that are left uninvoiced and open on the account respectively. 
         columns: 
           - name: account_id
@@ -30,7 +30,7 @@ sources:
             description: Is the existing amount of this balance due?
 
       - name: account_history
-        identifier: "{{ var('account_history_identifier', 'account_history') }}"
+        identifier: "{{ var('recurly_account_history_identifier', 'account_history') }}"
         description: >
           The account object stores the entire Recurly history of your customer and 
           acts as the entry point for working with a customer's billing information, subscription data, transactions, invoices and more. 
@@ -103,7 +103,7 @@ sources:
             description: The VAT number of the account (to avoid having the VAT applied). This is only used for manually collected invoices.
 
       - name: account_note_history
-        identifier: "{{ var('account_note_history_identifier', 'account_note_history') }}"
+        identifier: "{{ var('recurly_account_note_history_identifier', 'account_note_history') }}"
         description: A history of notes your team can leave on an account to add context. Notes are internal and not exposed to customers.
         columns: 
           - name: id
@@ -124,7 +124,7 @@ sources:
             description: Email associated with who created the note.
 
       - name: billing_info_history
-        identifier: "{{ var('billing_info_history_identifier', 'billing_info_history') }}"
+        identifier: "{{ var('recurly_billing_info_history_identifier', 'billing_info_history') }}"
         description: Stored payment information for an account. Filled out by the customer upon purchase or when they update information.
         columns:
           - name: id
@@ -187,7 +187,7 @@ sources:
             description: (for EU companies), VAT number provider by customer.
 
       - name: coupon_discount
-        identifier: "{{ var('coupon_discount_identifier', 'coupon_discount') }}"
+        identifier: "{{ var('recurly_coupon_discount_identifier', 'coupon_discount') }}"
         description: Coupon details and the discounts set for customer purchases.
         columns:          
           - name: coupon_id
@@ -208,7 +208,7 @@ sources:
             description: Delineates between which type of discount is being applied ('fixed' for amount discount, 'percent' for percentage discount)
 
       - name: coupon_redemption_history
-        identifier: "{{ var('coupon_redemption_history_identifier', 'coupon_redemption_history') }}"
+        identifier: "{{ var('recurly_coupon_redemption_history_identifier', 'coupon_redemption_history') }}"
         description: History of coupons redeemed by accounts.
         columns:
           - name: id 
@@ -231,7 +231,7 @@ sources:
             description: Time coupon redemption last updated.
       
       - name: credit_payment_history
-        identifier: "{{ var('credit_payment_history_identifier', 'credit_payment_history') }}"
+        identifier: "{{ var('recurly_credit_payment_history_identifier', 'credit_payment_history') }}"
         description: >
           A history of outstanding credit balance to pay an invoice,
           but does include the record of write-offs, credit balance removals,
@@ -276,7 +276,7 @@ sources:
             description: Time when a credit payment is voided.
 
       - name: invoice_coupon_redemption_history
-        identifier: "{{ var('invoice_coupon_redemption_history_identifier', 'invoice_coupon_redemption_history') }}"
+        identifier: "{{ var('recurly_invoice_coupon_redemption_history_identifier', 'invoice_coupon_redemption_history') }}"
         description: History of coupons redeemed and applied to specific invoices.
         columns:
           - name: coupon_redemption_id 
@@ -287,7 +287,7 @@ sources:
             description: Last time the invoice was updated.
 
       - name: invoice_history
-        identifier: "{{ var('invoice_history_identifier', 'invoice_history') }}"
+        identifier: "{{ var('recurly_invoice_history_identifier', 'invoice_history') }}"
         description: >
           An invoice relates charges, credits, and payments together. 
           When a subscription is created or renewed or a charge is created on the account, 
@@ -399,7 +399,7 @@ sources:
             description: Notes section if you are using Recurly's EU VAT feature for tax collection.
 
       - name: invoice_subscription_history
-        identifier: "{{ var('invoice_subscription_history_identifier', 'invoice_subscription_history') }}"
+        identifier: "{{ var('recurly_invoice_subscription_history_identifier', 'invoice_subscription_history') }}"
         description: >
           The connection between invoices and subscription. 
           FK on invoice are both invoice_id and invoice_updated_at, and on subscription is subscription_id.
@@ -413,7 +413,7 @@ sources:
             description: The id of the subscription associated with the invoice.
 
       - name: line_item_history
-        identifier: "{{ var('line_item_history_identifier', 'line_item_history') }}"
+        identifier: "{{ var('recurly_line_item_history_identifier', 'line_item_history') }}"
         description: >
           Line items are the charges and credits on your customer's invoices.
           The table holds the lineage of the line item.
@@ -542,7 +542,7 @@ sources:
             description: The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI. Used in HTB database.
 
       - name: plan_currency_history
-        identifier: "{{ var('plan_currency_history_identifier', 'plan_currency_history') }}"
+        identifier: "{{ var('recurly_plan_currency_history_identifier', 'plan_currency_history') }}"
         description: Plan prices
         columns:
           - name: plan_id
@@ -557,7 +557,7 @@ sources:
             description: Amount for one plan. 
 
       - name: plan_history
-        identifier: "{{ var('plan_history_identifier', 'plan_history') }}"
+        identifier: "{{ var('recurly_plan_history_identifier', 'plan_history') }}"
         description: >
           Plans define the base price, currency, and billing cycle for recurring purchases of products.
           The table holds the lineage of the plan.
@@ -629,7 +629,7 @@ sources:
               Enum: "days", "months"
 
       - name: subscription_add_on_history
-        identifier: "{{ var('subscription_add_on_history_identifier', 'subscription_add_on_history') }}"
+        identifier: "{{ var('recurly_subscription_add_on_history_identifier', 'subscription_add_on_history') }}"
         description: History of subscription add-ons to a particular plan.
         config:
           enabled: "{{ var('recurly__using_subscription_add_on_history', true) and var('recurly_sources', []) == [] }}"
@@ -654,7 +654,7 @@ sources:
             description: Amount of one unit of the add-on.
 
       - name: subscription_change_history
-        identifier: "{{ var('subscription_change_history_identifier', 'subscription_change_history') }}"
+        identifier: "{{ var('recurly_subscription_change_history_identifier', 'subscription_change_history') }}"
         description: History of subscription changes, particularly upgrades and downgrades, but also changes to how subscription is invoiced.
         config:
           enabled: "{{ var('recurly__using_subscription_change_history', true) and var('recurly_sources', []) == [] }}"
@@ -683,7 +683,7 @@ sources:
             description: Last modification of subscription change.
       
       - name: subscription_history
-        identifier: "{{ var('subscription_history_identifier', 'subscription_history') }}"
+        identifier: "{{ var('recurly_subscription_history_identifier', 'subscription_history') }}"
         description: >
           Subscriptions are created when your customers subscribe to one of your plans. 
           The customer's subscription tells Recurly when and how much to bill the customer.
@@ -788,7 +788,7 @@ sources:
             description: The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
 
       - name: transaction_subscription
-        identifier: "{{ var('transaction_subscription_identifier', 'transaction_subscription') }}"
+        identifier: "{{ var('recurly_transaction_subscription_identifier', 'transaction_subscription') }}"
         description: >
           The connection between transaction and subscription. 
           FK on transaction is transaction_id, and on subscription is subscription_id.
@@ -800,7 +800,7 @@ sources:
             description: The id of the subscription associated with the transaction.
 
       - name: transaction
-        identifier: "{{ var('transaction_identifier', 'transaction') }}"
+        identifier: "{{ var('recurly_transaction_identifier', 'transaction') }}"
         description: >
           Purchasing information is sent to your payment gateway in an action called a transaction. 
           This includes the customer's billing information and the amount of money to be charged, voided, or refunded.
