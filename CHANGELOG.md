@@ -1,3 +1,11 @@
+# dbt_recurly v1.5.1
+
+[PR #49](https://github.com/fivetran/dbt_recurly/pull/49) includes the following updates:
+
+## Feature Updates
+- Adds DuckDB as a supported destination.
+
+
 # dbt_recurly v1.5.0
 
 [PR #47](https://github.com/fivetran/dbt_recurly/pull/47) includes the following updates:
