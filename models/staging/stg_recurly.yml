@@ -199,7 +199,9 @@ models:
       - name: account_id
         description: Account associated with the coupon being redeemed.
       - name: coupon_id
-        description: Coupon being redeemed.
+        description: >
+          ID of the bulk coupon being redeemed. Before October 10, 2026, this column
+          held the unique coupon code ID, which now lives in `unique_coupon_code_id`.
       - name: created_at
         description: Time coupon was being redeemed.
       - name: currency
@@ -210,7 +212,9 @@ models:
         description: If a coupon is removed from a customer, time of removal.
       - name: state
         description: Current state of coupon redemption (usually active or inactive)
-      
+      - name: unique_coupon_code_id
+        description: ID of the unique coupon code being redeemed.
+
   - name: stg_recurly__credit_payment_history
     description: >
           A history of outstanding credit balance to pay an invoice,
