@@ -29,7 +29,8 @@ final as (
         currency,
         discounted,
         cast(removed_at as {{ dbt.type_timestamp() }}) as removed_at,
-        state
+        state,
+        unique_coupon_code_id
     from fields
 )
 

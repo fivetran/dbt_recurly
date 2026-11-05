@@ -10,6 +10,7 @@
     {"name": "id", "datatype": dbt.type_string()},
     {"name": "removed_at", "datatype": dbt.type_timestamp()},
     {"name": "state", "datatype": dbt.type_string()},
+    {"name": "unique_coupon_code_id", "datatype": dbt.type_string()},
     {"name": "updated_at", "datatype": dbt.type_timestamp()}
 ] %}
 
