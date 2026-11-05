@@ -1,0 +1,14 @@
+version: 1.6.0
+pr_number: 53
+is_breaking: false
+schema_data_changes:
+  entries:
+  - models:
+    - '[`stg_recurly__coupon_redemption_history`](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.stg_recurly__coupon_redemption_history)'
+    change_type: New Columns
+    new: '`unique_coupon_code_id`'
+    notes: Recurly's October 10, 2026 API change moves the unique coupon code ID that
+      `coupon_id` used to hold into this new column. After that date, `coupon_id` only
+      holds the bulk coupon ID. We keep the `coupon_id` name to match the source column
+      and document the change on that column instead. See the DECISIONLOG for details.
+date: '2026-11-05'
