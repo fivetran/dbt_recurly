@@ -3,6 +3,14 @@ version: 2
 models:
   - name: stg_recurly__account_balance_history
     description: The customer account balance is made up of any open or past due invoices on the account alongside any charge or credit adjustments that are left uninvoiced and open on the account respectively.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - account_updated_at
+              - currency
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -25,6 +33,13 @@ models:
       The account object stores the entire Recurly history of your customer and
       acts as the entry point for working with a customer's billing information, subscription data, transactions, invoices and more.
       Once an account is created, all values (with the exception of the account code) may be updated.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -85,6 +100,14 @@ models:
   - name: stg_recurly__account_note_history
     description: A history of notes your team can leave on an account to add context. Notes are internal and not exposed to customers.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_note_id
+              - account_id
+              - account_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -110,6 +133,13 @@ models:
   - name: stg_recurly__billing_info_history
     description: Stored payment information for an account. Filled out by the customer upon purchase or when they update information.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - billing_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -160,6 +190,13 @@ models:
   - name: stg_recurly__coupon_discount
     description: Coupon details and the discounts set for customer purchases.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - fivetran_id
+              - coupon_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -187,6 +224,13 @@ models:
   - name: stg_recurly__coupon_redemption_history
     description: History of coupons redeemed by accounts.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - coupon_redemption_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -220,6 +264,13 @@ models:
           A history of outstanding credit balance to pay an invoice,
           but does include the record of write-offs, credit balance removals,
           and credit payments later refunded as cash transaction.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - credit_payment_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -263,6 +314,14 @@ models:
 
   - name: stg_recurly__invoice_coupon_redemption_history
     description: History of coupons redeemed and applied to specific invoices.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - coupon_redemption_id
+              - invoice_id
+              - invoice_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -282,6 +341,13 @@ models:
       Recurly will sum the charges, discount or tax as appropriate, and send the invoice out for collection.
       The table holds the lineage of the invoice.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - invoice_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -373,6 +439,14 @@ models:
       The connection between invoices and subscription.
       FK on invoice are both invoice_id and invoice_updated_at, and on subscription is subscription_id.
       The table holds the lineage of the invoice - subscription connection.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - invoice_id
+              - invoice_updated_at
+              - subscription_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -392,6 +466,13 @@ models:
       Line items are the charges and credits on your customer's invoices.
       The table holds the lineage of the line item.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - line_item_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -505,6 +586,14 @@ models:
   - name: stg_recurly__plan_currency_history
     description: Plan prices
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - plan_id
+              - plan_updated_at
+              - currency
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -526,6 +615,13 @@ models:
       Plans define the base price, currency, and billing cycle for recurring purchases of products.
       The table holds the lineage of the plan.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - plan_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -596,6 +692,13 @@ models:
   - name: stg_recurly__subscription_add_on_history
     description: History of subscription add-ons to a particular plan.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - subscription_add_on_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -623,6 +726,13 @@ models:
   - name: stg_recurly__subscription_change_history
     description: History of subscription changes, particularly upgrades and downgrades, but also changes to how subscription is invoiced.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - subscription_change_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -657,6 +767,13 @@ models:
       The customer's subscription tells Recurly when and how much to bill the customer.
       The table holds the lineage of the subscription.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - subscription_id
+              - updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -748,6 +865,13 @@ models:
       The connection between transaction and subscription.
       FK on transaction is transaction_id, and on subscription is subscription_id.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - transaction_id
+              - subscription_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -765,6 +889,13 @@ models:
       Purchasing information is sent to your payment gateway in an action called a transaction.
       This includes the customer's billing information and the amount of money to be charged, voided, or refunded.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - transaction_id
+              - created_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
