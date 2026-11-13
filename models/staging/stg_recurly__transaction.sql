@@ -48,7 +48,7 @@ final as (
         invoice_id,
         refunded as is_refunded,
         success as is_successful,
-        row_number() over (partition by id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by created_at desc) = 1 as is_most_recent_record,
+        row_number() over (partition by id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by created_at desc nulls last) = 1 as is_most_recent_record,
         origin,
         original_transaction_id,
         payment_gateway_id,
