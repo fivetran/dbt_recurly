@@ -21,6 +21,13 @@ models:
 
   - name: recurly__account_daily_overview
     description: Each record is a day in an account and its accumulated balance totals based on all line item transactions up to that day.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - date_day
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -107,6 +114,12 @@ models:
 
   - name: recurly__account_overview
     description: Each record represents an account, enriched with metrics about their associated transactions.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -191,6 +204,13 @@ models:
 
   - name: recurly__balance_transactions
     description: Each record represents a specific line item charge, credit, or other balance change that accumulates into the final invoices.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - balance_transaction_id
+              - transaction_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -319,6 +339,12 @@ models:
 
   - name: recurly__churn_analysis
     description: Each record represents a subscription and their churn status and details.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - subscription_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -379,6 +405,13 @@ models:
 
   - name: recurly__monthly_recurring_revenue
     description: Each record represents an account and MRR generated on a monthly basis.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - account_month
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -419,6 +452,12 @@ models:
 
   - name: recurly__subscription_overview
     description: Each record represents a subscription, enriched with metrics about time, revenue, state, and period.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - subscription_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
