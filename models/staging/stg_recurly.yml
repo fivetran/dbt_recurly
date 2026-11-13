@@ -16,6 +16,8 @@ models:
         description: The combined amount of charge or credit adjustments that are left uninvoiced and open on the account.
       - name: currency
         description: 3-letter ISO 4217 currency code (USD for US Dollar)
+      - name: is_most_recent_record
+        description: Is this the most recent record of this account balance?
       - name: past_due
         description: Is the existing amount of this balance due?
 
@@ -98,6 +100,8 @@ models:
         description: Last time the account note was updated.
       - name: created_at
         description: Date/time When the note was created.
+      - name: is_most_recent_record
+        description: Is this the most recent record of this account note?
       - name: message
         description: Contents of the note created. 
       - name: object
@@ -141,6 +145,8 @@ models:
         description: Date customer's billing information was added to the account. 
       - name: first_name
         description: First name of the cardholder for the account.
+      - name: is_most_recent_record
+        description: Is this the most recent record of this billing information?
       - name: is_valid
         description: Is the card valid? Boolean object.
       - name: last_name
@@ -246,6 +252,8 @@ models:
         description: The date and time the credit payment was created.
       - name: currency
         description: 3-letter ISO 4217 currency code (USD for US Dollar).
+      - name: is_most_recent_record
+        description: Is this the most recent record of this credit payment?
       - name: original_credit_payment_id
         description: >
           The unique id of the credit payment the refund action credit payment is refunding. 
@@ -274,6 +282,8 @@ models:
         description: Invoice the coupon redemption is associated with.
       - name: invoice_updated_at
         description: Last time the invoice was updated.
+      - name: is_most_recent_record
+        description: Is this the most recent record of this invoice coupon redemption?
 
   - name: stg_recurly__invoice_history
     description: >
@@ -382,6 +392,8 @@ models:
           - not_null
       - name: invoice_updated_at
         description: When the invoice was updated.
+      - name: is_most_recent_record
+        description: Is this the most recent record of this invoice subscription?
       - name: subscription_id
         description: The id of the subscription associated with the invoice.
         tests:
@@ -516,6 +528,8 @@ models:
         description: Last time plan updated.
       - name: currency
         description: 3-letter ISO 4217 currency code.
+      - name: is_most_recent_record
+        description: Is this the most recent record of this plan currency?
       - name: setup_fees
         description: Fee automatically charged at the beginning of a subscription billing cycle.
       - name: unit_amount
@@ -609,6 +623,8 @@ models:
         description: The date/time the add-on was last created.
       - name: expired_at
         description: Date and time the subscription was/ will churn.
+      - name: is_most_recent_record
+        description: Is this the most recent record of this subscription add-on?
       - name: object
         description: Object type of subscription add-on.
       - name: plan_add_on_id
@@ -640,6 +656,8 @@ models:
         description: When the subscription was last created.
       - name: deleted_at
         description: When subscription was rendered to be inactive.
+      - name: is_most_recent_record
+        description: Is this the most recent record of this subscription change?
       - name: object
         description: Object type of subscription change.
       - name: plan_id
