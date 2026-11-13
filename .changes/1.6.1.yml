@@ -1,4 +1,5 @@
 version: 1.6.1
+pr_number: 58
 is_breaking: false
 under_the_hood:
 - description: "Documents the `is_most_recent_record` column in the nine staging models that output it but did not describe it. The column and all model outputs are unchanged, so this release only fills a gap in the package documentation."
