@@ -15,7 +15,7 @@ This dbt package transforms data from Fivetran's Recurly connector into analytic
   - [DAG](https://fivetran.github.io/dbt_recurly/#!/overview?g_v=1)
   - [Changelog](https://github.com/fivetran/dbt_recurly/blob/main/CHANGELOG.md)
 - dbt Core™ supported versions
-  - `>=1.3.0, <3.0.0`
+  - `>=1.10.0, <3.0.0`
 
 ## What does this dbt package do?
 This package enables you to enhance balance transaction entries with useful fields, create customized analysis tables to examine churn and monthly recurring revenue, and generate metrics tables for account activity analysis. It creates enriched models with metrics focused on transactions, subscriptions, and customer behavior.
@@ -74,7 +74,7 @@ Include the following recurly package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/recurly
-    version: [">=1.6.0", "<1.7.0"]
+    version: [">=1.7.0", "<1.8.0"]
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/recurly_source` in your `packages.yml` since this package has been deprecated.
