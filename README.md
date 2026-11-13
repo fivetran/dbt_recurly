@@ -74,7 +74,7 @@ Include the following recurly package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/recurly
-    version: [">=1.8.0", "<1.9.0"]
+    version: [">=1.7.0", "<1.8.0"]
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/recurly_source` in your `packages.yml` since this package has been deprecated.
