@@ -1,3 +1,10 @@
+# dbt_recurly v1.6.1
+
+[PR #59](https://github.com/fivetran/dbt_recurly/pull/59) includes the following updates:
+
+## Bug Fixes
+- Casts the current timestamp to a date before `date_trunc` in `int_recurly__account_cumulatives` so the month comparison is date-to-date. This resolves a `dbt0407` date/timestamp comparison error reported by dbt Fusion `--static-analysis strict`. Results are unchanged.
+
 # dbt_recurly v1.6.0
 
 [PR #53](https://github.com/fivetran/dbt_recurly/pull/53) includes the following updates:

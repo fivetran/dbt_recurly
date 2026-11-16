@@ -1,0 +1,9 @@
+version: 1.6.1
+pr_number: 59
+is_breaking: false
+bug_fixes:
+  entries:
+  - Casts the current timestamp to a date before `date_trunc` in `int_recurly__account_cumulatives`
+    so the month comparison is date-to-date, resolving a `dbt0407` error from dbt Fusion
+    `--static-analysis strict`. Results are unchanged.
+date: '2026-11-16'
