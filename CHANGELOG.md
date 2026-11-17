@@ -1,3 +1,10 @@
+# dbt_recurly v1.6.1
+
+[PR #58](https://github.com/fivetran/dbt_recurly/pull/58) includes the following updates:
+
+## Under the Hood
+- Documents the `is_most_recent_record` column in the nine staging models.
+
 # dbt_recurly v1.6.0
 
 [PR #53](https://github.com/fivetran/dbt_recurly/pull/53) includes the following updates:
