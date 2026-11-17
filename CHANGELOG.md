@@ -3,7 +3,7 @@
 [PR #58](https://github.com/fivetran/dbt_recurly/pull/58) includes the following updates:
 
 ## Under the Hood
-- Documents the `is_most_recent_record` column in the nine staging models that output it but did not describe it. The column and all model outputs are unchanged, so this release only fills a gap in the package documentation.
+- Documents the `is_most_recent_record` column in the nine staging models.
 
 # dbt_recurly v1.6.0
 
