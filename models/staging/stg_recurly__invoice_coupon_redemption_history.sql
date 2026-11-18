@@ -24,7 +24,7 @@ final as (
         coupon_redemption_id,
         invoice_id,
         cast(invoice_updated_at as {{ dbt.type_timestamp() }}) as invoice_updated_at,
-        row_number() over (partition by coupon_redemption_id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by invoice_updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by coupon_redemption_id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by invoice_updated_at desc nulls last) = 1 as is_most_recent_record
     from fields
 )
 

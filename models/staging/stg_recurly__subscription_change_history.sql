@@ -34,7 +34,7 @@ final as (
         quantity,
         subscription_id,
         cast(unit_amount as {{ dbt.type_numeric() }}) as unit_amount,
-        row_number() over (partition by id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by updated_at desc) = 1 as is_most_recent_record
+        row_number() over (partition by id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }} order by updated_at desc nulls last) = 1 as is_most_recent_record
     from fields
 ) 
 
