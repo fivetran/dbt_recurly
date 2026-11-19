@@ -191,6 +191,11 @@ models:
 
   - name: recurly__balance_transactions
     description: Each record represents a specific line item charge, credit, or other balance change that accumulates into the final invoices.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - source_relation
+            - balance_transaction_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -287,7 +292,9 @@ models:
       - name: invoice_closed_at
         description: Date invoice was marked paid or failed.
       - name: transaction_id
-        description: The id of the transaction associated with the invoice.
+        description: >
+          The ID of one transaction on the invoice. If the invoice has more than one transaction, this is the most recent successful
+          transaction, or the most recent transaction if none succeeded. The other `transaction_*` columns describe this same transaction.
       - name: transaction_created_at
         description: Time transaction was created.
       - name: transaction_type

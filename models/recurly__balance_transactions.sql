@@ -14,9 +14,27 @@ invoice_history as (
 
 transaction_history as (
 
-    select * 
+    select *
     from {{ ref('stg_recurly__transaction') }}
     where is_most_recent_record
+),
+
+-- An invoice can have several transactions, such as a voided attempt and a later successful one.
+-- Keep one transaction per invoice so each line item appears once: the latest successful one, or the latest one if none succeeded.
+invoice_transaction as (
+
+    select *
+    from (
+        select
+            *,
+            row_number() over (
+                partition by invoice_id {{ fivetran_utils.partition_by_source_relation(package_name='recurly') }}
+                order by case when lower(status) = 'success' then 0 else 1 end, created_at desc, transaction_id desc
+            ) as transaction_rank
+        from transaction_history
+        where invoice_id is not null
+    ) as ranked
+    where transaction_rank = 1
 ),
 
 
@@ -57,21 +75,21 @@ final as (
         invoice_history.created_at as invoice_created_at,
         invoice_history.due_at as invoice_due_at,
         invoice_history.closed_at as invoice_closed_at,
-        transaction_history.transaction_id,
-        transaction_history.created_at as transaction_created_at,
-        transaction_history.type as transaction_type,
-        transaction_history.origin as transaction_origin,
-        transaction_history.status as transaction_status,
-        transaction_history.billing_country as transaction_billing_country,
-        transaction_history.status_message as transaction_status_message,
-        transaction_history.payment_method_object as transaction_payment_method_object
+        invoice_transaction.transaction_id,
+        invoice_transaction.created_at as transaction_created_at,
+        invoice_transaction.type as transaction_type,
+        invoice_transaction.origin as transaction_origin,
+        invoice_transaction.status as transaction_status,
+        invoice_transaction.billing_country as transaction_billing_country,
+        invoice_transaction.status_message as transaction_status_message,
+        invoice_transaction.payment_method_object as transaction_payment_method_object
     from line_item_history
     left join invoice_history
         on line_item_history.invoice_id = invoice_history.invoice_id
         and line_item_history.source_relation = invoice_history.source_relation
-    left join transaction_history
-        on invoice_history.invoice_id = transaction_history.invoice_id
-        and invoice_history.source_relation = transaction_history.source_relation
+    left join invoice_transaction
+        on invoice_history.invoice_id = invoice_transaction.invoice_id
+        and invoice_history.source_relation = invoice_transaction.source_relation
 )
 
 select * 

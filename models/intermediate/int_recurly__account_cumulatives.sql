@@ -9,6 +9,34 @@ balance_transaction_joined as (
     select * 
     from {{ ref('recurly__balance_transactions') }}
 ),
+
+transaction_history as (
+
+    select *
+    from {{ ref('stg_recurly__transaction') }}
+    where is_most_recent_record
+),
+
+-- recurly__balance_transactions keeps one transaction per invoice, so find transaction dates across every transaction on the account's invoices.
+account_transaction_dates as (
+
+    select
+        account_invoices.source_relation,
+        account_invoices.account_id,
+        min(transaction_history.created_at) as first_transaction_date,
+        max(transaction_history.created_at) as most_recent_transaction_date
+    from (
+        select distinct
+            source_relation,
+            account_id,
+            invoice_id
+        from balance_transaction_joined
+    ) as account_invoices
+    join transaction_history
+        on account_invoices.invoice_id = transaction_history.invoice_id
+        and account_invoices.source_relation = transaction_history.source_relation
+    group by 1, 2
+),
  
 account_current_month as (
 
@@ -60,9 +88,7 @@ account_min_max as (
             then {{ 'created_at' }}
             else null end) as most_recent_charge_date,
         min(invoice_created_at) as first_invoice_date,
-        max(invoice_created_at) as most_recent_invoice_date,
-        min(transaction_created_at) as first_transaction_date,
-        max(transaction_created_at) as most_recent_transaction_date
+        max(invoice_created_at) as most_recent_invoice_date
     from balance_transaction_joined
     {{ dbt_utils.group_by(2) }}
 ),
@@ -101,8 +127,8 @@ final as (
         account_min_max.most_recent_charge_date,
         account_min_max.first_invoice_date,
         account_min_max.most_recent_invoice_date,
-        account_min_max.first_transaction_date,
-        account_min_max.most_recent_transaction_date
+        account_transaction_dates.first_transaction_date,
+        account_transaction_dates.most_recent_transaction_date
     from account_totals
     left join account_current_month
         on account_totals.account_id = account_current_month.account_id
@@ -110,6 +136,9 @@ final as (
     left join account_min_max
         on account_totals.account_id = account_min_max.account_id
         and account_totals.source_relation = account_min_max.source_relation
+    left join account_transaction_dates
+        on account_totals.account_id = account_transaction_dates.account_id
+        and account_totals.source_relation = account_transaction_dates.source_relation
 )
 
 select *

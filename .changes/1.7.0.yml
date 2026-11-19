@@ -1,0 +1,27 @@
+version: 1.7.0
+pr_number: null
+is_breaking: true
+schema_data_changes:
+  entries:
+  - models:
+    - '[`recurly__balance_transactions`](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__balance_transactions)'
+    change_type: Changed grain
+    old: One row per line item per transaction on the invoice
+    new: One row per line item
+    is_breaking: true
+    notes: When an invoice has more than one transaction, such as a voided attempt
+      and a later successful one, each line item now appears once. The `transaction_*`
+      columns describe the most recent successful transaction on the invoice, or
+      the most recent transaction if none succeeded. Adds a uniqueness test on
+      `source_relation` and `balance_transaction_id`.
+  - models:
+    - '[`recurly__account_overview`](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_overview)'
+    - '[`recurly__account_daily_overview`](https://fivetran.github.io/dbt_recurly/#!/model/model.recurly.recurly__account_daily_overview)'
+    change_type: Corrected values
+    old: Balance, charge, credit, discount, and tax amounts and counts are multiplied
+      by the number of transactions on the invoice
+    new: Each line item counts once
+    is_breaking: false
+    notes: Transaction counts and first and most recent transaction dates still
+      include every transaction on the account's invoices.
+date: '2026-11-19'
