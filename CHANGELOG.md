@@ -1,3 +1,11 @@
+# dbt_recurly v1.7.0
+
+[PR #56](https://github.com/fivetran/dbt_recurly/pull/56) includes the following updates:
+
+## Feature Update
+- Raises the minimum dbt version to 1.10.0.
+- Adds `dbt_utils.unique_combination_of_columns` tests to staging and end models. If a test fails, please [open an issue](https://github.com/fivetran/dbt_recurly/issues/new/choose).
+
 # dbt_recurly v1.6.1
 
 [PR #58](https://github.com/fivetran/dbt_recurly/pull/58) includes the following updates:
