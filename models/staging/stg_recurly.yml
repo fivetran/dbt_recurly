@@ -16,7 +16,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: account_id
         description: The account the balance update is associated with.  
-        tests: 
+        data_tests: 
           - not_null 
       - name: account_updated_at
         description: When the account balance was last changed.
@@ -47,7 +47,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Uniquely identifies your customers in Recurly. No two customers can share the same account id. Part of the PK
-        tests:
+        data_tests:
           - not_null
       - name: updated_at
         description: When the account was last changed. Part of the PK
@@ -115,7 +115,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: account_note_id
         description: Uniquely identifies the account note created.
-        tests: 
+        data_tests: 
           - not_null
       - name: account_id
         description: Account associated with the note created.
@@ -149,7 +149,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: billing_id
         description: Unique identifier for the billing info object.
-        tests:
+        data_tests:
           - not_null 
       - name: updated_at
         description: Date customer's billing information was last updated on the account.
@@ -208,11 +208,11 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: fivetran_id
         description: Combined unique surrogate key for the model.
-        tests:
+        data_tests:
           - not_null
       - name: coupon_id
         description: Coupon details and the discounts set for customer purchases.
-        tests:
+        data_tests:
           - not_null 
       - name: amount
         description: Fixed amount discount being applied, if applicable. Percentage would be null if amount exists. 
@@ -242,7 +242,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: coupon_redemption_id
         description: Unique identifier for the coupon redemption created. 
-        tests: 
+        data_tests: 
           - not_null
       - name: updated_at
         description: Time coupon redemption last updated.
@@ -282,7 +282,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: credit_payment_id
         description: Unique identifier for the credit payment.
-        tests: 
+        data_tests: 
           - not_null
       - name: updated_at
         description: Time credit payment last updated.
@@ -335,7 +335,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: coupon_redemption_id
         description: Unique identifier for the credit payment.
-        tests: 
+        data_tests: 
           - not_null
       - name: invoice_id
         description: Invoice the coupon redemption is associated with.
@@ -363,7 +363,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: invoice_id
         description: Unique identifier for the object.
-        tests: 
+        data_tests: 
           - not_null
       - name: updated_at
         description: When the invoice was last updated. 
@@ -402,7 +402,7 @@ models:
           If VAT taxation and the Country Invoice Sequencing feature are enabled, 
           invoices will have country-specific invoice numbers for invoices billed to EU countries (e.g. FR1001). 
           Non-EU invoices will continue to use the site-level invoice number sequence.
-        tests:
+        data_tests:
           - not_null
       - name: origin
         description: >
@@ -462,7 +462,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: invoice_id
         description: The id of the invoice associated with the subscription.
-        tests:
+        data_tests:
           - not_null
       - name: invoice_updated_at
         description: When the invoice was updated.
@@ -470,7 +470,7 @@ models:
         description: Is this the most recent record of this invoice subscription?
       - name: subscription_id
         description: The id of the subscription associated with the invoice.
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_recurly__line_item_history
@@ -490,7 +490,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: line_item_id
         description: Unique identifier for the object.
-        tests:
+        data_tests:
           - not_null
       - name: updated_at
         description: When the line item was last updated.
@@ -611,7 +611,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: plan_id
         description: The id of the plan. 
-        tests:
+        data_tests:
           - not_null
       - name: plan_updated_at
         description: Last time plan updated.
@@ -641,7 +641,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: plan_id
         description: Unique identifier for the object.
-        tests:
+        data_tests:
           - not_null
       - name: updated_at
         description: When the plan was last updated.
@@ -718,7 +718,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: subscription_add_on_id
         description: Unique identifier for subscription add-on. 
-        tests:
+        data_tests:
           - not_null
       - name: updated_at
         description: The date/time the add-on was last modified.
@@ -754,7 +754,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: subscription_change_id
         description: Unique identifier for subscription change.
-        tests:
+        data_tests:
           - not_null 
       - name: updated_at
         description: Last modification of subscription change.
@@ -797,7 +797,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: subscription_id
         description: Unique identifier for the subscription.
-        tests:
+        data_tests:
           - not_null 
       - name: updated_at
         description: When the subscription was updated.
@@ -895,11 +895,11 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: transaction_id
         description: The id of the transaction associated with the subscription.
-        tests:
+        data_tests:
           - not_null 
       - name: subscription_id
         description: The id of the subscription associated with the transaction.
-        tests:
+        data_tests:
           - not_null 
 
   - name: stg_recurly__transaction
@@ -919,7 +919,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: transaction_id
         description: Unique identifier for the object.
-        tests:
+        data_tests:
           - not_null
       - name: created_at
         description: When the transaction was created.

@@ -33,7 +33,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: account_daily_id
         description: Unique account key, based on source_relation, account id, and date of balance data.
-        tests:
+        data_tests:
           - not_null
       - name: account_id
         description: Account associated with balance transactions.
@@ -125,7 +125,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Primary key for the account.
-        tests:
+        data_tests:
           - not_null
       - name: account_created_at
         description: Timestamp of when the account entry was created.
@@ -216,7 +216,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: balance_transaction_id
         description: Unique identifier for the balance transaction line item
-        tests: 
+        data_tests: 
           - not_null
       - name: created_at
         description: When the line item was created.
@@ -350,7 +350,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: subscription_id
         description: Unique identifier for the subscription.
-        tests:
+        data_tests:
           - not_null
       - name: activated_at
         description: When the subscription was activated.  
@@ -417,7 +417,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: account_monthly_id
         description: Unique identifier associated by source_relation, account id, and month.
-        tests:
+        data_tests:
           - not_null
       - name: account_id
         description: id associated with the account.
