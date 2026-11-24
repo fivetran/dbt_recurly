@@ -13,8 +13,9 @@ recurly__balance_transactions as (
 
 mrr_balance_transactions as (
 
-    select
+    select distinct
         source_relation,
+        balance_transaction_id,
         account_id,
         amount,
         {{ dbt.date_trunc('month', 'created_at') }} as account_month
